@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2015 Karl Bennett
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.github.shiver-me-timbers</groupId>
+        <artifactId>smt-waiting-parent</artifactId>
+        <version>1.7-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>smt-waiting-aspect</artifactId>
+
+    <packaging>jar</packaging>
+
+    <name>${project.artifactId}</name>
+
+    <description>This aspect can be used to wait for a method to by retrying it for a given time limit.</description>
+
+    <url>http://shiver-me-timbers.github.io/smt-waiting-aspect/</url>
+
+    <profiles>
+        <profile>
+            <id>load-time</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <argLine>
+                                -javaagent:${settings.localRepository}/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar
+                            </argLine>
+                            <useSystemClassLoader>true</useSystemClassLoader>
+                            <systemPropertyVariables>
+                                <spring.profiles.active>load-time</spring.profiles.active>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-instrument</artifactId>
+                    <version>${spring.version}</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>compile-time</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <spring.profiles.active>compile-time</spring.profiles.active>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>aspectj-maven-plugin</artifactId>
+                        <version>1.7</version>
+                        <configuration>
+                            <source>${java.vm.specification.version}</source>
+                            <target>${java.vm.specification.version}</target>
+                            <Xlint>ignore</Xlint>
+                            <complianceLevel>${java.vm.specification.version}</complianceLevel>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>compile</goal>
+                                    <goal>test-compile</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>waiting-spring</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.github.shiver-me-timbers</groupId>
+                    <artifactId>smt-waiting-spring</artifactId>
+                    <version>1.7-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.shiver-me-timbers</groupId>
+            <artifactId>smt-waiting</artifactId>
+            <version>1.7-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <!-- The AspectJ dependency is has provided scope so that it doesn't clash with the version used by the use -->
+            <!-- of this library. -->
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.8.6</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <scm>
+        <connection>scm:git:https://github.com/shiver-me-timbers/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:git@github.com:shiver-me-timbers/${project.artifactId}.git</developerConnection>
+        <url>https://github.com/shiver-me-timbers/${project.artifactId}</url>
+        <tag>HEAD</tag>
+    </scm>
+</project>
