@@ -25,57 +25,23 @@
         <version>1.7-SNAPSHOT</version>
     </parent>
 
-    <artifactId>smt-waiting-spring</artifactId>
+    <artifactId>smt-waiting-spring-integration-test</artifactId>
 
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
 
-    <description>
-        This is an extension of the smt-waiting library that can be configured with Spring properties.
-    </description>
-
     <url>http://shiver-me-timbers.github.io/smt-waiting-spring/</url>
-
-    <properties>
-        <!-- This property isn't actually required for maven, but allows Intellij to compile the module with ajc. -->
-        <spring.version>4.1.7.RELEASE</spring.version>
-    </properties>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>aspectj-maven-plugin</artifactId>
-                <version>1.7</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
                 <configuration>
-                    <source>${java.vm.specification.version}</source>
-                    <target>${java.vm.specification.version}</target>
-                    <Xlint>ignore</Xlint>
-                    <complianceLevel>${java.vm.specification.version}</complianceLevel>
-                    <aspectLibraries>
-                        <aspectLibrary>
-                            <groupId>org.springframework</groupId>
-                            <artifactId>spring-aspects</artifactId>
-                        </aspectLibrary>
-                    </aspectLibraries>
+                    <skip>true</skip>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
@@ -83,7 +49,7 @@
     <dependencies>
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-waiting</artifactId>
+            <artifactId>smt-waiting-spring</artifactId>
             <version>1.7-SNAPSHOT</version>
         </dependency>
         <!-- The AspectJ and Spring dependencies are set with provided scope so that they don't clash with the versions -->
@@ -92,25 +58,21 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
             <version>1.8.6</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
             <version>${spring.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
             <version>${spring.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>

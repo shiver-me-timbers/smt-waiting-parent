@@ -25,50 +25,31 @@
         <version>1.7-SNAPSHOT</version>
     </parent>
 
-    <artifactId>smt-waiting</artifactId>
+    <artifactId>smt-waiting-aspect-integration-tests</artifactId>
 
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
 
-    <description>A library to help with wating till some code completes successfully.</description>
-
-    <url>http://shiver-me-timbers.github.io/smt-waiting/</url>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+    <url>http://shiver-me-timbers.github.io/smt-waiting-aspect/</url>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>com.github.shiver-me-timbers</groupId>
+            <artifactId>smt-waiting-aspect</artifactId>
+            <version>1.7-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-random-numbers</artifactId>
-            <scope>test</scope>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-random-strings</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.unitils</groupId>
-            <artifactId>unitils-core</artifactId>
-            <version>3.4.2</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

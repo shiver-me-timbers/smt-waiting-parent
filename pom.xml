@@ -22,7 +22,7 @@
     <parent>
         <groupId>com.github.shiver-me-timbers</groupId>
         <artifactId>smt-parent-pom</artifactId>
-        <version>1.7</version>
+        <version>1.8-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
@@ -51,14 +51,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-            </plugin>
         </plugins>
     </build>
 
@@ -79,28 +71,25 @@
                 <artifactId>spring-boot-starter-aop</artifactId>
                 <version>${spring.boot.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.github.shiver-me-timbers</groupId>
+                <artifactId>smt-random-numbers</artifactId>
+                <version>1.6</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.shiver-me-timbers</groupId>
+                <artifactId>smt-random-strings</artifactId>
+                <version>1.5</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-random-numbers</artifactId>
-            <version>1.6</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-random-strings</artifactId>
-            <version>1.5</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 
     <modules>
         <module>smt-waiting</module>
         <module>smt-waiting-spring</module>
+        <module>smt-waiting-spring-integration-test</module>
         <module>smt-waiting-aspect</module>
+        <module>smt-waiting-aspect-integration-tests</module>
     </modules>
 
     <scm>
