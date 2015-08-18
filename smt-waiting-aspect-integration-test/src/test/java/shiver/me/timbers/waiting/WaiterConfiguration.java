@@ -16,25 +16,18 @@
 
 package shiver.me.timbers.waiting;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-/**
- * @author Karl Bennett
- */
-class Timer {
+@Configuration
+@ComponentScan
+@EnableAspectJAutoProxy
+public class WaiterConfiguration {
 
-    private final Long duration;
-    private final TimeUnit unit;
-    private final Start start;
-
-    public Timer(Long duration, TimeUnit unit, Start start) {
-        this.duration = duration;
-        this.unit = unit;
-        this.start = start;
-    }
-
-    public boolean exceeded() {
-        return start.add(duration, unit).before(new Date());
+    @Bean
+    public WaiterAspect waiterAspect() {
+        return new WaiterAspect();
     }
 }

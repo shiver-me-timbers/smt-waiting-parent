@@ -16,25 +16,9 @@
 
 package shiver.me.timbers.waiting;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Callable;
 
-/**
- * @author Karl Bennett
- */
-class Timer {
+public interface WaitingForTrueComponent {
 
-    private final Long duration;
-    private final TimeUnit unit;
-    private final Start start;
-
-    public Timer(Long duration, TimeUnit unit, Start start) {
-        this.duration = duration;
-        this.unit = unit;
-        this.start = start;
-    }
-
-    public boolean exceeded() {
-        return start.add(duration, unit).before(new Date());
-    }
+    <T> T waitForTrueMethod(Callable<T> callable) throws Exception;
 }

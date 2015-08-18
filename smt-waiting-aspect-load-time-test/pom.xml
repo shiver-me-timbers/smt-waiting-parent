@@ -25,25 +25,25 @@
         <version>1.7-SNAPSHOT</version>
     </parent>
 
-    <artifactId>smt-waiting-aspect</artifactId>
+    <artifactId>smt-waiting-aspect-load-time-test</artifactId>
 
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
-
-    <description>This aspect can be used to wait for a method to by retrying it for a given time limit.</description>
 
     <url>http://shiver-me-timbers.github.io/smt-waiting-aspect/</url>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <argLine>
+                        -javaagent:${settings.localRepository}/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar
+                    </argLine>
+                    <useSystemClassLoader>true</useSystemClassLoader>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -51,31 +51,19 @@
     <dependencies>
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-waiting</artifactId>
+            <artifactId>smt-waiting-aspect-integration-test</artifactId>
             <version>1.7-SNAPSHOT</version>
+            <scope>test</scope>
         </dependency>
-        <dependency>
-            <!-- The AspectJ dependency is has provided scope so that it doesn't clash with the version used by the use -->
-            <!-- of this library. -->
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.8.6</version>
-            <scope>provided</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <artifactId>spring-boot-starter-aop</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-random-numbers</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-random-strings</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-instrument</artifactId>
+            <version>${spring.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

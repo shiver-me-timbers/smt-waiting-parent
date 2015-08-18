@@ -16,25 +16,7 @@
 
 package shiver.me.timbers.waiting;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
-/**
- * @author Karl Bennett
- */
-class Timer {
-
-    private final Long duration;
-    private final TimeUnit unit;
-    private final Start start;
-
-    public Timer(Long duration, TimeUnit unit, Start start) {
-        this.duration = duration;
-        this.unit = unit;
-        this.start = start;
-    }
-
-    public boolean exceeded() {
-        return start.add(duration, unit).before(new Date());
-    }
+public interface WaitingComponent extends
+    WaitingDefaultsComponent, WaitingDurationComponent, WaitingForComponent, WaitingForTrueComponent,
+    WaitingForNotNullComponent, WaitingIntervalComponent {
 }

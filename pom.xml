@@ -86,10 +86,13 @@
 
     <modules>
         <module>smt-waiting</module>
+        <module>smt-waiting-integration-test</module>
         <module>smt-waiting-spring</module>
         <module>smt-waiting-spring-integration-test</module>
         <module>smt-waiting-aspect</module>
-        <module>smt-waiting-aspect-integration-tests</module>
+        <module>smt-waiting-aspect-integration-test</module>
+        <module>smt-waiting-aspect-load-time-test</module>
+        <module>smt-waiting-aspect-compile-time-test</module>
     </modules>
 
     <scm>

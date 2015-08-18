@@ -25,28 +25,13 @@
         <version>1.7-SNAPSHOT</version>
     </parent>
 
-    <artifactId>smt-waiting-aspect</artifactId>
+    <artifactId>smt-waiting-integration-test</artifactId>
 
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
 
-    <description>This aspect can be used to wait for a method to by retrying it for a given time limit.</description>
-
-    <url>http://shiver-me-timbers.github.io/smt-waiting-aspect/</url>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+    <url>http://shiver-me-timbers.github.io/smt-waiting/</url>
 
     <dependencies>
         <dependency>
@@ -54,15 +39,6 @@
             <artifactId>smt-waiting</artifactId>
             <version>1.7-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <!-- The AspectJ dependency is has provided scope so that it doesn't clash with the version used by the use -->
-            <!-- of this library. -->
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.8.6</version>
-            <scope>provided</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

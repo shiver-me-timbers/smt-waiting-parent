@@ -16,25 +16,20 @@
 
 package shiver.me.timbers.waiting;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
 
-/**
- * @author Karl Bennett
- */
-class Timer {
+import java.util.concurrent.Callable;
 
-    private final Long duration;
-    private final TimeUnit unit;
-    private final Start start;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-    public Timer(Long duration, TimeUnit unit, Start start) {
-        this.duration = duration;
-        this.unit = unit;
-        this.start = start;
-    }
+@Component
+@Primary
+@Wait(@TimeOut(duration = 500, unit = MILLISECONDS))
+public class WaitingDurationClassComponent implements WaitingDurationComponent {
 
-    public boolean exceeded() {
-        return start.add(duration, unit).before(new Date());
+    @Override
+    public <T> T durationSetMethod(Callable<T> callable) throws Exception {
+        return callable.call();
     }
 }
