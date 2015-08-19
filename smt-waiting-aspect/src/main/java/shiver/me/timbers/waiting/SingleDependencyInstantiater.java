@@ -6,11 +6,11 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * @author Karl Bennett
  */
-class SingleInputInstantiater<T, I> implements Instantiater<T, I> {
+class SingleDependencyInstantiater<T, I> implements Instantiater<T, I> {
 
     private final Constructor<T> constructor;
 
-    public SingleInputInstantiater(Class<T> type, Class<I> inputType) {
+    public SingleDependencyInstantiater(Class<T> type, Class<I> inputType) {
         try {
             this.constructor = type.getConstructor(inputType);
         } catch (NoSuchMethodException e) {

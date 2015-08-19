@@ -58,6 +58,13 @@ public class OptionsTest {
     }
 
     @Test
+    public void Can_create_a_default_options() {
+
+        // When
+        new Options();
+    }
+
+    @Test
     @SuppressWarnings("unchecked")
     public void Can_create_an_options() throws InterruptedException {
 

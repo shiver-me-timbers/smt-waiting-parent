@@ -46,6 +46,13 @@ public class WaiterTest {
     }
 
     @Test
+    public void can_create_a_waiter() {
+
+        // When
+        new Waiter();
+    }
+
+    @Test
     public void Can_wait_until_no_exception_is_thrown() throws Throwable {
 
         @SuppressWarnings("unchecked")

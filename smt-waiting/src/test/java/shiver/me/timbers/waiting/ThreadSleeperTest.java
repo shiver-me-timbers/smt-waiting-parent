@@ -35,6 +35,6 @@ public class ThreadSleeperTest {
         new ThreadSleeper().sleep(100L);
 
         // Then
-        assertThat(System.currentTimeMillis() - start, allOf(greaterThanOrEqualTo(100L), lessThan(200L)));
+        assertThat(System.currentTimeMillis() - start, allOf(greaterThanOrEqualTo(100L), lessThan(500L)));
     }
 }

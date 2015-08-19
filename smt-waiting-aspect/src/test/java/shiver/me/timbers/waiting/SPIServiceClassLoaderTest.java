@@ -14,8 +14,12 @@ public class SPIServiceClassLoaderTest {
     @Test
     public void Can_load_a_service() {
 
+        // Given
+        final ServiceLoader<Class<RegisteredService>, Class<RegisteredService>> loader =
+            new SPIServiceClassLoader<>(RegisteredService.class);
+
         // When
-        final Class actual = new SPIServiceClassLoader<>(RegisteredService.class).load(null);
+        final Class actual = loader.load(null);
 
         // Then
         assertThat(actual, equalTo((Class) TestRegisteredService.class));
@@ -24,9 +28,12 @@ public class SPIServiceClassLoaderTest {
     @Test
     public void Cannot_load_a_service_that_has_not_been_registered() {
 
+        // Given
+        final ServiceLoader<Class<UnregisteredService>, Class<DefaultUnregisteredService>> loader =
+            new SPIServiceClassLoader<>(UnregisteredService.class);
+
         // When
-        final Class actual = new SPIServiceClassLoader<UnregisteredService, DefaultUnregisteredService>(
-            UnregisteredService.class).load(DefaultUnregisteredService.class);
+        final Class actual = loader.load(DefaultUnregisteredService.class);
 
         // Then
         assertThat(actual, equalTo((Class) DefaultUnregisteredService.class));

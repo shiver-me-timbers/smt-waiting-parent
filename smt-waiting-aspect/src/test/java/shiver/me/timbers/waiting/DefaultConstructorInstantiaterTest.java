@@ -18,8 +18,11 @@ public class DefaultConstructorInstantiaterTest {
     public void Can_instantiate_a_class_with_a_default_constructor()
         throws IllegalAccessException, InvocationTargetException, InstantiationException {
 
+        // Given
+        final Instantiater<TestService, Void> instantiater = new DefaultConstructorInstantiater<>(TestService.class);
+
         // When
-        final TestService actual = new DefaultConstructorInstantiater<>(TestService.class).instantiate(null);
+        final TestService actual = instantiater.instantiate(null);
 
         // Then
         assertThat(actual, isA(TestService.class));

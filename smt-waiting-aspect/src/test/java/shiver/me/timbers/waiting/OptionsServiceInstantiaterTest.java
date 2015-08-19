@@ -19,6 +19,10 @@ public class OptionsServiceInstantiaterTest {
         final Instantiater<OptionsService, Void> instantiater = mock(Instantiater.class);
         @SuppressWarnings("unchecked")
         final OptionsConfigurer<Wait> optionsConfigurer = mock(OptionsConfigurer.class);
+        final Instantiater<OptionsService, Wait> serviceInstantiater = new OptionsServiceInstantiater(
+            instantiater,
+            optionsConfigurer
+        );
 
         final Wait wait = mock(Wait.class);
 
@@ -31,7 +35,7 @@ public class OptionsServiceInstantiaterTest {
         given(optionsConfigurer.apply(options, wait)).willReturn(expected);
 
         // When
-        final OptionsService actual = new OptionsServiceInstantiater(instantiater, optionsConfigurer).instantiate(wait);
+        final OptionsService actual = serviceInstantiater.instantiate(wait);
 
         // Then
         assertThat(actual, is(expected));

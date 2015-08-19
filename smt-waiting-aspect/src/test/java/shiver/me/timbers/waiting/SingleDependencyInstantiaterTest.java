@@ -11,34 +11,39 @@ import static org.hamcrest.Matchers.isA;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
-public class SingleInputInstantiaterTest {
+public class SingleDependencyInstantiaterTest {
 
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void Can_instantiate_a_waiter()
+    public void Can_instantiate_a_class_with_a_single_dependency()
         throws IllegalAccessException, InvocationTargetException, InstantiationException {
 
         // Given
         final TestInput input = mock(TestInput.class);
+        final Instantiater<TestService, TestInput> instantiater = new SingleDependencyInstantiater<>(
+            TestService.class,
+            TestInput.class
+        );
 
         // When
-        final TestService actual = new SingleInputInstantiater<>(TestService.class, TestInput.class).instantiate(input);
+        final TestService actual = instantiater
+            .instantiate(input);
 
         // Then
         assertThat(actual.getInput(), is(input));
     }
 
     @Test
-    public void Can_instantiate_a_waiter_with_no_input_constructor()
+    public void Cannot_instantiate_a_waiter_with_no_input_constructor()
         throws IllegalAccessException, InvocationTargetException, InstantiationException {
 
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectCause(isA(NoSuchMethodException.class));
 
         // When
-        new SingleInputInstantiater<>(TestInput.class, Object.class);
+        new SingleDependencyInstantiater<>(TestInput.class, Object.class);
     }
 
     public static class TestService {
