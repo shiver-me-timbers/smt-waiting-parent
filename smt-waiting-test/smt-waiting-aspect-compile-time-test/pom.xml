@@ -86,11 +86,4 @@
             <version>1.8.6</version>
         </dependency>
     </dependencies>
-
-    <scm>
-        <connection>scm:git:https://github.com/shiver-me-timbers/${project.artifactId}.git</connection>
-        <developerConnection>scm:git:git@github.com:shiver-me-timbers/${project.artifactId}.git</developerConnection>
-        <url>https://github.com/shiver-me-timbers/${project.artifactId}</url>
-        <tag>HEAD</tag>
-    </scm>
 </project>
