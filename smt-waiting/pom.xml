@@ -33,17 +33,6 @@
 
     <description>A library to help with wating till some code completes successfully.</description>
 
-    <url>http://shiver-me-timbers.github.io/smt-waiting/</url>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

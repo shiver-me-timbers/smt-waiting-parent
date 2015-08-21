@@ -31,8 +31,6 @@
 
     <name>${project.artifactId}</name>
 
-    <url>http://shiver-me-timbers.github.io/smt-waiting-aspect/</url>
-
     <build>
         <plugins>
             <plugin>

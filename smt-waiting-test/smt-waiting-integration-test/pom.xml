@@ -31,8 +31,6 @@
 
     <name>${project.artifactId}</name>
 
-    <url>http://shiver-me-timbers.github.io/smt-waiting/</url>
-
     <dependencies>
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>

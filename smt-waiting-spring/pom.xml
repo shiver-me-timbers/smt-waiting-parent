@@ -35,8 +35,6 @@
         This is an extension of the smt-waiting library that can be configured with Spring properties.
     </description>
 
-    <url>http://shiver-me-timbers.github.io/smt-waiting-spring/</url>
-
     <properties>
         <!-- This property isn't actually required for maven, but allows Intellij to compile the module with ajc. -->
         <spring.version>4.1.7.RELEASE</spring.version>
