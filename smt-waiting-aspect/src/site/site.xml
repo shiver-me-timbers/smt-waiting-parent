@@ -24,7 +24,7 @@
         <menu name="Overview">
             <item name="About" href="index.html"/>
             <item name="Documentation" href="documentation.html"/>
-            <item name="Coverage" href="jacoco/index.html"/>
+            <item name="Coverage" href="cobertura/index.html"/>
             <item name="JavaDoc" href="apidocs/index.html"/>
             <item name="Source" href="source-repository.html"/>
         </menu>
