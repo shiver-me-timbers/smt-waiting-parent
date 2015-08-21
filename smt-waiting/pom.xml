@@ -31,7 +31,7 @@
 
     <name>${project.artifactId}</name>
 
-    <description>A library to help with wating till some code completes successfully.</description>
+    <description>A library to help with waiting till some code completes successfully.</description>
 
     <dependencies>
         <dependency>

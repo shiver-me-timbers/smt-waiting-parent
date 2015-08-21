@@ -44,7 +44,6 @@
             <!-- of this library. -->
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
-            <version>1.8.6</version>
             <scope>provided</scope>
         </dependency>
 

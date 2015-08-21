@@ -4,7 +4,7 @@ jdk:
   - oraclejdk7
   - openjdk7
 
-script: mvn clean integration-test
+script: mvn clean integration-test -P integration-test
 
 after_success:
-  - mvn clean test jacoco:report coveralls:report
+  - mvn clean cobertura:cobertura coveralls:report

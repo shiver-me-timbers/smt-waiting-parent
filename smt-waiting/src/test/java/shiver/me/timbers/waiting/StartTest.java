@@ -16,13 +16,13 @@
 
 package shiver.me.timbers.waiting;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLong;
 
@@ -40,6 +40,6 @@ public class StartTest {
         final Date end = new Start(now).add(duration, unit);
 
         // Then
-        Assert.assertThat(end, equalTo(new Date(now.getTime() + unit.toMillis(duration))));
+        assertThat(end, equalTo(new Date(now.getTime() + unit.toMillis(duration))));
     }
 }
