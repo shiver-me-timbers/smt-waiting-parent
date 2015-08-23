@@ -16,7 +16,7 @@
 
 package shiver.me.timbers.waiting;
 
-public class TestValidResult implements ResultValidator {
+public class ValidResult implements ResultValidator {
 
     @Override
     public boolean isValid(Object result) throws Throwable {
