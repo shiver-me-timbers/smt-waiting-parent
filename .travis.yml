@@ -7,4 +7,4 @@ jdk:
 script: mvn clean integration-test -P integration-test
 
 after_success:
-  - mvn clean cobertura:cobertura coveralls:report
+  - mvn clean cobertura:cobertura coveralls:report -P coverage
