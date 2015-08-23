@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-smt-waiting-aspect-integration-tests
+smt-waiting-aspect-load-time-test
 ===========
 
-Common code for the smt-waiting-aspect integration test projects.
+Integration tests that check that the smt-waiting-aspect can be load time weaved into classes.

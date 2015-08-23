@@ -16,4 +16,5 @@ limitations under the License.
 smt-waiting-aspect-integration-tests
 ===========
 
-Common code for the smt-waiting-aspect integration test projects.
+Common code for the smt-waiting-aspect integration test projects. Also the integration tests for this project check that
+the smt-waiting-aspect can be used with Spring auto proxies.

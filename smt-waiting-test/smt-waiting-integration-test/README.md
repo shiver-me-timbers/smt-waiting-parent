@@ -13,8 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-smt-waiting
+smt-waiting-integration-test
 ===========
-[![Build Status](https://travis-ci.org/shiver-me-timbers/smt-waiting.svg)](https://travis-ci.org/shiver-me-timbers/smt-waiting) [![Coverage Status](https://coveralls.io/repos/shiver-me-timbers/smt-waiting/badge.svg?branch=master&service=github)](https://coveralls.io/github/shiver-me-timbers/smt-waiting?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.shiver-me-timbers/smt-waiting/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.shiver-me-timbers/smt-waiting/)
 
-A library to help with wating till some code completes successfully.
+Integration tests for the smt-waiting project.
