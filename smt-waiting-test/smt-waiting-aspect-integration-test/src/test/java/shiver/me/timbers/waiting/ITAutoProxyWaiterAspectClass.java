@@ -54,17 +54,17 @@ public class ITAutoProxyWaiterAspectClass extends ITWaiterAspect {
     }
 
     @Override
-    protected WaitingForComponent waitingForComponent() {
+    protected WaitingForComponent waitForComponent() {
         return waitingForComponent;
     }
 
     @Override
-    protected WaitingForTrueComponent forTrueComponent() {
+    protected WaitingForTrueComponent waitForTrueComponent() {
         return forTrueComponent;
     }
 
     @Override
-    protected WaitingForNotNullComponent notNullComponent() {
+    protected WaitingForNotNullComponent waitForNotNullComponent() {
         return forNotNullComponent;
     }
 

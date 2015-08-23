@@ -1,8 +1,11 @@
 package shiver.me.timbers.waiting;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -11,10 +14,12 @@ import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomBooleans.someBoolean;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLong;
-import static shiver.me.timbers.data.random.RandomStrings.someAlphaString;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
 
 public class AbstractPropertyParserTest {
+
+    @Rule
+    public final ExpectedException expectedException = ExpectedException.none();
 
     private PropertyGetter propertyGetter;
     private AbstractPropertyParser parser;
@@ -81,21 +86,21 @@ public class AbstractPropertyParserTest {
     }
 
     @Test
-    public void Can_get_the_default_enum_property_for_an_invalid_property_value() {
+    public void Can_handle_an_invalid_property_value() {
+
+        final String invalidPropertyValue = someString();
+
+        expectedException.expect(IllegalStateException.class);
+        expectedException.expectMessage(containsString(invalidPropertyValue));
 
         final String key = someString();
         final AnEnum expected = someEnum(AnEnum.class);
-
-        final String invalidPropertyValue = someAlphaString();
 
         // Given
         given(propertyGetter.get(key, expected)).willReturn(invalidPropertyValue);
 
         // When
-        final AnEnum actual = parser.getEnumProperty(key, expected);
-
-        // Then
-        assertThat(actual, is(expected));
+        parser.getEnumProperty(key, expected);
     }
 
     @Test

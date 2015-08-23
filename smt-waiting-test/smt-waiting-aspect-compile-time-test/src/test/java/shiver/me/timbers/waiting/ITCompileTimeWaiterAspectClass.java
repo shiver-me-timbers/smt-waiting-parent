@@ -13,17 +13,17 @@ public class ITCompileTimeWaiterAspectClass extends ITWaiterAspect {
     }
 
     @Override
-    protected WaitingForComponent waitingForComponent() {
+    protected WaitingForComponent waitForComponent() {
         return new WaitingForClassComponent();
     }
 
     @Override
-    protected WaitingForTrueComponent forTrueComponent() {
+    protected WaitingForTrueComponent waitForTrueComponent() {
         return new WaitingForTrueClassComponent();
     }
 
     @Override
-    protected WaitingForNotNullComponent notNullComponent() {
+    protected WaitingForNotNullComponent waitForNotNullComponent() {
         return new WaitingForNotNullClassComponent();
     }
 

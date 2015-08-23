@@ -23,6 +23,7 @@ import org.junit.rules.ExpectedException;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
@@ -323,6 +324,29 @@ public class ITWaiter {
         properties.restoreProperties();
         assertThat(actual, equalTo((Object) false));
         verify(until, atMost(3)).success();
+    }
+
+    @Test
+    public void Can_handle_invalid_time_unit_property() throws Throwable {
+
+        final String invalidTimeUnit = someString();
+
+        expectedException.expect(IllegalStateException.class);
+        expectedException.expectMessage(containsString(invalidTimeUnit));
+
+        properties.setProperty("smt.waiting.timeoutDuration", "1");
+        properties.setProperty("smt.waiting.timeoutUnit", invalidTimeUnit);
+        final Until until = mock(Until.class);
+
+        // Given
+        given(until.success()).willThrow(new Exception());
+
+        // When
+        try {
+            new Waiter().wait(until);
+        } finally {
+            properties.restoreProperties();
+        }
     }
 
     @Test

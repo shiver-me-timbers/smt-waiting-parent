@@ -2,6 +2,8 @@ package shiver.me.timbers.waiting;
 
 import java.util.EnumSet;
 
+import static java.lang.String.format;
+
 /**
  * @author Karl Bennett
  */
@@ -28,13 +30,16 @@ abstract class AbstractPropertyParser implements PropertyParser {
     public <E extends Enum<E>> E getEnumProperty(String key, E defaultValue) {
         final String value = propertyGetter.get(key, defaultValue);
 
-        for (E enumValue : (EnumSet<E>) EnumSet.allOf((Class) defaultValue.getDeclaringClass())) {
+        final EnumSet<E> enums = EnumSet.allOf((Class) defaultValue.getDeclaringClass());
+        for (E enumValue : enums) {
             if (enumValue.name().equalsIgnoreCase(value)) {
                 return enumValue;
             }
         }
 
-        return defaultValue;
+        throw new IllegalStateException(format(
+            "Invalid %s value supplied of (%s). Allowed values are %s.", key, value, enums
+        ));
     }
 
     @SuppressWarnings("unchecked")

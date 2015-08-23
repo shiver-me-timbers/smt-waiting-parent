@@ -15,17 +15,17 @@ public class ITCompileTimeWaiterAspectMethods extends ITWaiterAspect {
     }
 
     @Override
-    protected WaitingForComponent waitingForComponent() {
+    protected WaitingForComponent waitForComponent() {
         return component;
     }
 
     @Override
-    protected WaitingForTrueComponent forTrueComponent() {
+    protected WaitingForTrueComponent waitForTrueComponent() {
         return component;
     }
 
     @Override
-    protected WaitingForNotNullComponent notNullComponent() {
+    protected WaitingForNotNullComponent waitForNotNullComponent() {
         return component;
     }
 

@@ -49,7 +49,7 @@ public class WaitingMethodsComponent implements WaitingComponent {
         return callable.call();
     }
 
-    @Wait(value = @TimeOut(duration = 500, unit = MILLISECONDS), waitFor = TestValidResult.class)
+    @Wait(value = @TimeOut(duration = 500, unit = MILLISECONDS), waitFor = ContainsValidResult.class)
     @Override
     public <T> T waitingForMethod(Callable<T> callable) throws Exception {
         return callable.call();
