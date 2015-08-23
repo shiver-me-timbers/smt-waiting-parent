@@ -16,32 +16,15 @@
 
 package shiver.me.timbers.waiting;
 
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import shiver.me.timbers.WaiterWaitForTrueConfiguration;
 
-import java.util.concurrent.Callable;
-
-import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_CLASS;
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = WaiterWaitForTrueConfiguration.class)
-@DirtiesContext(classMode = AFTER_CLASS)
-public class ITSpringAutoProxyWaiterAspectMethodsWaitForTrue extends ITWaiterAspectWaitForTrue {
+public class ITSpringAutoProxyWaiterAspectMethodsWaitForTrue extends ITSpringWaiterAspectClassWaitForTrue {
 
     @Autowired
     private WaitingComponent component;
 
     @Override
-    protected WaitingForTrueComponent waitForTrueComponent() {
-        return new WaitingForTrueComponent() {
-            @Override
-            public <T> T waitForTrueMethod(Callable<T> callable) throws Exception {
-                return component.defaultsMethod(callable);
-            }
-        };
+    protected WaitingDefaultsComponent component() {
+        return component;
     }
 }

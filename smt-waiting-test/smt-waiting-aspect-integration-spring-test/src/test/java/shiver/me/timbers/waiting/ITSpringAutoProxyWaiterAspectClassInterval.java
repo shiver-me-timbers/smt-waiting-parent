@@ -16,32 +16,15 @@
 
 package shiver.me.timbers.waiting;
 
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import shiver.me.timbers.WaiterIntervalConfiguration;
 
-import java.util.concurrent.Callable;
-
-import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_CLASS;
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = WaiterIntervalConfiguration.class)
-@DirtiesContext(classMode = AFTER_CLASS)
-public class ITSpringAutoProxyWaiterAspectClassInterval extends ITWaiterAspectInterval {
+public class ITSpringAutoProxyWaiterAspectClassInterval extends ITSpringWaiterAspectClassInterval {
 
     @Autowired
     private WaitingDefaultsComponent component;
 
     @Override
-    protected WaitingIntervalComponent intervalComponent() {
-        return new WaitingIntervalComponent() {
-            @Override
-            public <T> T intervalMethod(Callable<T> callable) throws Exception {
-                return component.defaultsMethod(callable);
-            }
-        };
+    protected WaitingDefaultsComponent component() {
+        return component;
     }
 }
