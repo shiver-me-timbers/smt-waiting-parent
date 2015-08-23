@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 
 @Configuration
-@ComponentScan("shiver.me.timbers.waiting")
+@ComponentScan("shiver.me.timbers.waiting.configuration")
 @EnableSpringConfigured
 public class WaiterDefaultConfiguration {
 }

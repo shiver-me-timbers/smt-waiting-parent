@@ -38,7 +38,13 @@
 
     <profiles>
         <profile>
+            <id>test</id>
+        </profile>
+        <profile>
             <id>integration-test</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <modules>
                 <module>smt-waiting-test</module>
             </modules>

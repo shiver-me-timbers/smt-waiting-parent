@@ -6,7 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 
 @Configuration
-@ComponentScan("shiver.me.timbers.waiting")
+@ComponentScan("shiver.me.timbers.waiting.configuration")
 @EnableSpringConfigured
 @PropertySource("classpath:interval.properties")
 public class WaiterIntervalConfiguration {

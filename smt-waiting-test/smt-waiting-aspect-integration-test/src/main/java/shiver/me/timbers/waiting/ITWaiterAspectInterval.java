@@ -26,6 +26,8 @@ import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public abstract class ITWaiterAspectInterval {
 
@@ -44,6 +46,7 @@ public abstract class ITWaiterAspectInterval {
         intervalComponent().intervalMethod(callable);
 
         // Then
+        verify(callable, times(2)).call();
         assertThat(System.currentTimeMillis() - start, allOf(greaterThanOrEqualTo(200L), lessThan(300L)));
     }
 }

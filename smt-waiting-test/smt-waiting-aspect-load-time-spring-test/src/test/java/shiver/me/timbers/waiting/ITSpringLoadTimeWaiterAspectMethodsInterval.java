@@ -16,16 +16,15 @@
 
 package shiver.me.timbers.waiting;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Configuration
-@EnableAspectJAutoProxy
-public class WaiterConfiguration {
+public class ITSpringLoadTimeWaiterAspectMethodsInterval extends ITSpringWaiterAspectClassInterval {
 
-    @Bean
-    public WaiterAspect waiterAspect() {
-        return new WaiterAspect();
+    @Autowired
+    private WaitingComponent component;
+
+    @Override
+    protected WaitingDefaultsComponent component() {
+        return component;
     }
 }
