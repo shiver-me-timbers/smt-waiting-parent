@@ -33,6 +33,8 @@
 
     <description>This aspect can be used to wait for a method to by retrying it for a given time limit.</description>
 
+    <url>http://shiver-me-timbers.github.io/smt-waiting-parent/</url>
+
     <dependencies>
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>

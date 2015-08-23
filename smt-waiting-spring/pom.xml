@@ -35,6 +35,8 @@
         This is an extension of the smt-waiting library that can be configured with Spring properties.
     </description>
 
+    <url>http://shiver-me-timbers.github.io/smt-waiting-parent/</url>
+
     <build>
         <plugins>
             <plugin>

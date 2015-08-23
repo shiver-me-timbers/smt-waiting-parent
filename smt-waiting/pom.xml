@@ -33,6 +33,8 @@
 
     <description>A library to help with waiting till some code completes successfully.</description>
 
+    <url>http://shiver-me-timbers.github.io/smt-waiting-parent/</url>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

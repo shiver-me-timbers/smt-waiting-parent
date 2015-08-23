@@ -15,6 +15,6 @@ limitations under the License.
 -->
 smt-waiting
 ===========
-[![Build Status](https://travis-ci.org/shiver-me-timbers/smt-waiting.svg)](https://travis-ci.org/shiver-me-timbers/smt-waiting) [![Coverage Status](https://coveralls.io/repos/shiver-me-timbers/smt-waiting/badge.svg?branch=master&service=github)](https://coveralls.io/github/shiver-me-timbers/smt-waiting?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.shiver-me-timbers/smt-waiting/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.shiver-me-timbers/smt-waiting/)
+[![Build Status](https://travis-ci.org/shiver-me-timbers/smt-waiting-parent.svg)](https://travis-ci.org/shiver-me-timbers/smt-waiting-parent) [![Coverage Status](https://coveralls.io/repos/shiver-me-timbers/smt-waiting-parent/badge.svg?branch=master&service=github)](https://coveralls.io/github/shiver-me-timbers/smt-waiting-parent?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.shiver-me-timbers/smt-waiting/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.shiver-me-timbers/smt-waiting/)
 
 A library to help with wating till some code completes successfully.

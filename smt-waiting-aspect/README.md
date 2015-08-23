@@ -15,6 +15,6 @@ limitations under the License.
 -->
 smt-waiting-aspect
 ===========
-[![Build Status](https://travis-ci.org/shiver-me-timbers/smt-waiting-aspect.svg)](https://travis-ci.org/shiver-me-timbers/smt-waiting-aspect) [![Coverage Status](https://coveralls.io/repos/shiver-me-timbers/smt-waiting-aspect/badge.svg?branch=master&service=github)](https://coveralls.io/github/shiver-me-timbers/smt-waiting-aspect?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.shiver-me-timbers/smt-waiting-aspect/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.shiver-me-timbers/smt-waiting-aspect/)
+[![Build Status](https://travis-ci.org/shiver-me-timbers/smt-waiting-parent.svg)](https://travis-ci.org/shiver-me-timbers/smt-waiting-parent) [![Coverage Status](https://coveralls.io/repos/shiver-me-timbers/smt-waiting-parent/badge.svg?branch=master&service=github)](https://coveralls.io/github/shiver-me-timbers/smt-waiting-parent?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.shiver-me-timbers/smt-waiting-aspect/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.shiver-me-timbers/smt-waiting-aspect/)
 
 This aspect can be used to wait for a method to by retrying it for a given time limit.
