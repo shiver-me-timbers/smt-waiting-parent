@@ -75,13 +75,13 @@ public class OptionsTest {
         final ResultValidator validator = mock(ResultValidator.class);
 
         // Given
-        given(propertyParser.getLongProperty("smt.waiting.timeoutDuration", 10L)).willReturn(timeoutDuration);
-        given(propertyParser.getEnumProperty("smt.waiting.timeoutUnit", SECONDS)).willReturn(timeoutUnit);
-        given(propertyParser.getLongProperty("smt.waiting.intervalDuration", 100L)).willReturn(intervalDuration);
-        given(propertyParser.getEnumProperty("smt.waiting.intervalUnit", MILLISECONDS)).willReturn(intervalUnit);
-        given(propertyParser.getBooleanProperty("smt.waiting.forTrue", false)).willReturn(true);
-        given(propertyParser.getBooleanProperty("smt.waiting.forNotNull", false)).willReturn(true);
-        given(propertyParser.getInstanceProperty("smt.waiting.for", null)).willReturn(validator);
+        given(propertyParser.getLongProperty("smt.waiting.timeout.duration", 10L)).willReturn(timeoutDuration);
+        given(propertyParser.getEnumProperty("smt.waiting.timeout.unit", SECONDS)).willReturn(timeoutUnit);
+        given(propertyParser.getLongProperty("smt.waiting.interval.duration", 100L)).willReturn(intervalDuration);
+        given(propertyParser.getEnumProperty("smt.waiting.interval.unit", MILLISECONDS)).willReturn(intervalUnit);
+        given(propertyParser.getBooleanProperty("smt.waiting.waitForTrue", false)).willReturn(true);
+        given(propertyParser.getBooleanProperty("smt.waiting.waitForNotNull", false)).willReturn(true);
+        given(propertyParser.getInstanceProperty("smt.waiting.waitFor", null)).willReturn(validator);
 
         // When
         Options options = new Options(sleeper, propertyParser);
@@ -293,8 +293,8 @@ public class OptionsTest {
         final TimeUnit intervalUnit = someEnum(TimeUnit.class);
 
         // Given
-        given(propertyParser.getLongProperty("smt.waiting.intervalDuration", 100L)).willReturn(intervalDuration);
-        given(propertyParser.getEnumProperty("smt.waiting.intervalUnit", MILLISECONDS)).willReturn(intervalUnit);
+        given(propertyParser.getLongProperty("smt.waiting.interval.duration", 100L)).willReturn(intervalDuration);
+        given(propertyParser.getEnumProperty("smt.waiting.interval.unit", MILLISECONDS)).willReturn(intervalUnit);
 
         // When
         new Options(sleeper, propertyParser).interval();

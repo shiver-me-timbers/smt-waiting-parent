@@ -307,11 +307,11 @@ public class ITWaiter {
     @Test
     public void Can_configure_waiter_timeout_with_system_properties() throws Throwable {
 
-        properties.setProperty("smt.waiting.timeoutDuration", "1");
-        properties.setProperty("smt.waiting.timeoutUnit", "SECONDS");
-        properties.setProperty("smt.waiting.intervalDuration", "500");
-        properties.setProperty("smt.waiting.intervalUnit", "MILLISECONDS");
-        properties.setProperty("smt.waiting.forTrue", "true");
+        properties.setProperty("smt.waiting.timeout.duration", "1");
+        properties.setProperty("smt.waiting.timeout.unit", "SECONDS");
+        properties.setProperty("smt.waiting.interval.duration", "500");
+        properties.setProperty("smt.waiting.interval.unit", "MILLISECONDS");
+        properties.setProperty("smt.waiting.waitForTrue", "true");
         final Until until = mock(Until.class);
 
         // Given
@@ -334,8 +334,8 @@ public class ITWaiter {
         expectedException.expect(IllegalStateException.class);
         expectedException.expectMessage(containsString(invalidTimeUnit));
 
-        properties.setProperty("smt.waiting.timeoutDuration", "1");
-        properties.setProperty("smt.waiting.timeoutUnit", invalidTimeUnit);
+        properties.setProperty("smt.waiting.timeout.duration", "1");
+        properties.setProperty("smt.waiting.timeout.unit", invalidTimeUnit);
         final Until until = mock(Until.class);
 
         // Given
@@ -352,7 +352,7 @@ public class ITWaiter {
     @Test
     public void Can_set_wait_for_true_with_system_properties() throws Throwable {
 
-        properties.setProperty("smt.waiting.forTrue", "true");
+        properties.setProperty("smt.waiting.waitForTrue", "true");
         final Until until = mock(Until.class);
 
         // Given
@@ -370,7 +370,7 @@ public class ITWaiter {
     @Test
     public void Can_set_wait_for_not_null_with_system_properties() throws Throwable {
 
-        properties.setProperty("smt.waiting.forNotNull", "true");
+        properties.setProperty("smt.waiting.waitForNotNull", "true");
         final Until until = mock(Until.class);
 
         final Object expected = new Object();
@@ -390,7 +390,7 @@ public class ITWaiter {
     @Test
     public void Can_set_wait_for_with_system_properties() throws Throwable {
 
-        properties.setProperty("smt.waiting.for", TestValidResult.class.getName());
+        properties.setProperty("smt.waiting.waitFor", TestValidResult.class.getName());
         final Until until = mock(Until.class);
 
         final Object expected = "valid";

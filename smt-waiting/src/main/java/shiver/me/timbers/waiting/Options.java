@@ -43,24 +43,24 @@ public class Options implements OptionsService {
 
     Options(Sleeper sleeper, PropertyParser propertyParser) {
         this.sleeper = sleeper;
-        this.timeoutDuration = propertyParser.getLongProperty("smt.waiting.timeoutDuration", 10L);
-        this.timeoutUnit = propertyParser.getEnumProperty("smt.waiting.timeoutUnit", SECONDS);
+        this.timeoutDuration = propertyParser.getLongProperty("smt.waiting.timeout.duration", 10L);
+        this.timeoutUnit = propertyParser.getEnumProperty("smt.waiting.timeout.unit", SECONDS);
         this.resultValidators = defaultValidators(propertyParser);
-        this.intervalDuration = propertyParser.getLongProperty("smt.waiting.intervalDuration", 100L);
-        this.intervalUnit = propertyParser.getEnumProperty("smt.waiting.intervalUnit", MILLISECONDS);
+        this.intervalDuration = propertyParser.getLongProperty("smt.waiting.interval.duration", 100L);
+        this.intervalUnit = propertyParser.getEnumProperty("smt.waiting.interval.unit", MILLISECONDS);
     }
 
     private static List<ResultValidator> defaultValidators(PropertyParser propertyParser) {
         final List<ResultValidator> resultValidators = new ArrayList<>();
 
-        if (propertyParser.getBooleanProperty("smt.waiting.forTrue", false)) {
+        if (propertyParser.getBooleanProperty("smt.waiting.waitForTrue", false)) {
             resultValidators.add(new TrueResult());
         }
-        if (propertyParser.getBooleanProperty("smt.waiting.forNotNull", false)) {
+        if (propertyParser.getBooleanProperty("smt.waiting.waitForNotNull", false)) {
             resultValidators.add(new NotNullResult());
         }
 
-        final ResultValidator customResultValidator = propertyParser.getInstanceProperty("smt.waiting.for", null);
+        final ResultValidator customResultValidator = propertyParser.getInstanceProperty("smt.waiting.waitFor", null);
         if (customResultValidator != null) {
             resultValidators.add(customResultValidator);
         }
