@@ -28,6 +28,8 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isA;
@@ -48,6 +50,7 @@ public class OptionsTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+
     private Sleeper sleeper;
     private PropertyParser propertyParser;
     private Options options;
@@ -103,243 +106,77 @@ public class OptionsTest {
     }
 
     @Test
-    public void Can_start_a_timeout() {
-
-        // Given
-        final Long duration = someLong();
-        final TimeUnit unit = someEnum(TimeUnit.class);
-
-        // When
-        final Timer actual = options.withTimeOut(duration, unit).startTimer();
-
-        // Then
-        assertPropertyReflectionEquals("duration", duration, actual);
-        assertPropertyReflectionEquals("unit", unit, actual);
-    }
-
-    @Test
-    public void Can_validate_result() throws Throwable {
-
-        final Object result = new Object();
-
-        @SuppressWarnings("unchecked")
-        final ResultValidator<Object> resultValidator = mock(ResultValidator.class);
-
-        final boolean expected = someBoolean();
-
-        // Given
-        given(resultValidator.isValid(result)).willReturn(expected);
-
-        // When
-        final boolean actual = options.waitFor(resultValidator).isValid(result);
-
-        // Then
-        assertThat(actual, is(expected));
-    }
-
-    @Test
-    public void Can_have_no_result_validation() throws Throwable {
-
-        // When
-        final boolean actual = options.isValid(null);
-
-        // Then
-        assertThat(actual, is(true));
-    }
-
-    @Test
-    public void Can_validate_result_in_multiple_ways() throws Throwable {
-
-        final Object result = new Object();
-        @SuppressWarnings("unchecked")
-        final ResultValidator<Object> resultValidator1 = mock(ResultValidator.class);
-        @SuppressWarnings("unchecked")
-        final ResultValidator<Object> resultValidator2 = mock(ResultValidator.class);
-        @SuppressWarnings("unchecked")
-        final ResultValidator<Object> resultValidator3 = mock(ResultValidator.class);
-
-        final boolean expected = someBoolean();
-
-        // Given
-        given(resultValidator1.isValid(result)).willReturn(true);
-        given(resultValidator2.isValid(result)).willReturn(true);
-        given(resultValidator3.isValid(result)).willReturn(expected);
-
-        // When
-        final boolean actual = options
-            .waitFor(resultValidator1)
-            .waitFor(resultValidator2)
-            .waitFor(resultValidator3)
-            .isValid(result);
-
-        // Then
-        assertThat(actual, is(expected));
-        verify(resultValidator1).isValid(result);
-        verify(resultValidator2).isValid(result);
-        verify(resultValidator3).isValid(result);
-    }
-
-    @Test
-    public void Can_stop_on_first_result_validation_failure() throws Throwable {
-
-        final Object result = new Object();
-        @SuppressWarnings("unchecked")
-        final ResultValidator<Object> resultValidator1 = mock(ResultValidator.class);
-        @SuppressWarnings("unchecked")
-        final ResultValidator<Object> resultValidator2 = mock(ResultValidator.class);
-        @SuppressWarnings("unchecked")
-        final ResultValidator<Object> resultValidator3 = mock(ResultValidator.class);
-
-        // Given
-        given(resultValidator1.isValid(result)).willReturn(true);
-        given(resultValidator2.isValid(result)).willReturn(false);
-
-        // When
-        final boolean actual = options.waitFor(resultValidator1).waitFor(resultValidator2).waitFor(resultValidator3)
-            .isValid(result);
-
-        // Then
-        assertThat(actual, is(false));
-        verify(resultValidator1).isValid(result);
-        verify(resultValidator2).isValid(result);
-        verifyZeroInteractions(resultValidator3);
-    }
-
-    @Test
     public void Can_wait_for_a_true_result() throws Throwable {
 
-        // Given
-        final Boolean expected = someBoolean();
-
         // When
-        final boolean actual = options.willWaitForTrue().isValid(expected);
+        final Choice actual = options.willWaitForTrue().choose();
 
         // Then
-        assertThat(actual, is(expected));
+        assertThat(actual, hasField("resultValidators", hasItem(isA(TrueResult.class))));
     }
 
     @Test
     public void Can_not_wait_for_a_true_result() throws Throwable {
 
-        // Given
-        final Object expected = new Object();
-
         // When
-        final boolean actual = options.willNotWaitForTrue().isValid(expected);
+        final Choice actual = options.willNotWaitForTrue().choose();
 
         // Then
-        assertThat(actual, is(true));
+        assertThat(actual, hasField("resultValidators", empty()));
     }
 
     @Test
     public void Can_override_wait_for_a_true_result() throws Throwable {
 
         // Given
-        final Object expected = new Object();
+        final AnyResult anyResult = new AnyResult();
 
         // When
-        final boolean actual = options
-            .waitFor(new AnyResult())
+        final Choice actual = options
+            .waitFor(anyResult)
             .willWaitForTrue()
             .willNotWaitForTrue()
-            .isValid(expected);
+            .choose();
 
         // Then
-        assertThat(actual, is(true));
-    }
-
-    @Test
-    public void Can_wait_for_a_true_result_that_is_not_a_boolean() throws Throwable {
-
-        // When
-        final boolean actual = options.willWaitForTrue().isValid(someString());
-
-        // Then
-        assertThat(actual, is(false));
-    }
-
-    @Test
-    public void Can_wait_for_a_true_result_that_is_null() throws Throwable {
-
-        // When
-        final boolean actual = options.willWaitForTrue().isValid(null);
-
-        // Then
-        assertThat(actual, is(false));
+        assertThat(actual, hasField("resultValidators", hasItem(is(anyResult))));
     }
 
     @Test
     public void Can_wait_for_non_null_result() throws Throwable {
 
         // When
-        final boolean actual = options.willWaitForNotNull().isValid(new Object());
+        final Choice actual = options.willWaitForNotNull().choose();
 
         // Then
-        assertThat(actual, is(true));
+        assertThat(actual, hasField("resultValidators", hasItem(isA(NotNullResult.class))));
     }
 
     @Test
     public void Can_not_wait_for_non_null_result() throws Throwable {
 
         // When
-        final boolean actual = options.willNotWaitForNotNull().isValid(null);
+        final Choice actual = options.willNotWaitForNotNull().choose();
 
         // Then
-        assertThat(actual, is(true));
+        assertThat(actual, hasField("resultValidators", empty()));
     }
 
     @Test
     public void Can_override_wait_for_non_null_result() throws Throwable {
 
+        // Given
+        final AnyResult anyResult = new AnyResult();
+
         // When
-        final boolean actual = options
-            .waitFor(new AnyResult())
+        final Choice actual = options
+            .waitFor(anyResult)
             .willWaitForNotNull()
             .willNotWaitForNotNull()
-            .isValid(null);
+            .choose();
 
         // Then
-        assertThat(actual, is(true));
-    }
-
-    @Test
-    public void Can_wait_for_non_null_result_that_is_null() throws Throwable {
-
-        // When
-        final boolean actual = options.willWaitForNotNull().isValid(null);
-
-        // Then
-        assertThat(actual, is(false));
-    }
-
-    @Test
-    public void Can_pause_for_an_interval() throws InterruptedException {
-
-        // Given
-        final long intervalDuration = someLong();
-        final TimeUnit intervalUnit = someEnum(TimeUnit.class);
-
-        // When
-        options.withInterval(intervalDuration, intervalUnit).interval();
-
-        // Then
-        verify(sleeper).sleep(intervalUnit.toMillis(intervalDuration));
-    }
-
-    @Test
-    public void Can_have_an_interval_interrupted() throws InterruptedException {
-
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectCause(isA(InterruptedException.class));
-
-        final long intervalDuration = someLong();
-        final TimeUnit intervalUnit = someEnum(TimeUnit.class);
-
-        // Given
-        willThrow(new InterruptedException()).given(sleeper).sleep(intervalUnit.toMillis(intervalDuration));
-
-        // When
-        options.withInterval(intervalDuration, intervalUnit).interval();
+        assertThat(actual, hasField("resultValidators", hasItem(is(anyResult))));
     }
 
     @Test
@@ -353,10 +190,11 @@ public class OptionsTest {
         given(propertyParser.getEnumProperty("smt.waiting.interval.unit", MILLISECONDS)).willReturn(intervalUnit);
 
         // When
-        new Options(sleeper, propertyParser).interval();
+        final Choice actual = new Options(sleeper, propertyParser).choose();
 
         // Then
-        verify(sleeper).sleep(intervalUnit.toMillis(intervalDuration));
+        assertThat(actual, hasField("intervalDuration", is(intervalDuration)));
+        assertThat(actual, hasField("intervalUnit", is(intervalUnit)));
     }
 
     @Test

@@ -91,24 +91,10 @@ public class Options implements OptionsService {
         return this;
     }
 
-    Timer startTimer() {
-        return new Timer(timeoutDuration, timeoutUnit, new Start(new Date()));
-    }
-
     @Override
     public Options waitFor(ResultValidator resultValidator) {
         this.resultValidators.add(resultValidator);
         return this;
-    }
-
-    @SuppressWarnings("unchecked")
-    boolean isValid(Object result) throws Throwable {
-        for (ResultValidator resultValidator : resultValidators) {
-            if (!resultValidator.isValid(result)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     @Override
@@ -142,12 +128,9 @@ public class Options implements OptionsService {
         return this;
     }
 
-    void interval() {
-        try {
-            sleeper.sleep(intervalUnit.toMillis(intervalDuration));
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    @Override
+    public Choice choose() {
+        return new Choice(sleeper, timeoutDuration, timeoutUnit, resultValidators, intervalDuration, intervalUnit);
     }
 
     private void removeValidator(Class type) {

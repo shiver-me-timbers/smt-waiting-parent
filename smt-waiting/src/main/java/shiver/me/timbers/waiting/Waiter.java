@@ -35,7 +35,9 @@ public class Waiter implements WaiterService {
 
     public <T> T wait(Until<T> until) {
 
-        final Timer timer = options.startTimer();
+        final Choice choice = options.choose();
+
+        final Timer timer = choice.startTimer();
 
         T result = null;
         Thrower thrower = new Thrower(until);
@@ -44,13 +46,13 @@ public class Waiter implements WaiterService {
             try {
                 result = until.success();
                 thrower.clear();
-                if (options.isValid(result)) {
+                if (choice.isValid(result)) {
                     return result;
                 }
             } catch (Throwable e) {
                 thrower.register(e);
             }
-            options.interval();
+            choice.interval();
         }
 
         thrower.throwIfRegistered();

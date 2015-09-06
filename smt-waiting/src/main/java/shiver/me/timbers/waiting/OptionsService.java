@@ -22,4 +22,6 @@ interface OptionsService {
     Options willNotWaitForNotNull();
 
     Options withInterval(long duration, TimeUnit unit);
+
+    Choice choose();
 }

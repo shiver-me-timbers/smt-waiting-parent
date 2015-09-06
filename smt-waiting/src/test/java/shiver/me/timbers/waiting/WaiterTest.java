@@ -38,11 +38,13 @@ public class WaiterTest {
 
     private Options options;
     private Waiter waiter;
+    private Choice choice;
 
     @Before
     public void setUp() {
         options = mock(Options.class);
         waiter = new Waiter(options);
+        choice = mock(Choice.class);
     }
 
     @Test
@@ -63,10 +65,11 @@ public class WaiterTest {
         final Object expected = new Object();
 
         // Given
-        given(options.startTimer()).willReturn(timer);
+        given(options.choose()).willReturn(choice);
+        given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false);
         given(until.success()).willThrow(new RuntimeException()).willThrow(new RuntimeException()).willReturn(expected);
-        given(options.isValid(expected)).willReturn(true);
+        given(choice.isValid(expected)).willReturn(true);
 
         // When
         final Object actual = waiter.wait(until);
@@ -74,7 +77,7 @@ public class WaiterTest {
         // Then
         assertThat(actual, is(expected));
         verify(until, times(3)).success();
-        verify(options, times(2)).interval();
+        verify(choice, times(2)).interval();
     }
 
     @Test
@@ -92,7 +95,8 @@ public class WaiterTest {
         final Timer timer = mock(Timer.class);
 
         // Given
-        given(options.startTimer()).willReturn(timer);
+        given(options.choose()).willReturn(choice);
+        given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false, false, true);
         given(until.success()).willThrow(new TestTimeOutException());
 
@@ -111,7 +115,8 @@ public class WaiterTest {
         final Timer timer = mock(Timer.class);
 
         // Given
-        given(options.startTimer()).willReturn(timer);
+        given(options.choose()).willReturn(choice);
+        given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false, false, true);
         given(until.success()).willThrow(new TestTimeOutRuntimeException());
 
@@ -130,7 +135,8 @@ public class WaiterTest {
         final Timer timer = mock(Timer.class);
 
         // Given
-        given(options.startTimer()).willReturn(timer);
+        given(options.choose()).willReturn(choice);
+        given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false, false, true);
         given(until.success()).willThrow(new TestTimeOutError());
 
@@ -149,10 +155,11 @@ public class WaiterTest {
         final Object expected = new Object();
 
         // Given
-        given(options.startTimer()).willReturn(timer);
+        given(options.choose()).willReturn(choice);
+        given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false);
         given(until.success()).willReturn(expected);
-        given(options.isValid(expected)).willReturn(false, false, true);
+        given(choice.isValid(expected)).willReturn(false, false, true);
 
         // When
         final Object actual = waiter.wait(until);
@@ -160,7 +167,7 @@ public class WaiterTest {
         // Then
         assertThat(actual, is(expected));
         verify(until, times(3)).success();
-        verify(options, times(2)).interval();
+        verify(choice, times(2)).interval();
     }
 
     @Test
@@ -174,10 +181,11 @@ public class WaiterTest {
         final Object expected = new Object();
 
         // Given
-        given(options.startTimer()).willReturn(timer);
+        given(options.choose()).willReturn(choice);
+        given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false, false, true);
         given(until.success()).willReturn(expected);
-        given(options.isValid(expected)).willReturn(false);
+        given(choice.isValid(expected)).willReturn(false);
 
         // When
         final Object actual = waiter.wait(until);
@@ -185,7 +193,7 @@ public class WaiterTest {
         // Then
         assertThat(actual, is(expected));
         verify(until, times(2)).success();
-        verify(options, times(2)).interval();
+        verify(choice, times(2)).interval();
     }
 
     @Test
@@ -199,10 +207,11 @@ public class WaiterTest {
         final Object expected = new Object();
 
         // Given
-        given(options.startTimer()).willReturn(timer);
+        given(options.choose()).willReturn(choice);
+        given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false, false, true);
         given(until.success()).willThrow(new Exception()).willReturn(expected);
-        given(options.isValid(expected)).willReturn(false);
+        given(choice.isValid(expected)).willReturn(false);
 
         // When
         final Object actual = waiter.wait(until);
@@ -210,7 +219,7 @@ public class WaiterTest {
         // Then
         assertThat(actual, is(expected));
         verify(until, times(2)).success();
-        verify(options, times(2)).interval();
+        verify(choice, times(2)).interval();
     }
 
 }
