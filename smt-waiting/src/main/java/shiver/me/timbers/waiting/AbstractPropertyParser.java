@@ -1,8 +1,11 @@
 package shiver.me.timbers.waiting;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 import static java.lang.String.format;
+import static java.util.Collections.emptyList;
 
 /**
  * @author Karl Bennett
@@ -44,18 +47,35 @@ abstract class AbstractPropertyParser implements PropertyParser {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getInstanceProperty(String key, T defaultValue) {
+    public <T> List<T> getInstanceProperty(String key) {
 
         final String value = propertyGetter.get(key);
 
         if (value == null) {
-            return defaultValue;
+            return emptyList();
         }
 
-        try {
-            return (T) Class.forName(value).newInstance();
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            return defaultValue;
+        final String[] types = value.split(",");
+
+        final List<T> instances = new ArrayList<>();
+        for (String type : types) {
+            try {
+                instances.add((T) Class.forName(type).newInstance());
+            } catch (ClassNotFoundException e) {
+                throw new IllegalStateException(
+                    format(
+                        "The property value for (%s) must be a comma separated list of fully qualified class names.",
+                        key
+                    ),
+                    e
+                );
+            } catch (InstantiationException | IllegalAccessException e) {
+                throw new IllegalStateException(
+                    format("Th class (%s) in the property value for (%s) cannot be instantiated.", type, key),
+                    e
+                );
+            }
         }
+        return instances;
     }
 }

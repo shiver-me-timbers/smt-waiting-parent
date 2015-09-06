@@ -21,11 +21,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isA;
@@ -81,7 +83,7 @@ public class OptionsTest {
         given(propertyParser.getEnumProperty("smt.waiting.interval.unit", MILLISECONDS)).willReturn(intervalUnit);
         given(propertyParser.getBooleanProperty("smt.waiting.waitForTrue", false)).willReturn(true);
         given(propertyParser.getBooleanProperty("smt.waiting.waitForNotNull", false)).willReturn(true);
-        given(propertyParser.getInstanceProperty("smt.waiting.waitFor", null)).willReturn(validator);
+        given(propertyParser.getInstanceProperty("smt.waiting.waitFor")).willReturn(Collections.<Object>singletonList(validator));
 
         // When
         Options options = new Options(sleeper, propertyParser);
@@ -217,6 +219,36 @@ public class OptionsTest {
     }
 
     @Test
+    public void Can_not_wait_for_a_true_result() throws Throwable {
+
+        // Given
+        final Object expected = new Object();
+
+        // When
+        final boolean actual = options.willNotWaitForTrue().isValid(expected);
+
+        // Then
+        assertThat(actual, is(true));
+    }
+
+    @Test
+    public void Can_override_wait_for_a_true_result() throws Throwable {
+
+        // Given
+        final Object expected = new Object();
+
+        // When
+        final boolean actual = options
+            .waitFor(new AnyResult())
+            .willWaitForTrue()
+            .willNotWaitForTrue()
+            .isValid(expected);
+
+        // Then
+        assertThat(actual, is(true));
+    }
+
+    @Test
     public void Can_wait_for_a_true_result_that_is_not_a_boolean() throws Throwable {
 
         // When
@@ -241,6 +273,30 @@ public class OptionsTest {
 
         // When
         final boolean actual = options.willWaitForNotNull().isValid(new Object());
+
+        // Then
+        assertThat(actual, is(true));
+    }
+
+    @Test
+    public void Can_not_wait_for_non_null_result() throws Throwable {
+
+        // When
+        final boolean actual = options.willNotWaitForNotNull().isValid(null);
+
+        // Then
+        assertThat(actual, is(true));
+    }
+
+    @Test
+    public void Can_override_wait_for_non_null_result() throws Throwable {
+
+        // When
+        final boolean actual = options
+            .waitFor(new AnyResult())
+            .willWaitForNotNull()
+            .willNotWaitForNotNull()
+            .isValid(null);
 
         // Then
         assertThat(actual, is(true));
@@ -301,5 +357,48 @@ public class OptionsTest {
 
         // Then
         verify(sleeper).sleep(intervalUnit.toMillis(intervalDuration));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Can_reset_values_back_to_defaults() throws InterruptedException {
+
+        final Long timeoutDuration = someLong();
+        final TimeUnit timeoutUnit = someEnum(TimeUnit.class);
+        final Long intervalDuration = someLong();
+        final TimeUnit intervalUnit = someEnum(TimeUnit.class);
+        final ResultValidator validator = mock(ResultValidator.class);
+
+        // Given
+        given(propertyParser.getLongProperty("smt.waiting.timeout.duration", 10L)).willReturn(someLong());
+        given(propertyParser.getEnumProperty("smt.waiting.timeout.unit", SECONDS)).willReturn(someEnum(TimeUnit.class));
+        given(propertyParser.getLongProperty("smt.waiting.interval.duration", 100L)).willReturn(someLong());
+        given(propertyParser.getEnumProperty("smt.waiting.interval.unit", MILLISECONDS))
+            .willReturn(someEnum(TimeUnit.class));
+        given(propertyParser.getBooleanProperty("smt.waiting.waitForTrue", false)).willReturn(someBoolean());
+        given(propertyParser.getBooleanProperty("smt.waiting.waitForNotNull", false)).willReturn(someBoolean());
+        given(propertyParser.getInstanceProperty("smt.waiting.waitFor"))
+            .willReturn(Collections.<Object>singletonList(mock(ResultValidator.class)));
+
+        // When
+        Options options = new Options(sleeper, propertyParser)
+            .withDefaults()
+            .withTimeOut(timeoutDuration, timeoutUnit)
+            .withInterval(intervalDuration, intervalUnit)
+            .willWaitForTrue()
+            .willWaitForNotNull()
+            .waitFor(validator);
+
+
+        // Then
+        assertThat(options, hasField("timeoutDuration", is(timeoutDuration)));
+        assertThat(options, hasField("timeoutUnit", is(timeoutUnit)));
+        assertThat(options, hasField("intervalDuration", is(intervalDuration)));
+        assertThat(options, hasField("intervalUnit", is(intervalUnit)));
+        assertThat(options, hasField("resultValidators", containsInAnyOrder(
+            instanceOf(TrueResult.class),
+            instanceOf(NotNullResult.class),
+            is(validator)
+        )));
     }
 }

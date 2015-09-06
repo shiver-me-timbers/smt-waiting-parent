@@ -7,13 +7,12 @@ class PropertyManager {
 
     private final Map<String, String> properties = new HashMap<>();
 
-    public void setProperty(String key, String value) {
-        backupProperty(key);
-        System.setProperty(key, value);
+    public void backupProperty(String key) {
+        properties.put(key, System.getProperty(key));
     }
 
-    private void backupProperty(String key) {
-        properties.put(key, System.getProperty(key));
+    public void setProperty(String key, String value) {
+        System.setProperty(key, value);
     }
 
     public void restoreProperties() {

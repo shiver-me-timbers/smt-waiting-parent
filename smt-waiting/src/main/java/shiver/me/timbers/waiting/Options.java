@@ -18,6 +18,7 @@ package shiver.me.timbers.waiting;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -28,6 +29,11 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  * @author Karl Bennett
  */
 public class Options implements OptionsService {
+
+    private static final long DEFAULT_TIMEOUT_DURATION = 10L;
+    private static final TimeUnit DEFAULT_TIMEOUT_UNIT = SECONDS;
+    private static final long DEFAULT_INTERVAL_DURATION = 100L;
+    private static final TimeUnit DEFAULT_INTERVAL_UNIT = MILLISECONDS;
 
     private final Sleeper sleeper;
 
@@ -43,11 +49,11 @@ public class Options implements OptionsService {
 
     Options(Sleeper sleeper, PropertyParser propertyParser) {
         this.sleeper = sleeper;
-        this.timeoutDuration = propertyParser.getLongProperty("smt.waiting.timeout.duration", 10L);
-        this.timeoutUnit = propertyParser.getEnumProperty("smt.waiting.timeout.unit", SECONDS);
+        this.timeoutDuration = propertyParser.getLongProperty("smt.waiting.timeout.duration", DEFAULT_TIMEOUT_DURATION);
+        this.timeoutUnit = propertyParser.getEnumProperty("smt.waiting.timeout.unit", DEFAULT_TIMEOUT_UNIT);
         this.resultValidators = defaultValidators(propertyParser);
-        this.intervalDuration = propertyParser.getLongProperty("smt.waiting.interval.duration", 100L);
-        this.intervalUnit = propertyParser.getEnumProperty("smt.waiting.interval.unit", MILLISECONDS);
+        this.intervalDuration = propertyParser.getLongProperty("smt.waiting.interval.duration", DEFAULT_INTERVAL_DURATION);
+        this.intervalUnit = propertyParser.getEnumProperty("smt.waiting.interval.unit", DEFAULT_INTERVAL_UNIT);
     }
 
     private static List<ResultValidator> defaultValidators(PropertyParser propertyParser) {
@@ -60,12 +66,22 @@ public class Options implements OptionsService {
             resultValidators.add(new NotNullResult());
         }
 
-        final ResultValidator customResultValidator = propertyParser.getInstanceProperty("smt.waiting.waitFor", null);
-        if (customResultValidator != null) {
-            resultValidators.add(customResultValidator);
+        final List<ResultValidator> customResultValidator = propertyParser.getInstanceProperty("smt.waiting.waitFor");
+        for (ResultValidator validator : customResultValidator) {
+            resultValidators.add(validator);
         }
 
         return resultValidators;
+    }
+
+    @Override
+    public Options withDefaults() {
+        this.timeoutDuration = DEFAULT_TIMEOUT_DURATION;
+        this.timeoutUnit = DEFAULT_TIMEOUT_UNIT;
+        this.resultValidators.clear();
+        this.intervalDuration = DEFAULT_INTERVAL_DURATION;
+        this.intervalUnit = DEFAULT_INTERVAL_UNIT;
+        return this;
     }
 
     @Override
@@ -102,8 +118,20 @@ public class Options implements OptionsService {
     }
 
     @Override
+    public Options willNotWaitForTrue() {
+        removeValidator(TrueResult.class);
+        return this;
+    }
+
+    @Override
     public Options willWaitForNotNull() {
         this.resultValidators.add(new NotNullResult());
+        return this;
+    }
+
+    @Override
+    public Options willNotWaitForNotNull() {
+        removeValidator(NotNullResult.class);
         return this;
     }
 
@@ -119,6 +147,15 @@ public class Options implements OptionsService {
             sleeper.sleep(intervalUnit.toMillis(intervalDuration));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void removeValidator(Class type) {
+        for (Iterator<ResultValidator> iterator = resultValidators.iterator(); iterator.hasNext(); ) {
+            final ResultValidator validator = iterator.next();
+            if (type.equals(validator.getClass())) {
+                iterator.remove();
+            }
         }
     }
 }

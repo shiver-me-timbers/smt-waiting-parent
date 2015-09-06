@@ -1,5 +1,7 @@
 package shiver.me.timbers.waiting;
 
+import java.util.List;
+
 /**
  * @author Karl Bennett
  */
@@ -11,5 +13,5 @@ interface PropertyParser {
 
     <E extends Enum<E>> E getEnumProperty(String key, E defaultValue);
 
-    <T> T getInstanceProperty(String key, T defaultValue);
+    <T> List<T> getInstanceProperty(String key);
 }

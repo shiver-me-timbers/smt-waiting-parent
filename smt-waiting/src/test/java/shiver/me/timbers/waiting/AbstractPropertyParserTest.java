@@ -5,7 +5,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.List;
+
+import static java.lang.String.format;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -104,83 +109,84 @@ public class AbstractPropertyParserTest {
     }
 
     @Test
-    public void Can_get_an_instance_property() {
+    public void Can_get_a_single_instance_property() {
 
         final String key = someString();
-        final ADefaultClass defaultValue = new ADefaultClass();
 
         // Given
         given(propertyGetter.get(key)).willReturn(AClass.class.getName());
 
         // When
-        final ADefaultClass actual = parser.getInstanceProperty(key, defaultValue);
+        final List<AClass> actual = parser.getInstanceProperty(key);
 
         // Then
-        assertThat(actual, instanceOf(AClass.class));
+        assertThat(actual, contains(instanceOf(AClass.class)));
     }
 
     @Test
-    public void Will_get_default_instance_for_property_that_does_not_exist() {
+    public void Can_get_a_multiple_instance_property() {
 
         final String key = someString();
-        final ADefaultClass defaultValue = new ADefaultClass();
+
+        // Given
+        given(propertyGetter.get(key)).willReturn(format("%s,%s", AClass.class.getName(), AnotherClass.class.getName()));
+
+        // When
+        final List<AClass> actual = parser.getInstanceProperty(key);
+
+        // Then
+        assertThat(actual, contains(instanceOf(AClass.class), instanceOf(AnotherClass.class)));
+    }
+
+    @Test
+    public void Will_get_an_empty_list_for_a_property_that_does_not_exist() {
+
+        final String key = someString();
 
         // Given
         given(propertyGetter.get(key)).willReturn(null);
 
         // When
-        final ADefaultClass actual = parser.getInstanceProperty(key, defaultValue);
+        final List<AClass> actual = parser.getInstanceProperty(key);
 
         // Then
-        assertThat(actual, is(defaultValue));
+        assertThat(actual, empty());
     }
 
-    @Test
-    public void Will_get_default_instance_for_class_that_does_not_exist() {
+    @Test(expected = IllegalStateException.class)
+    public void Will_get_an_exception_for_a_class_that_does_not_exist() {
 
         final String key = someString();
-        final ADefaultClass defaultValue = new ADefaultClass();
 
         // Given
         given(propertyGetter.get(key)).willReturn("this.class.does.not.Exist");
 
         // When
-        final ADefaultClass actual = parser.getInstanceProperty(key, defaultValue);
-
-        // Then
-        assertThat(actual, is(defaultValue));
+        parser.getInstanceProperty(key);
     }
 
-    @Test
-    public void Will_get_default_instance_for_class_that_has_no_default_constructor() {
+    @Test(expected = IllegalStateException.class)
+    public void Will_an_exception_for_a_class_that_has_no_default_constructor() {
 
         final String key = someString();
-        final ADefaultClass defaultValue = new ADefaultClass();
 
         // Given
         given(propertyGetter.get(key)).willReturn(ANonDefaultClass.class.getName());
 
         // When
-        final ADefaultClass actual = parser.getInstanceProperty(key, defaultValue);
-
-        // Then
-        assertThat(actual, is(defaultValue));
+        parser.getInstanceProperty(key);
     }
 
-    @Test
-    public void Will_get_default_instance_for_class_with_a_private_constructor() {
+    @Test(expected = IllegalStateException.class)
+    public void Will_get_an_exception_for_a_class_with_a_private_constructor() {
 
         final String key = someString();
-        final ADefaultClass defaultValue = new ADefaultClass();
 
         // Given
         given(propertyGetter.get(key)).willReturn(APrivateClass.class.getName());
 
         // When
-        final ADefaultClass actual = parser.getInstanceProperty(key, defaultValue);
-
-        // Then
-        assertThat(actual, is(defaultValue));
+        parser.getInstanceProperty(key);
     }
 
     private enum AnEnum {
@@ -191,10 +197,10 @@ public class AbstractPropertyParserTest {
         TESTING
     }
 
-    public static class ADefaultClass {
+    public static class AClass {
     }
 
-    public static class AClass extends ADefaultClass {
+    public static class AnotherClass extends AClass {
     }
 
     public static class ANonDefaultClass extends AClass {

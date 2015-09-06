@@ -16,10 +16,10 @@
 
 package shiver.me.timbers.waiting;
 
-public class TestValidResult implements ResultValidator {
+public class SuccessResult implements ResultValidator {
 
     @Override
     public boolean isValid(Object result) throws Throwable {
-        return "valid".equals(result.toString());
+        return result.toString().contains("success");
     }
 }
