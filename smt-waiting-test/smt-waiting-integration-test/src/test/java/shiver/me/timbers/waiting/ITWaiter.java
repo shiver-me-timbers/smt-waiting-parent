@@ -523,10 +523,7 @@ public class ITWaiter {
         properties.setProperty("smt.waiting.interval.unit", "SECONDS");
         properties.setProperty("smt.waiting.waitForTrue", "true");
         properties.setProperty("smt.waiting.waitForNotNull", "true");
-        properties.setProperty("smt.waiting.waitFor", format("%s,%s",
-            ValidResult.class.getName(),
-            SuccessResult.class.getName()
-        ));
+        properties.setProperty("smt.waiting.waitFor", NoResult.class.getName());
         final Until until = mock(Until.class);
 
         final Object expected = new Object();
@@ -535,15 +532,7 @@ public class ITWaiter {
         given(until.success()).willReturn(expected);
 
         // When
-        final Object actual = new Waiter(
-            new Options()
-                .withTimeOut(1L, MINUTES)
-                .withInterval(30L, SECONDS)
-                .willWaitForTrue()
-                .willNotWaitForTrue()
-                .waitFor(new NoResult())
-                .withDefaults()
-        ).wait(until);
+        final Object actual = new Waiter(new Options().withDefaults()).wait(until);
 
         // Then
         assertThat(actual, is(expected));

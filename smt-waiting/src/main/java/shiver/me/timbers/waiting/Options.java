@@ -17,8 +17,7 @@
 package shiver.me.timbers.waiting;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -36,12 +35,16 @@ public class Options implements OptionsService {
     private static final TimeUnit DEFAULT_INTERVAL_UNIT = MILLISECONDS;
 
     private final Sleeper sleeper;
+    private final PropertyParser propertyParser;
 
     private Long timeoutDuration;
     private TimeUnit timeoutUnit;
-    private List<ResultValidator> resultValidators;
     private Long intervalDuration;
     private TimeUnit intervalUnit;
+    private Boolean waitForTrue;
+    private Boolean waitForNotNull;
+    private List<ResultValidator> resultValidators = new ArrayList<>();
+    private Boolean withDefaults = false;
 
     public Options() {
         this(new ThreadSleeper(), new SystemPropertyParser());
@@ -49,38 +52,12 @@ public class Options implements OptionsService {
 
     Options(Sleeper sleeper, PropertyParser propertyParser) {
         this.sleeper = sleeper;
-        this.timeoutDuration = propertyParser.getLongProperty("smt.waiting.timeout.duration", DEFAULT_TIMEOUT_DURATION);
-        this.timeoutUnit = propertyParser.getEnumProperty("smt.waiting.timeout.unit", DEFAULT_TIMEOUT_UNIT);
-        this.resultValidators = defaultValidators(propertyParser);
-        this.intervalDuration = propertyParser.getLongProperty("smt.waiting.interval.duration", DEFAULT_INTERVAL_DURATION);
-        this.intervalUnit = propertyParser.getEnumProperty("smt.waiting.interval.unit", DEFAULT_INTERVAL_UNIT);
-    }
-
-    private static List<ResultValidator> defaultValidators(PropertyParser propertyParser) {
-        final List<ResultValidator> resultValidators = new ArrayList<>();
-
-        if (propertyParser.getBooleanProperty("smt.waiting.waitForTrue", false)) {
-            resultValidators.add(new TrueResult());
-        }
-        if (propertyParser.getBooleanProperty("smt.waiting.waitForNotNull", false)) {
-            resultValidators.add(new NotNullResult());
-        }
-
-        final List<ResultValidator> customResultValidator = propertyParser.getInstanceProperty("smt.waiting.waitFor");
-        for (ResultValidator validator : customResultValidator) {
-            resultValidators.add(validator);
-        }
-
-        return resultValidators;
+        this.propertyParser = propertyParser;
     }
 
     @Override
     public Options withDefaults() {
-        this.timeoutDuration = DEFAULT_TIMEOUT_DURATION;
-        this.timeoutUnit = DEFAULT_TIMEOUT_UNIT;
-        this.resultValidators.clear();
-        this.intervalDuration = DEFAULT_INTERVAL_DURATION;
-        this.intervalUnit = DEFAULT_INTERVAL_UNIT;
+        this.withDefaults = true;
         return this;
     }
 
@@ -92,32 +69,26 @@ public class Options implements OptionsService {
     }
 
     @Override
-    public Options waitFor(ResultValidator resultValidator) {
-        this.resultValidators.add(resultValidator);
-        return this;
-    }
-
-    @Override
     public Options willWaitForTrue() {
-        this.resultValidators.add(new TrueResult());
+        this.waitForTrue = true;
         return this;
     }
 
     @Override
     public Options willNotWaitForTrue() {
-        removeValidator(TrueResult.class);
+        this.waitForTrue = false;
         return this;
     }
 
     @Override
     public Options willWaitForNotNull() {
-        this.resultValidators.add(new NotNullResult());
+        this.waitForNotNull = true;
         return this;
     }
 
     @Override
     public Options willNotWaitForNotNull() {
-        removeValidator(NotNullResult.class);
+        this.waitForNotNull = false;
         return this;
     }
 
@@ -129,16 +100,113 @@ public class Options implements OptionsService {
     }
 
     @Override
-    public Choice choose() {
-        return new Choice(sleeper, timeoutDuration, timeoutUnit, resultValidators, intervalDuration, intervalUnit);
+    public Options waitFor(ResultValidator resultValidator) {
+        this.resultValidators.add(resultValidator);
+        return this;
     }
 
-    private void removeValidator(Class type) {
-        for (Iterator<ResultValidator> iterator = resultValidators.iterator(); iterator.hasNext(); ) {
-            final ResultValidator validator = iterator.next();
-            if (type.equals(validator.getClass())) {
-                iterator.remove();
-            }
+    @Override
+    public Choice choose() {
+        ChosenOptions options = createFromDefaults();
+        options = applyProperties(options);
+        options = applyManualOptions(options);
+
+        if (options.waitForTrue) {
+            options.resultValidators.add(new TrueResult());
+        }
+        if (options.waitForNotNull) {
+            options.resultValidators.add(new NotNullResult());
+        }
+
+        return new Choice(
+            sleeper,
+            options.timeoutDuration,
+            options.timeoutUnit,
+            options.resultValidators,
+            options.intervalDuration,
+            options.intervalUnit
+        );
+    }
+
+    private ChosenOptions createFromDefaults() {
+        return new ChosenOptions(
+            DEFAULT_TIMEOUT_DURATION,
+            DEFAULT_TIMEOUT_UNIT,
+            DEFAULT_INTERVAL_DURATION,
+            DEFAULT_INTERVAL_UNIT,
+            false,
+            false,
+            Collections.<ResultValidator>emptyList()
+        );
+    }
+
+    private ChosenOptions applyProperties(ChosenOptions options) {
+        if (withDefaults) {
+            return options;
+        }
+        return new ChosenOptions(
+            propertyParser.getLongProperty("smt.waiting.timeout.duration", options.timeoutDuration),
+            propertyParser.getEnumProperty("smt.waiting.timeout.unit", options.timeoutUnit),
+            propertyParser.getLongProperty("smt.waiting.interval.duration", options.intervalDuration),
+            propertyParser.getEnumProperty("smt.waiting.interval.unit", options.intervalUnit),
+            propertyParser.getBooleanProperty("smt.waiting.waitForTrue", false),
+            propertyParser.getBooleanProperty("smt.waiting.waitForNotNull", false),
+            defaultValidators(options.resultValidators, propertyParser)
+        );
+    }
+
+    private ChosenOptions applyManualOptions(ChosenOptions options) {
+        options.resultValidators.addAll(resultValidators);
+        return new ChosenOptions(
+            timeoutDuration == null ? options.timeoutDuration : timeoutDuration,
+            timeoutUnit == null ? options.timeoutUnit : timeoutUnit,
+            intervalDuration == null ? options.intervalDuration : intervalDuration,
+            intervalUnit == null ? options.intervalUnit : intervalUnit,
+            waitForTrue == null ? options.waitForTrue : waitForTrue,
+            waitForNotNull == null ? options.waitForNotNull : waitForNotNull,
+            options.resultValidators
+        );
+    }
+
+    private static List<ResultValidator> defaultValidators(
+        List<ResultValidator> resultValidators,
+        PropertyParser propertyParser
+    ) {
+
+        final List<ResultValidator> customResultValidator = propertyParser.getInstanceProperty("smt.waiting.waitFor");
+        for (ResultValidator validator : customResultValidator) {
+            resultValidators.add(validator);
+        }
+
+        return resultValidators;
+    }
+
+    private static class ChosenOptions {
+
+        private final Long timeoutDuration;
+        private final TimeUnit timeoutUnit;
+        private final Long intervalDuration;
+        private final TimeUnit intervalUnit;
+        private final boolean waitForTrue;
+        private final boolean waitForNotNull;
+        private final List<ResultValidator> resultValidators;
+
+        private ChosenOptions(
+            Long timeoutDuration,
+            TimeUnit timeoutUnit,
+            Long intervalDuration,
+            TimeUnit intervalUnit,
+            boolean waitForTrue,
+            boolean waitForNotNull,
+            List<ResultValidator> resultValidators
+        ) {
+            this.timeoutDuration = timeoutDuration;
+            this.timeoutUnit = timeoutUnit;
+            this.intervalDuration = intervalDuration;
+            this.intervalUnit = intervalUnit;
+            this.waitForTrue = waitForTrue;
+            this.waitForNotNull = waitForNotNull;
+            this.resultValidators = new ArrayList<>(resultValidators);
         }
     }
 }

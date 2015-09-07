@@ -11,8 +11,6 @@ interface OptionsService {
 
     Options withTimeOut(Long duration, TimeUnit unit);
 
-    Options waitFor(ResultValidator resultValidator);
-
     Options willWaitForTrue();
 
     Options willNotWaitForTrue();
@@ -22,6 +20,8 @@ interface OptionsService {
     Options willNotWaitForNotNull();
 
     Options withInterval(long duration, TimeUnit unit);
+
+    Options waitFor(ResultValidator resultValidator);
 
     Choice choose();
 }

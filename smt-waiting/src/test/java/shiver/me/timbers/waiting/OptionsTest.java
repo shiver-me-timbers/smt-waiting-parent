@@ -26,7 +26,6 @@ import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasItem;
@@ -35,15 +34,11 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isA;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.unitils.reflectionassert.ReflectionAssert.assertPropertyReflectionEquals;
 import static shiver.me.timbers.data.random.RandomBooleans.someBoolean;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLong;
-import static shiver.me.timbers.data.random.RandomStrings.someString;
 import static shiver.me.timbers.waiting.HasFieldMatcher.hasField;
 
 public class OptionsTest {
@@ -71,7 +66,18 @@ public class OptionsTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void Can_create_an_options() throws InterruptedException {
+    public void Nothing_is_set_on_creation() throws InterruptedException {
+
+        // When
+        new Options(sleeper, propertyParser);
+
+        // Then
+        verifyZeroInteractions(sleeper, propertyParser);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Can_create_an_options_that_is_set_from_properties() throws InterruptedException {
 
         final long timeoutDuration = someLong();
         final TimeUnit timeoutUnit = someEnum(TimeUnit.class);
@@ -89,7 +95,7 @@ public class OptionsTest {
         given(propertyParser.getInstanceProperty("smt.waiting.waitFor")).willReturn(Collections.<Object>singletonList(validator));
 
         // When
-        Options options = new Options(sleeper, propertyParser);
+        Choice options = new Options(sleeper, propertyParser).choose();
 
         // Then
         assertThat(options, hasField("timeoutDuration", is(timeoutDuration)));
@@ -97,7 +103,7 @@ public class OptionsTest {
         assertThat(options, hasField("intervalDuration", is(intervalDuration)));
         assertThat(options, hasField("intervalUnit", is(intervalUnit)));
         assertThat(options, hasField("resultValidators",
-            contains(
+            containsInAnyOrder(
                 instanceOf(TrueResult.class),
                 instanceOf(NotNullResult.class),
                 is(validator)
@@ -220,12 +226,12 @@ public class OptionsTest {
 
         // When
         Options options = new Options(sleeper, propertyParser)
-            .withDefaults()
             .withTimeOut(timeoutDuration, timeoutUnit)
             .withInterval(intervalDuration, intervalUnit)
             .willWaitForTrue()
             .willWaitForNotNull()
-            .waitFor(validator);
+            .waitFor(validator)
+            .withDefaults();
 
 
         // Then
@@ -233,10 +239,6 @@ public class OptionsTest {
         assertThat(options, hasField("timeoutUnit", is(timeoutUnit)));
         assertThat(options, hasField("intervalDuration", is(intervalDuration)));
         assertThat(options, hasField("intervalUnit", is(intervalUnit)));
-        assertThat(options, hasField("resultValidators", containsInAnyOrder(
-            instanceOf(TrueResult.class),
-            instanceOf(NotNullResult.class),
-            is(validator)
-        )));
+        assertThat(options, hasField("resultValidators", hasItem(is(validator))));
     }
 }

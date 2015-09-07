@@ -22,7 +22,7 @@ public class SystemPropertyGetterTest {
 
         final String key = someAlphaNumericString();
 
-        final String expected = someString();
+        final String expected = someString(10);
 
         // Given
         System.setProperty(key, expected);
