@@ -6,6 +6,11 @@ package shiver.me.timbers.waiting;
 public class SpringOptions extends Options {
 
     public SpringOptions() {
-        super(new ThreadSleeper(), new SpringPropertyParser());
+        super(
+            new StaticDefaultChoices(),
+            new PropertyParserChoices(new SpringPropertyParser()),
+            new MergingManualChoices(),
+            new BasicChooser(new ThreadSleeper())
+        );
     }
 }

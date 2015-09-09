@@ -13,24 +13,24 @@ class Choice {
 
     private final Long timeoutDuration;
     private final TimeUnit timeoutUnit;
-    private final List<ResultValidator> resultValidators;
     private final Long intervalDuration;
     private final TimeUnit intervalUnit;
+    private final List<ResultValidator> resultValidators;
 
     Choice(
         Sleeper sleeper,
         Long timeoutDuration,
         TimeUnit timeoutUnit,
-        List<ResultValidator> resultValidators,
         Long intervalDuration,
-        TimeUnit intervalUnit
+        TimeUnit intervalUnit,
+        List<ResultValidator> resultValidators
     ) {
         this.sleeper = sleeper;
         this.timeoutDuration = timeoutDuration;
         this.timeoutUnit = timeoutUnit;
-        this.resultValidators = resultValidators;
         this.intervalDuration = intervalDuration;
         this.intervalUnit = intervalUnit;
+        this.resultValidators = resultValidators;
     }
 
     Timer startTimer() {

@@ -17,44 +17,35 @@
 package shiver.me.timbers.waiting;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isA;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
-import static shiver.me.timbers.data.random.RandomBooleans.someBoolean;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLong;
-import static shiver.me.timbers.waiting.HasFieldMatcher.hasField;
 
 public class OptionsTest {
 
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-
-    private Sleeper sleeper;
-    private PropertyParser propertyParser;
     private Options options;
+    private DefaultChoices defaultChoices;
+    private PropertyChoices propertyChoices;
+    private ManualChoices manualChoices;
+    private Chooser chooser;
 
     @Before
     public void setUp() {
-        sleeper = mock(Sleeper.class);
-        propertyParser = mock(PropertyParser.class);
-        options = new Options(sleeper, propertyParser);
+        defaultChoices = mock(DefaultChoices.class);
+        propertyChoices = mock(PropertyChoices.class);
+        manualChoices = mock(ManualChoices.class);
+        chooser = mock(Chooser.class);
+        options = new Options(defaultChoices, propertyChoices, manualChoices, chooser);
     }
 
     @Test
@@ -65,180 +56,88 @@ public class OptionsTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void Nothing_is_set_on_creation() throws InterruptedException {
 
         // When
-        new Options(sleeper, propertyParser);
+        new Options(defaultChoices, propertyChoices, manualChoices, chooser);
 
         // Then
-        verifyZeroInteractions(sleeper, propertyParser);
+        verifyZeroInteractions(defaultChoices, propertyChoices, manualChoices);
     }
 
     @Test
-    @SuppressWarnings("unchecked")
-    public void Can_create_an_options_that_is_set_from_properties() throws InterruptedException {
+    public void Can_create_a_choice() throws InterruptedException {
 
-        final long timeoutDuration = someLong();
-        final TimeUnit timeoutUnit = someEnum(TimeUnit.class);
-        final long intervalDuration = someLong();
-        final TimeUnit intervalUnit = someEnum(TimeUnit.class);
-        final ResultValidator validator = mock(ResultValidator.class);
+        final Choices defaults = mock(Choices.class);
+        final Choices properties = mock(Choices.class);
+        final Choices manual = mock(Choices.class);
+
+        final Choice expected = mock(Choice.class);
 
         // Given
-        given(propertyParser.getLongProperty("smt.waiting.timeout.duration", 10L)).willReturn(timeoutDuration);
-        given(propertyParser.getEnumProperty("smt.waiting.timeout.unit", SECONDS)).willReturn(timeoutUnit);
-        given(propertyParser.getLongProperty("smt.waiting.interval.duration", 100L)).willReturn(intervalDuration);
-        given(propertyParser.getEnumProperty("smt.waiting.interval.unit", MILLISECONDS)).willReturn(intervalUnit);
-        given(propertyParser.getBooleanProperty("smt.waiting.waitForTrue", false)).willReturn(true);
-        given(propertyParser.getBooleanProperty("smt.waiting.waitForNotNull", false)).willReturn(true);
-        given(propertyParser.getInstanceProperty("smt.waiting.waitFor")).willReturn(Collections.<Object>singletonList(validator));
+        given(defaultChoices.create()).willReturn(defaults);
+        given(propertyChoices.apply(defaults)).willReturn(properties);
+        given(manualChoices.apply(eq(properties), any(Choices.class))).willReturn(manual);
+        given(chooser.choose(manual)).willReturn(expected);
 
         // When
-        Choice options = new Options(sleeper, propertyParser).choose();
+        final Choice actual = options.choose();
 
         // Then
-        assertThat(options, hasField("timeoutDuration", is(timeoutDuration)));
-        assertThat(options, hasField("timeoutUnit", is(timeoutUnit)));
-        assertThat(options, hasField("intervalDuration", is(intervalDuration)));
-        assertThat(options, hasField("intervalUnit", is(intervalUnit)));
-        assertThat(options, hasField("resultValidators",
-            containsInAnyOrder(
-                instanceOf(TrueResult.class),
-                instanceOf(NotNullResult.class),
-                is(validator)
-            )
-        ));
+        assertThat(actual, is(expected));
     }
 
     @Test
-    public void Can_wait_for_a_true_result() throws Throwable {
+    public void Can_create_a_choice_with_custom_values() throws InterruptedException {
 
-        // When
-        final Choice actual = options.willWaitForTrue().choose();
-
-        // Then
-        assertThat(actual, hasField("resultValidators", hasItem(isA(TrueResult.class))));
-    }
-
-    @Test
-    public void Can_not_wait_for_a_true_result() throws Throwable {
-
-        // When
-        final Choice actual = options.willNotWaitForTrue().choose();
-
-        // Then
-        assertThat(actual, hasField("resultValidators", empty()));
-    }
-
-    @Test
-    public void Can_override_wait_for_a_true_result() throws Throwable {
-
-        // Given
-        final AnyResult anyResult = new AnyResult();
-
-        // When
-        final Choice actual = options
-            .waitFor(anyResult)
-            .willWaitForTrue()
-            .willNotWaitForTrue()
-            .choose();
-
-        // Then
-        assertThat(actual, hasField("resultValidators", hasItem(is(anyResult))));
-    }
-
-    @Test
-    public void Can_wait_for_non_null_result() throws Throwable {
-
-        // When
-        final Choice actual = options.willWaitForNotNull().choose();
-
-        // Then
-        assertThat(actual, hasField("resultValidators", hasItem(isA(NotNullResult.class))));
-    }
-
-    @Test
-    public void Can_not_wait_for_non_null_result() throws Throwable {
-
-        // When
-        final Choice actual = options.willNotWaitForNotNull().choose();
-
-        // Then
-        assertThat(actual, hasField("resultValidators", empty()));
-    }
-
-    @Test
-    public void Can_override_wait_for_non_null_result() throws Throwable {
-
-        // Given
-        final AnyResult anyResult = new AnyResult();
-
-        // When
-        final Choice actual = options
-            .waitFor(anyResult)
-            .willWaitForNotNull()
-            .willNotWaitForNotNull()
-            .choose();
-
-        // Then
-        assertThat(actual, hasField("resultValidators", hasItem(is(anyResult))));
-    }
-
-    @Test
-    public void Can_pause_for_a_default_interval_of_100_milliseconds() throws InterruptedException {
-
-        final long intervalDuration = someLong();
-        final TimeUnit intervalUnit = someEnum(TimeUnit.class);
-
-        // Given
-        given(propertyParser.getLongProperty("smt.waiting.interval.duration", 100L)).willReturn(intervalDuration);
-        given(propertyParser.getEnumProperty("smt.waiting.interval.unit", MILLISECONDS)).willReturn(intervalUnit);
-
-        // When
-        final Choice actual = new Options(sleeper, propertyParser).choose();
-
-        // Then
-        assertThat(actual, hasField("intervalDuration", is(intervalDuration)));
-        assertThat(actual, hasField("intervalUnit", is(intervalUnit)));
-    }
-
-    @Test
-    @SuppressWarnings("unchecked")
-    public void Can_reset_values_back_to_defaults() throws InterruptedException {
-
+        final Choices defaults = mock(Choices.class);
+        final Choices properties = mock(Choices.class);
         final Long timeoutDuration = someLong();
         final TimeUnit timeoutUnit = someEnum(TimeUnit.class);
-        final Long intervalDuration = someLong();
-        final TimeUnit intervalUnit = someEnum(TimeUnit.class);
-        final ResultValidator validator = mock(ResultValidator.class);
+        final ResultValidator resultValidator2 = mock(ResultValidator.class);
+        final Choices manual = mock(Choices.class);
+
+        final Choice expected = mock(Choice.class);
 
         // Given
-        given(propertyParser.getLongProperty("smt.waiting.timeout.duration", 10L)).willReturn(someLong());
-        given(propertyParser.getEnumProperty("smt.waiting.timeout.unit", SECONDS)).willReturn(someEnum(TimeUnit.class));
-        given(propertyParser.getLongProperty("smt.waiting.interval.duration", 100L)).willReturn(someLong());
-        given(propertyParser.getEnumProperty("smt.waiting.interval.unit", MILLISECONDS))
-            .willReturn(someEnum(TimeUnit.class));
-        given(propertyParser.getBooleanProperty("smt.waiting.waitForTrue", false)).willReturn(someBoolean());
-        given(propertyParser.getBooleanProperty("smt.waiting.waitForNotNull", false)).willReturn(someBoolean());
-        given(propertyParser.getInstanceProperty("smt.waiting.waitFor"))
-            .willReturn(Collections.<Object>singletonList(mock(ResultValidator.class)));
+        given(defaultChoices.create()).willReturn(defaults);
+        given(propertyChoices.apply(defaults)).willReturn(properties);
+        given(manualChoices.apply(eq(properties), any(Choices.class))).willReturn(manual);
+        given(chooser.choose(manual)).willReturn(expected);
 
         // When
-        Options options = new Options(sleeper, propertyParser)
-            .withTimeOut(timeoutDuration, timeoutUnit)
-            .withInterval(intervalDuration, intervalUnit)
+        final Choice actual = options.withTimeOut(timeoutDuration, timeoutUnit)
+            .withInterval(someLong(), someEnum(TimeUnit.class))
             .willWaitForTrue()
+            .willNotWaitForTrue()
             .willWaitForNotNull()
-            .waitFor(validator)
-            .withDefaults();
-
+            .willNotWaitForNotNull()
+            .waitFor(mock(ResultValidator.class))
+            .waitFor(resultValidator2)
+            .choose();
 
         // Then
-        assertThat(options, hasField("timeoutDuration", is(timeoutDuration)));
-        assertThat(options, hasField("timeoutUnit", is(timeoutUnit)));
-        assertThat(options, hasField("intervalDuration", is(intervalDuration)));
-        assertThat(options, hasField("intervalUnit", is(intervalUnit)));
-        assertThat(options, hasField("resultValidators", hasItem(is(validator))));
+        assertThat(actual, is(expected));
+    }
+
+    @Test
+    public void Can_create_a_choice_with_defaults() throws InterruptedException {
+
+        final Choices defaults = mock(Choices.class);
+        final Choices manual = mock(Choices.class);
+
+        final Choice expected = mock(Choice.class);
+
+        // Given
+        given(defaultChoices.create()).willReturn(defaults);
+        given(manualChoices.apply(eq(defaults), any(Choices.class))).willReturn(manual);
+        given(chooser.choose(manual)).willReturn(expected);
+
+        // When
+        final Choice actual = options.withDefaults().choose();
+
+        // Then
+        assertThat(actual, is(expected));
+        verifyZeroInteractions(propertyChoices);
     }
 }

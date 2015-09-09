@@ -38,9 +38,7 @@ public class ChoiceTest {
             mock(Sleeper.class),
             duration,
             unit,
-            Collections.<ResultValidator>emptyList(),
-            someLong(),
-            someEnum(TimeUnit.class)
+            someLong(), someEnum(TimeUnit.class), Collections.<ResultValidator>emptyList()
         ).startTimer();
 
         // Then
@@ -66,9 +64,7 @@ public class ChoiceTest {
             mock(Sleeper.class),
             someLong(),
             someEnum(TimeUnit.class),
-            Collections.<ResultValidator>singletonList(resultValidator),
-            someLong(),
-            someEnum(TimeUnit.class)
+            someLong(), someEnum(TimeUnit.class), Collections.<ResultValidator>singletonList(resultValidator)
         ).isValid(result);
 
         // Then
@@ -83,9 +79,7 @@ public class ChoiceTest {
             mock(Sleeper.class),
             someLong(),
             someEnum(TimeUnit.class),
-            Collections.<ResultValidator>emptyList(),
-            someLong(),
-            someEnum(TimeUnit.class)
+            someLong(), someEnum(TimeUnit.class), Collections.<ResultValidator>emptyList()
         ).isValid(null);
 
         // Then
@@ -115,9 +109,7 @@ public class ChoiceTest {
             mock(Sleeper.class),
             someLong(),
             someEnum(TimeUnit.class),
-            Arrays.<ResultValidator>asList(resultValidator1, resultValidator2, resultValidator3),
-            someLong(),
-            someEnum(TimeUnit.class)
+            someLong(), someEnum(TimeUnit.class), Arrays.<ResultValidator>asList(resultValidator1, resultValidator2, resultValidator3)
         ).isValid(result);
 
         // Then
@@ -147,9 +139,7 @@ public class ChoiceTest {
             mock(Sleeper.class),
             someLong(),
             someEnum(TimeUnit.class),
-            Arrays.<ResultValidator>asList(resultValidator1, resultValidator2, resultValidator3),
-            someLong(),
-            someEnum(TimeUnit.class)
+            someLong(), someEnum(TimeUnit.class), Arrays.<ResultValidator>asList(resultValidator1, resultValidator2, resultValidator3)
         ).isValid(result);
 
         // Then
@@ -172,9 +162,7 @@ public class ChoiceTest {
             sleeper,
             someLong(),
             someEnum(TimeUnit.class),
-            Collections.<ResultValidator>emptyList(),
-            intervalDuration,
-            intervalUnit
+            intervalDuration, intervalUnit, Collections.<ResultValidator>emptyList()
         ).interval();
 
         // Then
@@ -199,9 +187,7 @@ public class ChoiceTest {
             sleeper,
             someLong(),
             someEnum(TimeUnit.class),
-            Collections.<ResultValidator>emptyList(),
-            intervalDuration,
-            intervalUnit
+            intervalDuration, intervalUnit, Collections.<ResultValidator>emptyList()
         ).interval();
     }
 }

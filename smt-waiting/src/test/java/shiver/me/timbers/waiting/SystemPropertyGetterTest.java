@@ -20,7 +20,7 @@ public class SystemPropertyGetterTest {
     @Test
     public void Can_get_a_system_property() {
 
-        final String key = someAlphaNumericString();
+        final String key = someAlphaNumericString(5);
 
         final String expected = someString(10);
 
