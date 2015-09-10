@@ -220,7 +220,7 @@ public class ITWaiter {
         final Until until = mock(Until.class);
 
         // Given
-        options.willWaitForTrue();
+        options.willWaitForTrue(true);
         given(until.success()).willReturn(false, false, true);
 
         // When
@@ -237,7 +237,7 @@ public class ITWaiter {
         final Until until = mock(Until.class);
 
         // Given
-        options.willWaitForTrue();
+        options.willWaitForTrue(true);
         given(until.success()).willReturn(false);
 
         // When
@@ -254,7 +254,7 @@ public class ITWaiter {
         final Until until = mock(Until.class);
 
         // Given
-        options.willWaitForTrue();
+        options.willWaitForTrue(true);
         given(until.success()).willReturn(null);
 
         // When
@@ -273,7 +273,7 @@ public class ITWaiter {
         final Object expected = new Object();
 
         // Given
-        options.willWaitForNotNull();
+        options.willWaitForNotNull(true);
         given(until.success()).willReturn(null, null, expected);
 
         // When
@@ -290,7 +290,7 @@ public class ITWaiter {
         final Until until = mock(Until.class);
 
         // Given
-        options.willWaitForNotNull();
+        options.willWaitForNotNull(true);
         given(until.success()).willReturn(null);
 
         // When
@@ -410,7 +410,7 @@ public class ITWaiter {
         given(until.success()).willReturn(false);
 
         // When
-        final Object actual = new Waiter(new Options().willNotWaitForTrue()).wait(until);
+        final Object actual = new Waiter(new Options().willWaitForTrue(false)).wait(until);
 
         // Then
         assertThat(actual, is((Object) false));
@@ -446,7 +446,7 @@ public class ITWaiter {
         given(until.success()).willReturn(null);
 
         // When
-        final Object actual = new Waiter(new Options().willNotWaitForNotNull()).wait(until);
+        final Object actual = new Waiter(new Options().willWaitForNotNull(false)).wait(until);
 
         // Then
         assertThat(actual, nullValue());
@@ -531,7 +531,7 @@ public class ITWaiter {
         given(until.success()).willReturn(expected);
 
         // When
-        final Object actual = new Waiter(new Options().withDefaults()).wait(until);
+        final Object actual = new Waiter(new Options().withDefaults(true)).wait(until);
 
         // Then
         assertThat(actual, is(expected));

@@ -61,8 +61,8 @@ public class Options implements OptionsService {
     }
 
     @Override
-    public Options withDefaults() {
-        this.withDefaults = true;
+    public Options withDefaults(boolean useDefaults) {
+        this.withDefaults = useDefaults;
         return this;
     }
 
@@ -74,26 +74,14 @@ public class Options implements OptionsService {
     }
 
     @Override
-    public Options willWaitForTrue() {
-        this.waitForTrue = true;
+    public Options willWaitForTrue(boolean shouldWait) {
+        this.waitForTrue = shouldWait;
         return this;
     }
 
     @Override
-    public Options willNotWaitForTrue() {
-        this.waitForTrue = false;
-        return this;
-    }
-
-    @Override
-    public Options willWaitForNotNull() {
-        this.waitForNotNull = true;
-        return this;
-    }
-
-    @Override
-    public Options willNotWaitForNotNull() {
-        this.waitForNotNull = false;
+    public Options willWaitForNotNull(boolean shouldWait) {
+        this.waitForNotNull = shouldWait;
         return this;
     }
 

@@ -22,7 +22,7 @@
     <parent>
         <groupId>com.github.shiver-me-timbers</groupId>
         <artifactId>smt-waiting-parent</artifactId>
-        <version>1.9-SNAPSHOT</version>
+        <version>2.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>smt-waiting</artifactId>

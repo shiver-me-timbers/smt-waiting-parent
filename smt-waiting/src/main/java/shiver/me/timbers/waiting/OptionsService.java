@@ -7,17 +7,13 @@ import java.util.concurrent.TimeUnit;
  */
 interface OptionsService {
 
-    Options withDefaults();
+    Options withDefaults(boolean useDefaults);
 
     Options withTimeOut(Long duration, TimeUnit unit);
 
-    Options willWaitForTrue();
+    Options willWaitForTrue(boolean shouldWait);
 
-    Options willNotWaitForTrue();
-
-    Options willWaitForNotNull();
-
-    Options willNotWaitForNotNull();
+    Options willWaitForNotNull(boolean shouldWait);
 
     Options withInterval(long duration, TimeUnit unit);
 

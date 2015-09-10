@@ -19,6 +19,8 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLongBetween;
+import static shiver.me.timbers.waiting.Decision.UNDECIDED;
+import static shiver.me.timbers.waiting.Decision.YES;
 
 public class WaitOptionsConfigurerTest {
 
@@ -26,10 +28,13 @@ public class WaitOptionsConfigurerTest {
     public final ExpectedException expectedException = ExpectedException.none();
 
     private OptionsService options;
-    private Wait wait;
     private WaitOptionsConfigurer configurer;
+    private Wait wait;
+
     private TimeOut defaultTimeout;
     private Interval defaultInterval;
+    private Decision defaultWaitForTrue;
+    private Decision defaultWaitForNotNull;
     private Class<ResultValidator>[] defaultWaitFor;
 
     @Before
@@ -43,6 +48,8 @@ public class WaitOptionsConfigurerTest {
         given(defaultTimeout.duration()).willReturn(-1L);
         defaultInterval = mock(Interval.class);
         given(defaultInterval.duration()).willReturn(-1L);
+        defaultWaitForTrue = UNDECIDED;
+        defaultWaitForNotNull = UNDECIDED;
         defaultWaitFor = new Class[0];
     }
 
@@ -52,6 +59,8 @@ public class WaitOptionsConfigurerTest {
         // Given
         given(wait.value()).willReturn(defaultTimeout);
         given(wait.interval()).willReturn(defaultInterval);
+        given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
+        given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(defaultWaitFor);
 
         // When
@@ -74,6 +83,8 @@ public class WaitOptionsConfigurerTest {
         given(timeOut.duration()).willReturn(duration);
         given(timeOut.unit()).willReturn(unit);
         given(wait.interval()).willReturn(defaultInterval);
+        given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
+        given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(defaultWaitFor);
 
         // When
@@ -98,6 +109,8 @@ public class WaitOptionsConfigurerTest {
         given(wait.interval()).willReturn(interval);
         given(interval.duration()).willReturn(duration);
         given(interval.unit()).willReturn(unit);
+        given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
+        given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(defaultWaitFor);
 
         // When
@@ -116,14 +129,14 @@ public class WaitOptionsConfigurerTest {
         // Given
         given(wait.value()).willReturn(defaultTimeout);
         given(wait.interval()).willReturn(defaultInterval);
+        given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
+        given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(new Class[]{TestResultOne.class, TestResultTwo.class});
 
         // When
         final OptionsService actual = configurer.apply(options, wait);
 
         // Then
-        given(wait.value()).willReturn(defaultTimeout);
-        given(wait.interval()).willReturn(defaultInterval);
         assertThat(actual, is(options));
         verify(options, times(2)).waitFor(any(TestResultOne.class));
         verify(options, times(2)).waitFor(any(TestResultTwo.class));
@@ -140,6 +153,8 @@ public class WaitOptionsConfigurerTest {
         // Given
         given(wait.value()).willReturn(defaultTimeout);
         given(wait.interval()).willReturn(defaultInterval);
+        given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
+        given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(new Class[]{TestResultOne.class, NoDefaultTestResult.class});
 
         // When
@@ -156,6 +171,8 @@ public class WaitOptionsConfigurerTest {
         // Given
         given(wait.value()).willReturn(defaultTimeout);
         given(wait.interval()).willReturn(defaultInterval);
+        given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
+        given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(new Class[]{TestResultOne.class, NoPublicTestResult.class});
 
         // When
@@ -168,15 +185,16 @@ public class WaitOptionsConfigurerTest {
         // Given
         given(wait.value()).willReturn(defaultTimeout);
         given(wait.interval()).willReturn(defaultInterval);
+        given(wait.waitForTrue()).willReturn(YES);
+        given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(defaultWaitFor);
-        given(wait.waitForTrue()).willReturn(true);
 
         // When
         final OptionsService actual = configurer.apply(options, wait);
 
         // Then
         assertThat(actual, is(options));
-        verify(options).willWaitForTrue();
+        verify(options).willWaitForTrue(true);
         verifyNoMoreInteractions(options);
     }
 
@@ -186,15 +204,16 @@ public class WaitOptionsConfigurerTest {
         // Given
         given(wait.value()).willReturn(defaultTimeout);
         given(wait.interval()).willReturn(defaultInterval);
+        given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
+        given(wait.waitForNotNull()).willReturn(YES);
         given(wait.waitFor()).willReturn(defaultWaitFor);
-        given(wait.waitForNotNull()).willReturn(true);
 
         // When
         final OptionsService actual = configurer.apply(options, wait);
 
         // Then
         assertThat(actual, is(options));
-        verify(options).willWaitForNotNull();
+        verify(options).willWaitForNotNull(true);
         verifyNoMoreInteractions(options);
     }
 
@@ -214,6 +233,7 @@ public class WaitOptionsConfigurerTest {
 
     public static class NoDefaultTestResult implements ResultValidator {
 
+        @SuppressWarnings("UnusedParameters")
         public NoDefaultTestResult(Object object) {
         }
 

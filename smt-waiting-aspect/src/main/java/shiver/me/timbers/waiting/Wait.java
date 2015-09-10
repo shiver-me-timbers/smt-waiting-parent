@@ -23,6 +23,7 @@ import java.lang.annotation.Target;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static shiver.me.timbers.waiting.Decision.UNDECIDED;
 
 /**
  * @author Karl Bennett
@@ -37,7 +38,7 @@ public @interface Wait {
 
     Class<? extends ResultValidator>[] waitFor() default {};
 
-    boolean waitForTrue() default false;
+    Decision waitForTrue() default UNDECIDED;
 
-    boolean waitForNotNull() default false;
+    Decision waitForNotNull() default UNDECIDED;
 }

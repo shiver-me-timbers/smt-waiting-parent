@@ -22,10 +22,11 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.Callable;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static shiver.me.timbers.waiting.Decision.YES;
 
 @Component
 @Primary
-@Wait(value = @TimeOut(duration = 500, unit = MILLISECONDS), waitForNotNull = true)
+@Wait(value = @TimeOut(duration = 500, unit = MILLISECONDS), waitForNotNull = YES)
 public class WaitingForNotNullClassComponent implements WaitingForNotNullComponent {
 
     @Override

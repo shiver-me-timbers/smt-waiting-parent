@@ -28,6 +28,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
+import static shiver.me.timbers.data.random.RandomBooleans.someBoolean;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLong;
 
@@ -92,8 +93,6 @@ public class OptionsTest {
 
         final Choices defaults = mock(Choices.class);
         final Choices properties = mock(Choices.class);
-        final Long timeoutDuration = someLong();
-        final TimeUnit timeoutUnit = someEnum(TimeUnit.class);
         final ResultValidator resultValidator2 = mock(ResultValidator.class);
         final Choices manual = mock(Choices.class);
 
@@ -106,12 +105,10 @@ public class OptionsTest {
         given(chooser.choose(manual)).willReturn(expected);
 
         // When
-        final Choice actual = options.withTimeOut(timeoutDuration, timeoutUnit)
+        final Choice actual = options.withTimeOut(someLong(), someEnum(TimeUnit.class))
             .withInterval(someLong(), someEnum(TimeUnit.class))
-            .willWaitForTrue()
-            .willNotWaitForTrue()
-            .willWaitForNotNull()
-            .willNotWaitForNotNull()
+            .willWaitForTrue(someBoolean())
+            .willWaitForNotNull(someBoolean())
             .waitFor(mock(ResultValidator.class))
             .waitFor(resultValidator2)
             .choose();
@@ -134,7 +131,7 @@ public class OptionsTest {
         given(chooser.choose(manual)).willReturn(expected);
 
         // When
-        final Choice actual = options.withDefaults().choose();
+        final Choice actual = options.withDefaults(true).choose();
 
         // Then
         assertThat(actual, is(expected));

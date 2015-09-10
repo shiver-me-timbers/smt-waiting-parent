@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.Callable;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static shiver.me.timbers.waiting.Decision.YES;
 
 @Component
 public class WaitingMethodsComponent implements WaitingComponent {
@@ -37,13 +38,13 @@ public class WaitingMethodsComponent implements WaitingComponent {
         return callable.call();
     }
 
-    @Wait(value = @TimeOut(duration = 500, unit = MILLISECONDS), waitForTrue = true)
+    @Wait(value = @TimeOut(duration = 500, unit = MILLISECONDS), waitForTrue = YES)
     @Override
     public <T> T waitForTrueMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
 
-    @Wait(value = @TimeOut(duration = 500, unit = MILLISECONDS), waitForNotNull = true)
+    @Wait(value = @TimeOut(duration = 500, unit = MILLISECONDS), waitForNotNull = YES)
     @Override
     public <T> T waitForNotNullMethod(Callable<T> callable) throws Exception {
         return callable.call();

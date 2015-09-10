@@ -1,5 +1,8 @@
 package shiver.me.timbers.waiting;
 
+import static shiver.me.timbers.waiting.Decision.UNDECIDED;
+import static shiver.me.timbers.waiting.Decision.YES;
+
 /**
  * @author Karl Bennett
  */
@@ -22,12 +25,11 @@ class WaitOptionsConfigurer implements OptionsConfigurer<Wait> {
             options.waitFor(newInstance(validator));
         }
 
-        if (wait.waitForTrue()) {
-            options.willWaitForTrue();
+        if (!UNDECIDED.equals(wait.waitForTrue())) {
+            options.willWaitForTrue(YES.equals(wait.waitForTrue()));
         }
-
-        if (wait.waitForNotNull()) {
-            options.willWaitForNotNull();
+        if (!UNDECIDED.equals(wait.waitForNotNull())) {
+            options.willWaitForNotNull(YES.equals(wait.waitForNotNull()));
         }
 
         return options;
