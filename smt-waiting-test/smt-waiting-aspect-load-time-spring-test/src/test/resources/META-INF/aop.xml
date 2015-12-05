@@ -17,7 +17,7 @@
 <!DOCTYPE aspectj PUBLIC "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
 <aspectj>
     <weaver options="-Xlint:ignore">
-        <include within="shiver.me.timbers.waiting.WaiterAspect"/>
-        <include within="shiver.me.timbers.waiting.Waiting*"/>
+        <include within="shiver.me.timbers.waiting.WaiterAspect" />
+        <include within="shiver.me.timbers.waiting.Waiting*" />
     </weaver>
 </aspectj>
