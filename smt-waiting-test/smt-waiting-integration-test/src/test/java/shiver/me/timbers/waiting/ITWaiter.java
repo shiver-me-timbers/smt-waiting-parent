@@ -39,6 +39,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
+import static shiver.me.timbers.data.random.RandomThings.someThing;
 
 public class ITWaiter {
 
@@ -58,13 +59,6 @@ public class ITWaiter {
         shortWaiter = new Waiter(new Options().withTimeOut(10L, MILLISECONDS));
 
         properties = new PropertyManager();
-        properties.backupProperty("smt.waiting.timeout.duration");
-        properties.backupProperty("smt.waiting.timeout.unit");
-        properties.backupProperty("smt.waiting.interval.duration");
-        properties.backupProperty("smt.waiting.interval.unit");
-        properties.backupProperty("smt.waiting.waitForNotNull");
-        properties.backupProperty("smt.waiting.waitForTrue");
-        properties.backupProperty("smt.waiting.waitFor");
     }
 
     @After
@@ -101,7 +95,7 @@ public class ITWaiter {
         given(until.success()).willThrow(new Exception()).willThrow(new Exception()).willReturn(expected);
 
         // When
-        final Object actual = new Waiter().wait(until);
+        final Object actual = waiter.wait(until);
 
         // Then
         assertThat(actual, is(expected));
@@ -111,15 +105,14 @@ public class ITWaiter {
     @Test
     public void Can_wait_until_time_out_if_exception_always_thrown() throws Throwable {
 
-        final Exception exception = new TestTimeOutException();
-
-        expectedException.expect(WaitedTooLongException.class);
-        expectedException.expectCause(is(exception));
-
         final Until until = mock(Until.class);
+
+        final Exception exception = new TestTimeOutException();
 
         // Given
         given(until.success()).willThrow(exception);
+        expectedException.expect(WaitedTooLongException.class);
+        expectedException.expectCause(is(exception));
 
         // When
         shortWaiter.wait(until);
@@ -128,14 +121,13 @@ public class ITWaiter {
     @Test
     public void Can_directly_throw_a_runtime_exception() throws Throwable {
 
-        final Exception exception = new TestTimeOutRuntimeException();
-
-        expectedException.expect(is(exception));
-
         final Until until = mock(Until.class);
+
+        final Exception exception = new TestTimeOutRuntimeException();
 
         // Given
         given(until.success()).willThrow(exception);
+        expectedException.expect(is(exception));
 
         // When
         shortWaiter.wait(until);
@@ -144,14 +136,13 @@ public class ITWaiter {
     @Test
     public void Can_directly_throw_an_error() throws Throwable {
 
-        final Error error = new TestTimeOutError();
-
-        expectedException.expect(is(error));
-
         final Until until = mock(Until.class);
+
+        final Error error = new TestTimeOutError();
 
         // Given
         given(until.success()).willThrow(error);
+        expectedException.expect(is(error));
 
         // When
         shortWaiter.wait(until);
@@ -319,20 +310,79 @@ public class ITWaiter {
     }
 
     @Test
+    public void Can_ignore_exceptions_contained_in_the_include_list() throws Throwable {
+
+        final Until until = mock(Until.class);
+
+        final Throwable include1 = someThrowable();
+        final Throwable include2 = someThrowable();
+        final Throwable include3 = someThrowable();
+
+        final Object expected = new Object();
+
+        // Given
+        options.include(include1.getClass()).include(include2.getClass()).include(include3.getClass());
+        given(until.success()).willThrow(include1, include2, include3).willReturn(expected);
+
+        // When
+        final Object actual = waiter.wait(until);
+
+        // Then
+        assertThat(actual, is(expected));
+        verify(until, times(4)).success();
+    }
+
+    @Test
+    public void Cannot_ignore_exceptions_that_are_not_contained_in_the_include_list() throws Throwable {
+
+        final Until until = mock(Until.class);
+
+        final Throwable expected = someOtherThrowable();
+
+        // Given
+        options.include(someThrowable().getClass())
+            .include(someThrowable().getClass())
+            .include(someThrowable().getClass());
+        given(until.success()).willThrow(expected);
+        expectedException.expect(is(expected));
+
+        // When
+        waiter.wait(until);
+    }
+
+    @Test
+    public void Can_ignore_all_exceptions_if_no_includes_set() throws Throwable {
+
+        final Until until = mock(Until.class);
+
+        final Object expected = new Object();
+
+        // Given
+        given(until.success()).willThrow(someThrowable(), someThrowable(), someThrowable()).willReturn(expected);
+
+        // When
+        final Object actual = waiter.wait(until);
+
+        // Then
+        assertThat(actual, is(expected));
+        verify(until, times(4)).success();
+    }
+
+    @Test
     public void Can_configure_waiter_timeout_with_system_properties() throws Throwable {
 
+        final Until until = mock(Until.class);
+
+        // Given
         properties.setProperty("smt.waiting.timeout.duration", "1");
         properties.setProperty("smt.waiting.timeout.unit", "SECONDS");
         properties.setProperty("smt.waiting.interval.duration", "500");
         properties.setProperty("smt.waiting.interval.unit", "MILLISECONDS");
-        final Until until = mock(Until.class);
-
-        // Given
         given(until.success()).willThrow(new Exception());
 
         // When
         try {
-            new Waiter().wait(until);
+            waiter.wait(until);
         } catch (Exception e) {
             // We only care about the number of calls, not how it failed.
         }
@@ -344,18 +394,19 @@ public class ITWaiter {
     @Test
     public void Can_override_the_duration_system_properties() throws Throwable {
 
+        final Until until = mock(Until.class);
+
+        // Given
         properties.setProperty("smt.waiting.timeout.duration", "1");
         properties.setProperty("smt.waiting.timeout.unit", "MINUTE");
         properties.setProperty("smt.waiting.interval.duration", "1");
         properties.setProperty("smt.waiting.interval.unit", "SECONDS");
-        final Until until = mock(Until.class);
-
-        // Given
+        options.withTimeOut(1L, SECONDS).withInterval(500L, MILLISECONDS);
         given(until.success()).willThrow(new Exception());
 
         // When
         try {
-            new Waiter(new Options().withTimeOut(1L, SECONDS).withInterval(500L, MILLISECONDS)).wait(until);
+            waiter.wait(until);
         } catch (Exception e) {
             // We only care about the number of calls, not how it failed.
         }
@@ -367,33 +418,32 @@ public class ITWaiter {
     @Test
     public void Can_handle_invalid_time_unit_property() throws Throwable {
 
+        final Until until = mock(Until.class);
+
         final String invalidTimeUnit = someString();
 
+        // Given
+        properties.setProperty("smt.waiting.timeout.duration", "1");
+        properties.setProperty("smt.waiting.timeout.unit", invalidTimeUnit);
+        given(until.success()).willThrow(new Exception());
         expectedException.expect(IllegalStateException.class);
         expectedException.expectMessage(containsString(invalidTimeUnit));
 
-        properties.setProperty("smt.waiting.timeout.duration", "1");
-        properties.setProperty("smt.waiting.timeout.unit", invalidTimeUnit);
-        final Until until = mock(Until.class);
-
-        // Given
-        given(until.success()).willThrow(new Exception());
-
         // When
-        new Waiter().wait(until);
+        waiter.wait(until);
     }
 
     @Test
     public void Can_set_wait_for_true_with_a_system_property() throws Throwable {
 
-        properties.setProperty("smt.waiting.waitForTrue", "true");
         final Until until = mock(Until.class);
 
         // Given
+        properties.setProperty("smt.waiting.waitForTrue", "true");
         given(until.success()).willReturn(false, false, true);
 
         // When
-        final Object actual = new Waiter().wait(until);
+        final Object actual = waiter.wait(until);
 
         // Then
         assertThat(actual, is((Object) true));
@@ -407,10 +457,11 @@ public class ITWaiter {
         final Until until = mock(Until.class);
 
         // Given
+        options.willWaitForTrue(false);
         given(until.success()).willReturn(false);
 
         // When
-        final Object actual = new Waiter(new Options().willWaitForTrue(false)).wait(until);
+        final Object actual = waiter.wait(until);
 
         // Then
         assertThat(actual, is((Object) false));
@@ -420,16 +471,16 @@ public class ITWaiter {
     @Test
     public void Can_set_wait_for_not_null_with_a_system_property() throws Throwable {
 
-        properties.setProperty("smt.waiting.waitForNotNull", "true");
         final Until until = mock(Until.class);
 
         final Object expected = new Object();
 
         // Given
+        properties.setProperty("smt.waiting.waitForNotNull", "true");
         given(until.success()).willReturn(null, null, expected);
 
         // When
-        final Object actual = new Waiter().wait(until);
+        final Object actual = waiter.wait(until);
 
         // Then
         assertThat(actual, is(expected));
@@ -439,14 +490,15 @@ public class ITWaiter {
     @Test
     public void Can_override_the_wait_for_not_null_system_property() throws Throwable {
 
-        properties.setProperty("smt.waiting.waitForNotNull", "true");
         final Until until = mock(Until.class);
 
         // Given
+        properties.setProperty("smt.waiting.waitForNotNull", "true");
+        options.willWaitForNotNull(false);
         given(until.success()).willReturn(null);
 
         // When
-        final Object actual = new Waiter(new Options().willWaitForNotNull(false)).wait(until);
+        final Object actual = waiter.wait(until);
 
         // Then
         assertThat(actual, nullValue());
@@ -456,16 +508,16 @@ public class ITWaiter {
     @Test
     public void Can_set_wait_for_with_a_system_property() throws Throwable {
 
-        properties.setProperty("smt.waiting.waitFor", ValidResult.class.getName());
         final Until until = mock(Until.class);
 
         final Object expected = "valid";
 
         // Given
+        properties.setProperty("smt.waiting.waitFor", ValidResult.class.getName());
         given(until.success()).willReturn(someString(), someString(), expected);
 
         // When
-        final Object actual = new Waiter().wait(until);
+        final Object actual = waiter.wait(until);
 
         // Then
         assertThat(actual, is(expected));
@@ -475,19 +527,19 @@ public class ITWaiter {
     @Test
     public void Can_set_multiple_wait_for_with_a_system_property() throws Throwable {
 
-        properties.setProperty("smt.waiting.waitFor", format("%s,%s",
-            ValidResult.class.getName(),
-            SuccessResult.class.getName()
-        ));
         final Until until = mock(Until.class);
 
         final Object expected = "valid success";
 
         // Given
+        properties.setProperty("smt.waiting.waitFor", format("%s,%s",
+            ValidResult.class.getName(),
+            SuccessResult.class.getName()
+        ));
         given(until.success()).willReturn("valid", "success", expected);
 
         // When
-        final Object actual = new Waiter().wait(until);
+        final Object actual = waiter.wait(until);
 
         // Then
         assertThat(actual, is(expected));
@@ -497,16 +549,86 @@ public class ITWaiter {
     @Test
     public void Can_add_extra_wait_for_to_those_set_with_the_system_property() throws Throwable {
 
-        properties.setProperty("smt.waiting.waitFor", ValidResult.class.getName());
         final Until until = mock(Until.class);
 
         final Object expected = "valid success";
 
         // Given
+        properties.setProperty("smt.waiting.waitFor", ValidResult.class.getName());
+        options.waitFor(new SuccessResult());
         given(until.success()).willReturn("valid", "success", expected);
 
         // When
-        final Object actual = new Waiter(new Options().waitFor(new SuccessResult())).wait(until);
+        final Object actual = waiter.wait(until);
+
+        // Then
+        assertThat(actual, is(expected));
+        verify(until, times(3)).success();
+    }
+
+    @Test
+    public void Can_set_include_with_a_system_property() throws Throwable {
+
+        final Until until = mock(Until.class);
+
+        final Throwable exception = someThrowable();
+
+        final Object expected = new Object();
+
+        // Given
+        properties.setProperty("smt.waiting.include", exception.getClass().getName());
+        given(until.success()).willThrow(exception).willReturn(expected);
+
+        // When
+        final Object actual = waiter.wait(until);
+
+        // Then
+        assertThat(actual, is(expected));
+        verify(until, times(2)).success();
+    }
+
+    @Test
+    public void Can_set_multiple_includes_with_a_system_property() throws Throwable {
+
+        final Until until = mock(Until.class);
+
+        final Throwable exception1 = someThrowable();
+        final Throwable exception2 = someThrowable();
+
+        final Object expected = new Object();
+
+        // Given
+        properties.setProperty("smt.waiting.include", format("%s,%s",
+            exception1.getClass().getName(),
+            exception2.getClass().getName()
+        ));
+        given(until.success()).willThrow(exception1).willThrow(exception2).willReturn(expected);
+
+        // When
+        final Object actual = waiter.wait(until);
+
+        // Then
+        assertThat(actual, is(expected));
+        verify(until, times(3)).success();
+    }
+
+    @Test
+    public void Can_add_an_extra_include_to_those_set_with_the_system_property() throws Throwable {
+
+        final Until until = mock(Until.class);
+
+        final Throwable exception1 = someThrowable();
+        final Throwable exception2 = someThrowable();
+
+        final Object expected = new Object();
+
+        // Given
+        properties.setProperty("smt.waiting.include", exception1.getClass().getName());
+        options.include(exception2.getClass());
+        given(until.success()).willThrow(exception1).willThrow(exception2).willReturn(expected);
+
+        // When
+        final Object actual = waiter.wait(until);
 
         // Then
         assertThat(actual, is(expected));
@@ -516,6 +638,11 @@ public class ITWaiter {
     @Test
     public void Can_reset_values_back_to_defaults() throws Throwable {
 
+        final Until until = mock(Until.class);
+
+        final Object expected = new Object();
+
+        // Given
         properties.setProperty("smt.waiting.timeout.duration", "30");
         properties.setProperty("smt.waiting.timeout.unit", "SECONDS");
         properties.setProperty("smt.waiting.interval.duration", "10");
@@ -523,18 +650,29 @@ public class ITWaiter {
         properties.setProperty("smt.waiting.waitForTrue", "true");
         properties.setProperty("smt.waiting.waitForNotNull", "true");
         properties.setProperty("smt.waiting.waitFor", NoResult.class.getName());
-        final Until until = mock(Until.class);
-
-        final Object expected = new Object();
-
-        // Given
-        given(until.success()).willReturn(expected);
+        properties.setProperty("smt.waiting.include", IllegalArgumentException.class.getName());
+        properties.setProperty("smt.waiting.exclude", IllegalStateException.class.getName());
+        options.withDefaults(true);
+        given(until.success()).willThrow(new IllegalStateException()).willReturn(expected);
 
         // When
-        final Object actual = new Waiter(new Options().withDefaults(true)).wait(until);
+        final Object actual = waiter.wait(until);
 
         // Then
         assertThat(actual, is(expected));
-        verify(until).success();
+        verify(until, times(2)).success();
+    }
+
+    private static Throwable someThrowable() {
+        return someThing(new Exception(), new RuntimeException(), new Error(), new IllegalArgumentException());
+    }
+
+    private static Throwable someOtherThrowable() {
+        return someThing(
+            new IllegalStateException(),
+            new ClassCastException(),
+            new NumberFormatException(),
+            new IllegalAccessError()
+        );
     }
 }

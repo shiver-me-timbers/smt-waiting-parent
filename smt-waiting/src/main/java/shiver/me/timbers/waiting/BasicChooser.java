@@ -46,7 +46,9 @@ class BasicChooser implements Chooser {
             choices.getTimeoutUnit(),
             choices.getIntervalDuration(),
             choices.getIntervalUnit(),
-            resultValidators
+            resultValidators,
+            choices.getIncludes(),
+            choices.getExcludes()
         );
     }
 }

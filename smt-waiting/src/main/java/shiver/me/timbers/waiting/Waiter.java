@@ -40,7 +40,7 @@ public class Waiter implements WaiterService {
         final Timer timer = choice.startTimer();
 
         T result = null;
-        Thrower thrower = new Thrower(until);
+        Thrower thrower = new Thrower(until, choice);
 
         while (!timer.exceeded()) {
             try {
@@ -51,6 +51,7 @@ public class Waiter implements WaiterService {
                 }
             } catch (Throwable e) {
                 thrower.register(e);
+                thrower.throwIfNotSuppressed();
             }
             choice.interval();
         }
@@ -63,10 +64,12 @@ public class Waiter implements WaiterService {
     private static class Thrower {
 
         private final Until until;
+        private final Choice choice;
         private Throwable throwable;
 
-        public Thrower(Until until) {
+        public Thrower(Until until, Choice choice) {
             this.until = until;
+            this.choice = choice;
         }
 
         public void clear() {
@@ -102,6 +105,12 @@ public class Waiter implements WaiterService {
 
         private boolean isChecked() {
             return throwable != null;
+        }
+
+        public void throwIfNotSuppressed() {
+            if (!choice.isSuppressed(throwable)) {
+                throwIfRegistered();
+            }
         }
     }
 }

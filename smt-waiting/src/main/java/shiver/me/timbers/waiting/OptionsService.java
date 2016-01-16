@@ -23,17 +23,21 @@ import java.util.concurrent.TimeUnit;
  */
 interface OptionsService {
 
-    Options withDefaults(boolean useDefaults);
+    OptionsService withDefaults(boolean useDefaults);
 
-    Options withTimeOut(Long duration, TimeUnit unit);
+    OptionsService withTimeOut(Long duration, TimeUnit unit);
 
-    Options willWaitForTrue(boolean shouldWait);
+    OptionsService willWaitForTrue(boolean shouldWait);
 
-    Options willWaitForNotNull(boolean shouldWait);
+    OptionsService willWaitForNotNull(boolean shouldWait);
 
-    Options withInterval(long duration, TimeUnit unit);
+    OptionsService withInterval(long duration, TimeUnit unit);
 
-    Options waitFor(ResultValidator resultValidator);
+    OptionsService waitFor(ResultValidator resultValidator);
+
+    OptionsService include(Class<? extends Throwable> throwable);
+
+    OptionsService exclude(Class<? extends Throwable> throwable);
 
     Choice choose();
 }

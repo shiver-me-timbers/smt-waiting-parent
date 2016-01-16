@@ -16,7 +16,9 @@
 
 package shiver.me.timbers.waiting;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Karl Bennett
@@ -29,11 +31,9 @@ class PropertyParserChoices implements PropertyChoices {
         this.propertyParser = propertyParser;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Choices apply(Choices choices) {
-        final List<ResultValidator> resultValidators = propertyParser.getInstanceProperty("smt.waiting.waitFor");
-        resultValidators.addAll(choices.getResultValidators());
-
         return new BasicChoices(
             propertyParser.getLongProperty("smt.waiting.timeout.duration", choices.getTimeoutDuration()),
             propertyParser.getEnumProperty("smt.waiting.timeout.unit", choices.getTimeoutUnit()),
@@ -41,7 +41,15 @@ class PropertyParserChoices implements PropertyChoices {
             propertyParser.getEnumProperty("smt.waiting.interval.unit", choices.getIntervalUnit()),
             propertyParser.getBooleanProperty("smt.waiting.waitForTrue", choices.isWaitForTrue()),
             propertyParser.getBooleanProperty("smt.waiting.waitForNotNull", choices.isWaitForNotNull()),
-            resultValidators
+            propertyParser.getInstanceProperty("smt.waiting.waitFor", choices.getResultValidators()),
+            new HashSet<>(propertyParser.getClassProperty(
+                "smt.waiting.include",
+                new ArrayList<>((Set) choices.getIncludes())
+            )),
+            new HashSet<>(propertyParser.getClassProperty(
+                "smt.waiting.exclude",
+                new ArrayList<>((Set) choices.getExcludes())
+            ))
         );
     }
 }

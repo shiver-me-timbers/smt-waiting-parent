@@ -17,7 +17,9 @@
 package shiver.me.timbers.waiting;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,6 +40,8 @@ public class Options implements OptionsService {
     private Boolean waitForNotNull;
     private List<ResultValidator> resultValidators = new ArrayList<>();
     private Boolean withDefaults = false;
+    private Set<Class<? extends Throwable>> includes = new HashSet<>();
+    private Set<Class<? extends Throwable>> excludes = new HashSet<>();
 
     public Options() {
         this(
@@ -99,6 +103,18 @@ public class Options implements OptionsService {
     }
 
     @Override
+    public OptionsService include(Class<? extends Throwable> throwable) {
+        this.includes.add(throwable);
+        return this;
+    }
+
+    @Override
+    public OptionsService exclude(Class<? extends Throwable> throwable) {
+        this.excludes.add(throwable);
+        return this;
+    }
+
+    @Override
     public Choice choose() {
         final Choices defaults = defaultChoices.create();
         final Choices manual = manualChoices.apply(
@@ -110,7 +126,9 @@ public class Options implements OptionsService {
                 intervalUnit,
                 waitForTrue,
                 waitForNotNull,
-                resultValidators
+                resultValidators,
+                includes,
+                excludes
             )
         );
         return chooser.choose(manual);

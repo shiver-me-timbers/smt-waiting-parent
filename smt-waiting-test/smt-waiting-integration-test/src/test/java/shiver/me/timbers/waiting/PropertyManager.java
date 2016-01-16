@@ -23,11 +23,8 @@ class PropertyManager {
 
     private final Map<String, String> properties = new HashMap<>();
 
-    public void backupProperty(String key) {
-        properties.put(key, System.getProperty(key));
-    }
-
     public void setProperty(String key, String value) {
+        properties.put(key, System.getProperty(key));
         System.setProperty(key, value);
     }
 

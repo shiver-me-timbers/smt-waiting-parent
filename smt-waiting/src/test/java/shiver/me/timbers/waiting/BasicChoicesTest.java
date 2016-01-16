@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Karl Bennett
+ * Copyright 2016 Karl Bennett
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,30 +16,13 @@
 
 package shiver.me.timbers.waiting;
 
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import org.junit.Test;
 
-/**
- * @author Karl Bennett
- */
-interface Choices {
+public class BasicChoicesTest {
 
-    Long getTimeoutDuration();
-
-    TimeUnit getTimeoutUnit();
-
-    Long getIntervalDuration();
-
-    TimeUnit getIntervalUnit();
-
-    Boolean isWaitForTrue();
-
-    Boolean isWaitForNotNull();
-
-    List<ResultValidator> getResultValidators();
-
-    Set<Class<? extends Throwable>> getIncludes();
-
-    Set<Class<? extends Throwable>> getExcludes();
+    @Test
+    public void Has_equality() {
+        EqualsVerifier.forClass(BasicChoices.class).usingGetClass().verify();
+    }
 }

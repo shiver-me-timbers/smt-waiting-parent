@@ -21,9 +21,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.Collections;
 import java.util.List;
 
 import static java.lang.String.format;
+import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
@@ -107,7 +109,7 @@ public class AbstractPropertyParserTest {
     }
 
     @Test
-    public void Can_handle_an_invalid_property_value() {
+    public void Can_handle_an_invalid_enum_property_value() {
 
         final String invalidPropertyValue = someString();
 
@@ -125,7 +127,7 @@ public class AbstractPropertyParserTest {
     }
 
     @Test
-    public void Can_get_a_single_instance_property() {
+    public void Can_get_a_single_class_property() {
 
         final String key = someString();
 
@@ -133,14 +135,14 @@ public class AbstractPropertyParserTest {
         given(propertyGetter.get(key)).willReturn(AClass.class.getName());
 
         // When
-        final List<AClass> actual = parser.getInstanceProperty(key);
+        final List<Class<AClass>> actual = parser.getClassProperty(key, Collections.<Class<AClass>>emptyList());
 
         // Then
-        assertThat(actual, contains(instanceOf(AClass.class)));
+        assertThat(actual, contains(AClass.class));
     }
 
     @Test
-    public void Can_get_a_multiple_instance_property() {
+    public void Can_get_a_multiple_class_property() {
 
         final String key = someString();
 
@@ -148,14 +150,30 @@ public class AbstractPropertyParserTest {
         given(propertyGetter.get(key)).willReturn(format("%s,%s", AClass.class.getName(), AnotherClass.class.getName()));
 
         // When
-        final List<AClass> actual = parser.getInstanceProperty(key);
+        final List<Class<AClass>> actual = parser.getClassProperty(key, Collections.<Class<AClass>>emptyList());
 
         // Then
-        assertThat(actual, contains(instanceOf(AClass.class), instanceOf(AnotherClass.class)));
+        assertThat(actual, contains(AClass.class, AnotherClass.class));
     }
 
     @Test
-    public void Will_get_an_empty_list_for_a_property_that_does_not_exist() {
+    public void Can_merge_a_class_property_with_a_manually_set_class() {
+
+        final String key = someString();
+
+        // Given
+        given(propertyGetter.get(key)).willReturn(AClass.class.getName());
+
+        // When
+        @SuppressWarnings("unchecked")
+        final List<Class<? extends AClass>> actual = parser.getClassProperty(key, (List) asList(AnotherClass.class));
+
+        // Then
+        assertThat(actual, contains((Class) AnotherClass.class, (Class) AClass.class));
+    }
+
+    @Test
+    public void Will_get_an_empty_list_for_a_class_property_that_does_not_exist() {
 
         final String key = someString();
 
@@ -163,7 +181,7 @@ public class AbstractPropertyParserTest {
         given(propertyGetter.get(key)).willReturn(null);
 
         // When
-        final List<AClass> actual = parser.getInstanceProperty(key);
+        final List<Class<AClass>> actual = parser.getClassProperty(key, Collections.<Class<AClass>>emptyList());
 
         // Then
         assertThat(actual, empty());
@@ -178,11 +196,84 @@ public class AbstractPropertyParserTest {
         given(propertyGetter.get(key)).willReturn("this.class.does.not.Exist");
 
         // When
-        parser.getInstanceProperty(key);
+        parser.getClassProperty(key, Collections.<Class<AClass>>emptyList());
+    }
+
+    @Test
+    public void Can_get_a_single_instance_property() {
+
+        final String key = someString();
+
+        // Given
+        given(propertyGetter.get(key)).willReturn(AClass.class.getName());
+
+        // When
+        final List<AClass> actual = parser.getInstanceProperty(key, Collections.<AClass>emptyList());
+
+        // Then
+        assertThat(actual, contains(instanceOf(AClass.class)));
+    }
+
+    @Test
+    public void Can_get_a_multiple_instance_property() {
+
+        final String key = someString();
+
+        // Given
+        given(propertyGetter.get(key)).willReturn(format("%s,%s", AClass.class.getName(), AnotherClass.class.getName()));
+
+        // When
+        final List<AClass> actual = parser.getInstanceProperty(key, Collections.<AClass>emptyList());
+
+        // Then
+        assertThat(actual, contains(instanceOf(AClass.class), instanceOf(AnotherClass.class)));
+    }
+
+    @Test
+    public void Can_merge_an_instance_property_with_a_manually_set_property() {
+
+        final String key = someString();
+
+        // Given
+        given(propertyGetter.get(key)).willReturn(AClass.class.getName());
+
+        // When
+        @SuppressWarnings("unchecked")
+        final List<AClass> actual = parser.getInstanceProperty(key, asList((AClass) new AnotherClass()));
+
+        // Then
+        assertThat(actual, contains(instanceOf(AnotherClass.class), instanceOf(AClass.class)));
+    }
+
+    @Test
+    public void Will_get_an_empty_list_for_an_instance_property_that_does_not_exist() {
+
+        final String key = someString();
+
+        // Given
+        given(propertyGetter.get(key)).willReturn(null);
+
+        // When
+        final List<AClass> actual = parser.getInstanceProperty(key, Collections.<AClass>emptyList());
+
+        // Then
+        assertThat(actual, empty());
     }
 
     @Test(expected = IllegalStateException.class)
-    public void Will_an_exception_for_a_class_that_has_no_default_constructor() {
+    public void Will_get_an_exception_for_an_instance_property_class_that_does_not_exist() {
+
+        final String key = someString();
+
+        // Given
+        given(propertyGetter.get(key)).willReturn("this.class.does.not.Exist");
+
+        // When
+        parser.getInstanceProperty(key, Collections.<AClass>emptyList());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void Will_an_exception_for_an_instance_property_class_that_has_no_default_constructor() {
 
         final String key = someString();
 
@@ -190,11 +281,11 @@ public class AbstractPropertyParserTest {
         given(propertyGetter.get(key)).willReturn(ANonDefaultClass.class.getName());
 
         // When
-        parser.getInstanceProperty(key);
+        parser.getInstanceProperty(key, Collections.<AClass>emptyList());
     }
 
     @Test(expected = IllegalStateException.class)
-    public void Will_get_an_exception_for_a_class_with_a_private_constructor() {
+    public void Will_get_an_exception_for_an_instance_property_class_with_a_private_constructor() {
 
         final String key = someString();
 
@@ -202,7 +293,7 @@ public class AbstractPropertyParserTest {
         given(propertyGetter.get(key)).willReturn(APrivateClass.class.getName());
 
         // When
-        parser.getInstanceProperty(key);
+        parser.getInstanceProperty(key, Collections.<AClass>emptyList());
     }
 
     private enum AnEnum {

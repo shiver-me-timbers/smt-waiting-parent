@@ -23,7 +23,6 @@ import org.junit.rules.ExpectedException;
 
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isA;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -38,13 +37,11 @@ public class WaiterTest {
 
     private Options options;
     private Waiter waiter;
-    private Choice choice;
 
     @Before
     public void setUp() {
         options = mock(Options.class);
         waiter = new Waiter(options);
-        choice = mock(Choice.class);
     }
 
     @Test
@@ -60,7 +57,9 @@ public class WaiterTest {
         @SuppressWarnings("unchecked")
         final Until<Object> until = mock(Until.class);
 
+        final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
+        final RuntimeException exception = new RuntimeException();
 
         final Object expected = new Object();
 
@@ -68,7 +67,8 @@ public class WaiterTest {
         given(options.choose()).willReturn(choice);
         given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false);
-        given(until.success()).willThrow(new RuntimeException()).willThrow(new RuntimeException()).willReturn(expected);
+        given(until.success()).willThrow(exception).willThrow(exception).willReturn(expected);
+        given(choice.isSuppressed(exception)).willReturn(true);
         given(choice.isValid(expected)).willReturn(true);
 
         // When
@@ -85,20 +85,21 @@ public class WaiterTest {
 
         final String untilToString = someString();
 
-        expectedException.expect(WaitedTooLongException.class);
-        expectedException.expectMessage(format("Waited too long for (%s) to succeed", untilToString));
-        expectedException.expectCause(isA(TestTimeOutException.class));
-
         @SuppressWarnings("unchecked")
         final Until<Object> until = mock(Until.class, untilToString);
 
+        final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
+        final TestTimeOutException exception = new TestTimeOutException();
 
         // Given
         given(options.choose()).willReturn(choice);
         given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false, false, true);
-        given(until.success()).willThrow(new TestTimeOutException());
+        given(until.success()).willThrow(exception);
+        expectedException.expect(WaitedTooLongException.class);
+        expectedException.expectMessage(format("Waited too long for (%s) to succeed", untilToString));
+        expectedException.expectCause(is(exception));
 
         // When
         waiter.wait(until);
@@ -107,18 +108,20 @@ public class WaiterTest {
     @Test
     public void Can_directly_throw_a_runtime_exception() throws Throwable {
 
-        expectedException.expect(TestTimeOutRuntimeException.class);
 
         @SuppressWarnings("unchecked")
         final Until<Object> until = mock(Until.class);
 
+        final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
+        final TestTimeOutRuntimeException exception = new TestTimeOutRuntimeException();
 
         // Given
         given(options.choose()).willReturn(choice);
         given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false, false, true);
-        given(until.success()).willThrow(new TestTimeOutRuntimeException());
+        given(until.success()).willThrow(exception);
+        expectedException.expect(is(exception));
 
         // When
         waiter.wait(until);
@@ -127,18 +130,19 @@ public class WaiterTest {
     @Test
     public void Can_directly_throw_an_error() throws Throwable {
 
-        expectedException.expect(TestTimeOutError.class);
-
         @SuppressWarnings("unchecked")
         final Until<Object> until = mock(Until.class);
 
+        final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
+        final TestTimeOutError error = new TestTimeOutError();
 
         // Given
         given(options.choose()).willReturn(choice);
         given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false, false, true);
-        given(until.success()).willThrow(new TestTimeOutError());
+        given(until.success()).willThrow(error);
+        expectedException.expect(is(error));
 
         // When
         waiter.wait(until);
@@ -150,6 +154,7 @@ public class WaiterTest {
         @SuppressWarnings("unchecked")
         final Until<Object> until = mock(Until.class);
 
+        final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
 
         final Object expected = new Object();
@@ -176,6 +181,7 @@ public class WaiterTest {
         @SuppressWarnings("unchecked")
         final Until<Object> until = mock(Until.class);
 
+        final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
 
         final Object expected = new Object();
@@ -202,7 +208,9 @@ public class WaiterTest {
         @SuppressWarnings("unchecked")
         final Until<Object> until = mock(Until.class);
 
+        final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
+        final Exception exception = new Exception();
 
         final Object expected = new Object();
 
@@ -210,7 +218,8 @@ public class WaiterTest {
         given(options.choose()).willReturn(choice);
         given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false, false, true);
-        given(until.success()).willThrow(new Exception()).willReturn(expected);
+        given(until.success()).willThrow(exception).willReturn(expected);
+        given(choice.isSuppressed(exception)).willReturn(true);
         given(choice.isValid(expected)).willReturn(false);
 
         // When
@@ -222,4 +231,53 @@ public class WaiterTest {
         verify(choice, times(2)).interval();
     }
 
+    @Test
+    public void Can_ignore_exceptions_contained_in_the_include_list() throws Throwable {
+
+        @SuppressWarnings("unchecked")
+        final Until<Object> until = mock(Until.class);
+
+        final Choice choice = mock(Choice.class);
+        final Timer timer = mock(Timer.class);
+        final TestTimeOutException exception = new TestTimeOutException();
+
+        final Object expected = new Object();
+
+        // Given
+        given(options.choose()).willReturn(choice);
+        given(choice.startTimer()).willReturn(timer);
+        given(timer.exceeded()).willReturn(false);
+        given(until.success()).willThrow(exception).willReturn(expected);
+        given(choice.isSuppressed(exception)).willReturn(true);
+        given(choice.isValid(expected)).willReturn(true);
+
+        // When
+        final Object actual = waiter.wait(until);
+
+        // Then
+        assertThat(actual, is(expected));
+        verify(until, times(2)).success();
+    }
+
+    @Test
+    public void Cannot_ignore_exceptions_that_are_not_contained_in_the_include_list() throws Throwable {
+
+        @SuppressWarnings("unchecked")
+        final Until<Object> until = mock(Until.class);
+
+        final Choice choice = mock(Choice.class);
+        final Timer timer = mock(Timer.class);
+        final TestTimeOutRuntimeException exception = new TestTimeOutRuntimeException();
+
+        // Given
+        given(options.choose()).willReturn(choice);
+        given(choice.startTimer()).willReturn(timer);
+        given(timer.exceeded()).willReturn(false);
+        given(until.success()).willThrow(exception);
+        given(choice.isSuppressed(exception)).willReturn(false);
+        expectedException.expect(is(exception));
+
+        // When
+        waiter.wait(until);
+    }
 }

@@ -55,12 +55,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-random-numbers</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-random-strings</artifactId>
+            <artifactId>smt-random</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

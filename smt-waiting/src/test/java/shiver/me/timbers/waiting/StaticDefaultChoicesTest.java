@@ -40,5 +40,7 @@ public class StaticDefaultChoicesTest {
         assertThat(actual.isWaitForTrue(), is(false));
         assertThat(actual.isWaitForNotNull(), is(false));
         assertThat(actual.getResultValidators(), empty());
+        assertThat(actual.getIncludes(), empty());
+        assertThat(actual.getExcludes(), empty());
     }
 }

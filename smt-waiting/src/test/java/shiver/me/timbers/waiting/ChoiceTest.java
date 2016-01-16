@@ -22,8 +22,10 @@ import org.junit.rules.ExpectedException;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isA;
 import static org.junit.Assert.assertThat;
@@ -32,10 +34,12 @@ import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.unitils.reflectionassert.ReflectionAssert.assertPropertyReflectionEquals;
 import static shiver.me.timbers.data.random.RandomBooleans.someBoolean;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLong;
+import static shiver.me.timbers.matchers.Matchers.hasField;
+import static shiver.me.timbers.waiting.RandomExceptions.someOtherThrowable;
+import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
 
 public class ChoiceTest {
 
@@ -54,12 +58,16 @@ public class ChoiceTest {
             mock(Sleeper.class),
             duration,
             unit,
-            someLong(), someEnum(TimeUnit.class), Collections.<ResultValidator>emptyList()
+            someLong(),
+            someEnum(TimeUnit.class),
+            Collections.<ResultValidator>emptyList(),
+            Collections.<Class<? extends Throwable>>emptySet(),
+            Collections.<Class<? extends Throwable>>emptySet()
         ).startTimer();
 
         // Then
-        assertPropertyReflectionEquals("duration", duration, actual);
-        assertPropertyReflectionEquals("unit", unit, actual);
+        assertThat(actual, hasField("duration", duration));
+        assertThat(actual, hasField("unit", unit));
     }
 
     @Test
@@ -80,7 +88,11 @@ public class ChoiceTest {
             mock(Sleeper.class),
             someLong(),
             someEnum(TimeUnit.class),
-            someLong(), someEnum(TimeUnit.class), Collections.<ResultValidator>singletonList(resultValidator)
+            someLong(),
+            someEnum(TimeUnit.class),
+            Collections.<ResultValidator>singletonList(resultValidator),
+            Collections.<Class<? extends Throwable>>emptySet(),
+            Collections.<Class<? extends Throwable>>emptySet()
         ).isValid(result);
 
         // Then
@@ -95,7 +107,11 @@ public class ChoiceTest {
             mock(Sleeper.class),
             someLong(),
             someEnum(TimeUnit.class),
-            someLong(), someEnum(TimeUnit.class), Collections.<ResultValidator>emptyList()
+            someLong(),
+            someEnum(TimeUnit.class),
+            Collections.<ResultValidator>emptyList(),
+            Collections.<Class<? extends Throwable>>emptySet(),
+            Collections.<Class<? extends Throwable>>emptySet()
         ).isValid(null);
 
         // Then
@@ -125,7 +141,11 @@ public class ChoiceTest {
             mock(Sleeper.class),
             someLong(),
             someEnum(TimeUnit.class),
-            someLong(), someEnum(TimeUnit.class), Arrays.<ResultValidator>asList(resultValidator1, resultValidator2, resultValidator3)
+            someLong(),
+            someEnum(TimeUnit.class),
+            Arrays.<ResultValidator>asList(resultValidator1, resultValidator2, resultValidator3),
+            Collections.<Class<? extends Throwable>>emptySet(),
+            Collections.<Class<? extends Throwable>>emptySet()
         ).isValid(result);
 
         // Then
@@ -155,7 +175,11 @@ public class ChoiceTest {
             mock(Sleeper.class),
             someLong(),
             someEnum(TimeUnit.class),
-            someLong(), someEnum(TimeUnit.class), Arrays.<ResultValidator>asList(resultValidator1, resultValidator2, resultValidator3)
+            someLong(),
+            someEnum(TimeUnit.class),
+            Arrays.<ResultValidator>asList(resultValidator1, resultValidator2, resultValidator3),
+            Collections.<Class<? extends Throwable>>emptySet(),
+            Collections.<Class<? extends Throwable>>emptySet()
         ).isValid(result);
 
         // Then
@@ -178,7 +202,11 @@ public class ChoiceTest {
             sleeper,
             someLong(),
             someEnum(TimeUnit.class),
-            intervalDuration, intervalUnit, Collections.<ResultValidator>emptyList()
+            intervalDuration,
+            intervalUnit,
+            Collections.<ResultValidator>emptyList(),
+            Collections.<Class<? extends Throwable>>emptySet(),
+            Collections.<Class<? extends Throwable>>emptySet()
         ).interval();
 
         // Then
@@ -203,7 +231,77 @@ public class ChoiceTest {
             sleeper,
             someLong(),
             someEnum(TimeUnit.class),
-            intervalDuration, intervalUnit, Collections.<ResultValidator>emptyList()
+            intervalDuration,
+            intervalUnit,
+            Collections.<ResultValidator>emptyList(),
+            Collections.<Class<? extends Throwable>>emptySet(),
+            Collections.<Class<? extends Throwable>>emptySet()
         ).interval();
+    }
+
+    @Test
+    public void Can_check_if_an_included_exception_is_suppressed() {
+
+        // Given
+        final Throwable exception = someOtherThrowable();
+
+        // When
+        final boolean actual = new Choice(
+            mock(Sleeper.class),
+            someLong(),
+            someEnum(TimeUnit.class),
+            someLong(),
+            someEnum(TimeUnit.class),
+            Collections.<ResultValidator>emptyList(),
+            new HashSet<>(asList(someThrowable().getClass(), exception.getClass(), someThrowable().getClass())),
+            Collections.<Class<? extends Throwable>>emptySet()
+        ).isSuppressed(exception);
+
+        // Then
+        assertThat(actual, is(true));
+    }
+
+    @Test
+    public void Can_check_if_an_exception_that_is_not_included_is_not_suppressed() {
+
+        // Given
+        final Throwable exception = someOtherThrowable();
+
+        // When
+        final boolean actual = new Choice(
+            mock(Sleeper.class),
+            someLong(),
+            someEnum(TimeUnit.class),
+            someLong(),
+            someEnum(TimeUnit.class),
+            Collections.<ResultValidator>emptyList(),
+            new HashSet<>(asList(someThrowable().getClass(), someThrowable().getClass(), someThrowable().getClass())),
+            Collections.<Class<? extends Throwable>>emptySet()
+        ).isSuppressed(exception);
+
+        // Then
+        assertThat(actual, is(false));
+    }
+
+    @Test
+    public void Can_check_that_all_exceptions_are_suppressed_if_no_includes_are_set() {
+
+        // Given
+        final Throwable exception = someThrowable();
+
+        // When
+        final boolean actual = new Choice(
+            mock(Sleeper.class),
+            someLong(),
+            someEnum(TimeUnit.class),
+            someLong(),
+            someEnum(TimeUnit.class),
+            Collections.<ResultValidator>emptyList(),
+            Collections.<Class<? extends Throwable>>emptySet(),
+            Collections.<Class<? extends Throwable>>emptySet()
+        ).isSuppressed(exception);
+
+        // Then
+        assertThat(actual, is(true));
     }
 }

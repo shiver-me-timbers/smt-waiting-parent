@@ -20,18 +20,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLong;
-import static shiver.me.timbers.waiting.HasFieldMatcher.hasField;
+import static shiver.me.timbers.matchers.Matchers.hasField;
 
 public class BasicChooserTest {
 
@@ -45,6 +46,7 @@ public class BasicChooserTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void Can_choose_all_choice() {
 
         final Choices choices = mock(Choices.class);
@@ -53,8 +55,9 @@ public class BasicChooserTest {
         final TimeUnit timeoutUnit = someEnum(TimeUnit.class);
         final Long intervalDuration = someLong();
         final TimeUnit intervalUnit = someEnum(TimeUnit.class);
-        @SuppressWarnings("unchecked")
         final List<ResultValidator> resultValidators = mock(List.class);
+        final Set<Class<? extends Throwable>> includes = mock(Set.class);
+        final Set<Class<? extends Throwable>> excludes = mock(Set.class);
 
         // Given
         given(choices.getTimeoutDuration()).willReturn(timeoutDuration);
@@ -64,22 +67,27 @@ public class BasicChooserTest {
         given(choices.isWaitForTrue()).willReturn(true);
         given(choices.isWaitForNotNull()).willReturn(true);
         given(choices.getResultValidators()).willReturn(resultValidators);
+        given(choices.getIncludes()).willReturn(includes);
+        given(choices.getExcludes()).willReturn(excludes);
 
         // When
         final Choice actual = chooser.choose(choices);
 
         // Then
-        verify(resultValidators, times(2)).add(any(ResultValidator.class));
+        verify(resultValidators).add((ResultValidator) argThat(instanceOf(TrueResult.class)));
+        verify(resultValidators).add((ResultValidator) argThat(instanceOf(NotNullResult.class)));
         assertThat(actual, hasField("sleeper", sleeper));
         assertThat(actual, hasField("timeoutDuration", timeoutDuration));
         assertThat(actual, hasField("timeoutUnit", timeoutUnit));
         assertThat(actual, hasField("resultValidators", resultValidators));
         assertThat(actual, hasField("intervalDuration", intervalDuration));
         assertThat(actual, hasField("intervalUnit", intervalUnit));
+        assertThat(actual, hasField("includes", includes));
+        assertThat(actual, hasField("excludes", excludes));
     }
 
     @Test
-    public void Can_not_add_tru_and_null_result_validators() {
+    public void Can_not_add_true_and_null_result_validators() {
 
         final Choices choices = mock(Choices.class);
 

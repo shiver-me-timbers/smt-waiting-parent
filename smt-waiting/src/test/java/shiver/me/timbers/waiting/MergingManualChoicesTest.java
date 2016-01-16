@@ -20,7 +20,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -55,9 +57,12 @@ public class MergingManualChoicesTest {
         final TimeUnit intervalUnit = someEnum(TimeUnit.class);
         final Boolean waitForTrue = someBoolean();
         final Boolean waitForNotNull = someBoolean();
-        @SuppressWarnings("unchecked")
-        final List<ResultValidator> resultValidators = spy(new ArrayList<ResultValidator>());
         final List<ResultValidator> currentValidators = spy(new ArrayList<ResultValidator>());
+        final Set<Class<? extends Throwable>> currentIncludes = spy(new HashSet<Class<? extends Throwable>>());
+        final Set<Class<? extends Throwable>> currentExcludes = spy(new HashSet<Class<? extends Throwable>>());
+        final List<ResultValidator> manualValidators = spy(new ArrayList<ResultValidator>());
+        final Set<Class<? extends Throwable>> manualIncludes = spy(new HashSet<Class<? extends Throwable>>());
+        final Set<Class<? extends Throwable>> manualExcludes = spy(new HashSet<Class<? extends Throwable>>());
 
         // Given
         given(currentChoices.getTimeoutDuration()).willReturn(timeoutDuration);
@@ -67,19 +72,25 @@ public class MergingManualChoicesTest {
         given(currentChoices.isWaitForTrue()).willReturn(waitForTrue);
         given(currentChoices.isWaitForNotNull()).willReturn(waitForNotNull);
         given(currentChoices.getResultValidators()).willReturn(currentValidators);
+        given(currentChoices.getIncludes()).willReturn(currentIncludes);
+        given(currentChoices.getExcludes()).willReturn(currentExcludes);
         given(manualChoices.getTimeoutDuration()).willReturn(null);
         given(manualChoices.getTimeoutUnit()).willReturn(null);
         given(manualChoices.getIntervalDuration()).willReturn(null);
         given(manualChoices.getIntervalUnit()).willReturn(null);
         given(manualChoices.isWaitForTrue()).willReturn(null);
         given(manualChoices.isWaitForNotNull()).willReturn(null);
-        given(manualChoices.getResultValidators()).willReturn(resultValidators);
+        given(manualChoices.getResultValidators()).willReturn(manualValidators);
+        given(manualChoices.getIncludes()).willReturn(manualIncludes);
+        given(manualChoices.getExcludes()).willReturn(manualExcludes);
 
         // When
         final Choices actual = mergingManualChoices.apply(currentChoices, manualChoices);
 
         // Then
-        verify(currentValidators).addAll(resultValidators);
+        verify(currentValidators).addAll(manualValidators);
+        verify(currentIncludes).addAll(manualIncludes);
+        verify(currentExcludes).addAll(manualExcludes);
         assertThat(actual.getTimeoutDuration(), equalTo(timeoutDuration));
         assertThat(actual.getTimeoutUnit(), equalTo(timeoutUnit));
         assertThat(actual.getIntervalDuration(), equalTo(intervalDuration));
@@ -98,9 +109,12 @@ public class MergingManualChoicesTest {
         final TimeUnit intervalUnit = someEnum(TimeUnit.class);
         final Boolean waitForTrue = someBoolean();
         final Boolean waitForNotNull = someBoolean();
-        @SuppressWarnings("unchecked")
-        final List<ResultValidator> resultValidators = spy(new ArrayList<ResultValidator>());
         final List<ResultValidator> currentValidators = spy(new ArrayList<ResultValidator>());
+        final Set<Class<? extends Throwable>> currentIncludes = spy(new HashSet<Class<? extends Throwable>>());
+        final Set<Class<? extends Throwable>> currentExcludes = spy(new HashSet<Class<? extends Throwable>>());
+        final List<ResultValidator> manualValidators = spy(new ArrayList<ResultValidator>());
+        final Set<Class<? extends Throwable>> manualIncludes = spy(new HashSet<Class<? extends Throwable>>());
+        final Set<Class<? extends Throwable>> manualExcludes = spy(new HashSet<Class<? extends Throwable>>());
 
         // Given
         given(currentChoices.getTimeoutDuration()).willReturn(someLong());
@@ -110,19 +124,25 @@ public class MergingManualChoicesTest {
         given(currentChoices.isWaitForTrue()).willReturn(someBoolean());
         given(currentChoices.isWaitForNotNull()).willReturn(someBoolean());
         given(currentChoices.getResultValidators()).willReturn(currentValidators);
+        given(currentChoices.getIncludes()).willReturn(currentIncludes);
+        given(currentChoices.getExcludes()).willReturn(currentExcludes);
         given(manualChoices.getTimeoutDuration()).willReturn(timeoutDuration);
         given(manualChoices.getTimeoutUnit()).willReturn(timeoutUnit);
         given(manualChoices.getIntervalDuration()).willReturn(intervalDuration);
         given(manualChoices.getIntervalUnit()).willReturn(intervalUnit);
         given(manualChoices.isWaitForTrue()).willReturn(waitForTrue);
         given(manualChoices.isWaitForNotNull()).willReturn(waitForNotNull);
-        given(manualChoices.getResultValidators()).willReturn(resultValidators);
+        given(manualChoices.getResultValidators()).willReturn(manualValidators);
+        given(manualChoices.getIncludes()).willReturn(manualIncludes);
+        given(manualChoices.getExcludes()).willReturn(manualExcludes);
 
         // When
         final Choices actual = mergingManualChoices.apply(currentChoices, manualChoices);
 
         // Then
-        verify(currentValidators).addAll(resultValidators);
+        verify(currentValidators).addAll(manualValidators);
+        verify(currentIncludes).addAll(manualIncludes);
+        verify(currentExcludes).addAll(manualExcludes);
         assertThat(actual.getTimeoutDuration(), equalTo(timeoutDuration));
         assertThat(actual.getTimeoutUnit(), equalTo(timeoutUnit));
         assertThat(actual.getIntervalDuration(), equalTo(intervalDuration));

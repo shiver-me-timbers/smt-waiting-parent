@@ -18,6 +18,7 @@ package shiver.me.timbers.waiting;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -32,6 +33,8 @@ class Choice {
     private final Long intervalDuration;
     private final TimeUnit intervalUnit;
     private final List<ResultValidator> resultValidators;
+    private final Set<Class<? extends Throwable>> includes;
+    private final Set<Class<? extends Throwable>> excludes;
 
     Choice(
         Sleeper sleeper,
@@ -39,7 +42,9 @@ class Choice {
         TimeUnit timeoutUnit,
         Long intervalDuration,
         TimeUnit intervalUnit,
-        List<ResultValidator> resultValidators
+        List<ResultValidator> resultValidators,
+        Set<Class<? extends Throwable>> includes,
+        Set<Class<? extends Throwable>> excludes
     ) {
         this.sleeper = sleeper;
         this.timeoutDuration = timeoutDuration;
@@ -47,6 +52,8 @@ class Choice {
         this.intervalDuration = intervalDuration;
         this.intervalUnit = intervalUnit;
         this.resultValidators = resultValidators;
+        this.includes = includes;
+        this.excludes = excludes;
     }
 
     Timer startTimer() {
@@ -69,5 +76,19 @@ class Choice {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean isSuppressed(Throwable throwable) {
+        if (includes.isEmpty() && excludes.isEmpty()) {
+            return true;
+        }
+
+        final Class<? extends Throwable> type = throwable.getClass();
+
+        if (includes.contains(type)) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -29,5 +29,7 @@ interface PropertyParser {
 
     <E extends Enum<E>> E getEnumProperty(String key, E defaultValue);
 
-    <T> List<T> getInstanceProperty(String key);
+    <T> List<Class<T>> getClassProperty(String key, List<Class<T>> previousClasses);
+
+    <T> List<T> getInstanceProperty(String key, List<T> previousInstances);
 }

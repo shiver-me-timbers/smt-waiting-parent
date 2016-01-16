@@ -19,26 +19,41 @@ package shiver.me.timbers.waiting;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static shiver.me.timbers.data.random.RandomBooleans.someBoolean;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLong;
+import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
 
 public class OptionsTest {
 
-    private Options options;
+    private static final BasicChoices EMPTY_CHOICES = new BasicChoices(
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        Collections.<ResultValidator>emptyList(),
+        Collections.<Class<? extends Throwable>>emptySet(),
+        Collections.<Class<? extends Throwable>>emptySet()
+    );
+
     private DefaultChoices defaultChoices;
     private PropertyChoices propertyChoices;
     private ManualChoices manualChoices;
     private Chooser chooser;
+    private OptionsService options;
 
     @Before
     public void setUp() {
@@ -78,7 +93,7 @@ public class OptionsTest {
         // Given
         given(defaultChoices.create()).willReturn(defaults);
         given(propertyChoices.apply(defaults)).willReturn(properties);
-        given(manualChoices.apply(eq(properties), any(Choices.class))).willReturn(manual);
+        given(manualChoices.apply(eq(properties), eq(EMPTY_CHOICES))).willReturn(manual);
         given(chooser.choose(manual)).willReturn(expected);
 
         // When
@@ -91,9 +106,21 @@ public class OptionsTest {
     @Test
     public void Can_create_a_choice_with_custom_values() throws InterruptedException {
 
+        final Long timeoutDuration = someLong();
+        final TimeUnit timeoutUnit = someEnum(TimeUnit.class);
+        final Long intervalDuration = someLong();
+        final TimeUnit intervalUnit = someEnum(TimeUnit.class);
+        final Boolean shouldWaitForTrue = someBoolean();
+        final Boolean shouldWaitForNotNull = someBoolean();
+        final ResultValidator validator1 = mock(ResultValidator.class);
+        final ResultValidator validator2 = mock(ResultValidator.class);
+        final Class<? extends Throwable> throwable1 = someThrowable().getClass();
+        final Class<? extends Throwable> throwable2 = someThrowable().getClass();
+        final Class<? extends Throwable> throwable3 = someThrowable().getClass();
+        final Class<? extends Throwable> throwable4 = someThrowable().getClass();
+
         final Choices defaults = mock(Choices.class);
         final Choices properties = mock(Choices.class);
-        final ResultValidator resultValidator2 = mock(ResultValidator.class);
         final Choices manual = mock(Choices.class);
 
         final Choice expected = mock(Choice.class);
@@ -101,16 +128,33 @@ public class OptionsTest {
         // Given
         given(defaultChoices.create()).willReturn(defaults);
         given(propertyChoices.apply(defaults)).willReturn(properties);
-        given(manualChoices.apply(eq(properties), any(Choices.class))).willReturn(manual);
+        given(manualChoices.apply(
+            eq(properties),
+            eq(new BasicChoices(
+                timeoutDuration,
+                timeoutUnit,
+                intervalDuration,
+                intervalUnit,
+                shouldWaitForTrue,
+                shouldWaitForNotNull,
+                asList(validator1, validator2),
+                new HashSet<>(asList(throwable1, throwable2)),
+                new HashSet<>(asList(throwable3, throwable4))
+            ))
+        )).willReturn(manual);
         given(chooser.choose(manual)).willReturn(expected);
 
         // When
-        final Choice actual = options.withTimeOut(someLong(), someEnum(TimeUnit.class))
-            .withInterval(someLong(), someEnum(TimeUnit.class))
-            .willWaitForTrue(someBoolean())
-            .willWaitForNotNull(someBoolean())
-            .waitFor(mock(ResultValidator.class))
-            .waitFor(resultValidator2)
+        final Choice actual = options.withTimeOut(timeoutDuration, timeoutUnit)
+            .withInterval(intervalDuration, intervalUnit)
+            .willWaitForTrue(shouldWaitForTrue)
+            .willWaitForNotNull(shouldWaitForNotNull)
+            .waitFor(validator1)
+            .waitFor(validator2)
+            .include(throwable1)
+            .include(throwable2)
+            .exclude(throwable3)
+            .exclude(throwable4)
             .choose();
 
         // Then
@@ -127,7 +171,7 @@ public class OptionsTest {
 
         // Given
         given(defaultChoices.create()).willReturn(defaults);
-        given(manualChoices.apply(eq(defaults), any(Choices.class))).willReturn(manual);
+        given(manualChoices.apply(eq(defaults), eq(EMPTY_CHOICES))).willReturn(manual);
         given(chooser.choose(manual)).willReturn(expected);
 
         // When

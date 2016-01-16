@@ -19,16 +19,18 @@ package shiver.me.timbers.waiting;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.Collections.emptyList;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
 import static shiver.me.timbers.data.random.RandomBooleans.someBoolean;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLong;
@@ -56,7 +58,12 @@ public class PropertyParserChoicesTest {
         final TimeUnit intervalUnit = someEnum(TimeUnit.class);
         final Boolean waitForTrue = someBoolean();
         final Boolean waitForNotNull = someBoolean();
+        final List<ResultValidator> previousValidators = spy(new ArrayList<ResultValidator>());
         final List<ResultValidator> propertyValidators = spy(new ArrayList<ResultValidator>());
+        final List<Class<? extends Throwable>> previousIncludes = spy(new ArrayList<Class<? extends Throwable>>());
+        final List<Class<? extends Throwable>> propertyIncludes = spy(new ArrayList<Class<? extends Throwable>>());
+        final List<Class<? extends Throwable>> previousExcludes = spy(new ArrayList<Class<? extends Throwable>>());
+        final List<Class<? extends Throwable>> propertyExcludes = spy(new ArrayList<Class<? extends Throwable>>());
 
         // Given
         given(choices.getTimeoutDuration()).willReturn(previousTimeoutDuration);
@@ -66,19 +73,28 @@ public class PropertyParserChoicesTest {
         given(choices.isWaitForTrue()).willReturn(previousWaitForTrue);
         given(choices.isWaitForNotNull()).willReturn(previousWaitForNotNull);
         given(choices.getResultValidators()).willReturn(previousResultValidators);
-        given(propertyParser.getLongProperty("smt.waiting.timeout.duration", previousTimeoutDuration)).willReturn(timeoutDuration);
+        given(propertyParser.getLongProperty("smt.waiting.timeout.duration", previousTimeoutDuration))
+            .willReturn(timeoutDuration);
         given(propertyParser.getEnumProperty("smt.waiting.timeout.unit", previousTimeoutUnit)).willReturn(timeoutUnit);
-        given(propertyParser.getLongProperty("smt.waiting.interval.duration", previousIntervalDuration)).willReturn(intervalDuration);
-        given(propertyParser.getEnumProperty("smt.waiting.interval.unit", previousIntervalUnit)).willReturn(intervalUnit);
-        given(propertyParser.getBooleanProperty("smt.waiting.waitForTrue", previousWaitForTrue)).willReturn(waitForTrue);
-        given(propertyParser.getBooleanProperty("smt.waiting.waitForNotNull", previousWaitForNotNull)).willReturn(waitForNotNull);
-        given(propertyParser.getInstanceProperty("smt.waiting.waitFor")).willReturn((List) propertyValidators);
+        given(propertyParser.getLongProperty("smt.waiting.interval.duration", previousIntervalDuration))
+            .willReturn(intervalDuration);
+        given(propertyParser.getEnumProperty("smt.waiting.interval.unit", previousIntervalUnit))
+            .willReturn(intervalUnit);
+        given(propertyParser.getBooleanProperty("smt.waiting.waitForTrue", previousWaitForTrue))
+            .willReturn(waitForTrue);
+        given(propertyParser.getBooleanProperty("smt.waiting.waitForNotNull", previousWaitForNotNull))
+            .willReturn(waitForNotNull);
+        given(propertyParser.getInstanceProperty("smt.waiting.waitFor", previousValidators))
+            .willReturn((List) propertyValidators);
+        given(propertyParser.getClassProperty("smt.waiting.include", (List) previousIncludes))
+            .willReturn((List) propertyIncludes);
+        given(propertyParser.getClassProperty("smt.waiting.exclude", (List) previousExcludes))
+            .willReturn((List) propertyExcludes);
 
         // When
         final Choices actual = new PropertyParserChoices(propertyParser).apply(choices);
 
         // Then
-        verify(propertyValidators).addAll(previousResultValidators);
         assertThat(actual.getTimeoutDuration(), is(timeoutDuration));
         assertThat(actual.getTimeoutUnit(), is(timeoutUnit));
         assertThat(actual.getIntervalDuration(), is(intervalDuration));
@@ -86,5 +102,7 @@ public class PropertyParserChoicesTest {
         assertThat(actual.isWaitForTrue(), is(waitForTrue));
         assertThat(actual.isWaitForNotNull(), is(waitForNotNull));
         assertThat(actual.getResultValidators(), is(propertyValidators));
+        assertThat(actual.getIncludes(), equalTo((Set) new HashSet<>(propertyIncludes)));
+        assertThat(actual.getExcludes(), equalTo((Set) new HashSet<>(propertyExcludes)));
     }
 }

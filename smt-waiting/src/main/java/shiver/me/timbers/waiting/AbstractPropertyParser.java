@@ -17,6 +17,7 @@
 package shiver.me.timbers.waiting;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -63,7 +64,7 @@ abstract class AbstractPropertyParser implements PropertyParser {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> List<T> getInstanceProperty(String key) {
+    public <T> List<Class<T>> getClassProperty(String key, List<Class<T>> previousClasses) {
 
         final String value = propertyGetter.get(key);
 
@@ -73,10 +74,10 @@ abstract class AbstractPropertyParser implements PropertyParser {
 
         final String[] types = value.split(",");
 
-        final List<T> instances = new ArrayList<>();
+        final List<Class<T>> instances = new ArrayList<>(previousClasses);
         for (String type : types) {
             try {
-                instances.add((T) Class.forName(type).newInstance());
+                instances.add((Class<T>) Class.forName(type));
             } catch (ClassNotFoundException e) {
                 throw new IllegalStateException(
                     format(
@@ -85,6 +86,18 @@ abstract class AbstractPropertyParser implements PropertyParser {
                     ),
                     e
                 );
+            }
+        }
+        return instances;
+    }
+
+    @Override
+    public <T> List<T> getInstanceProperty(String key, List<T> previousInstances) {
+
+        final List<T> instances = new ArrayList<>(previousInstances);
+        for (Class<T> type : getClassProperty(key, Collections.<Class<T>>emptyList())) {
+            try {
+                instances.add(type.newInstance());
             } catch (InstantiationException | IllegalAccessException e) {
                 throw new IllegalStateException(
                     format("Th class (%s) in the property value for (%s) cannot be instantiated.", type, key),

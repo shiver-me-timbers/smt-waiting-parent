@@ -47,7 +47,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-random-strings</artifactId>
+            <artifactId>smt-random</artifactId>
         </dependency>
 
         <dependency>

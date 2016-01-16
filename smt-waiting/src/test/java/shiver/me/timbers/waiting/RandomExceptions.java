@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Karl Bennett
+ * Copyright 2016 Karl Bennett
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,30 +16,22 @@
 
 package shiver.me.timbers.waiting;
 
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import java.io.IOException;
 
-/**
- * @author Karl Bennett
- */
-interface Choices {
+import static shiver.me.timbers.data.random.RandomThings.someThing;
 
-    Long getTimeoutDuration();
+public class RandomExceptions {
 
-    TimeUnit getTimeoutUnit();
+    public static Throwable someThrowable() {
+        return someThing(new Exception(), new RuntimeException(), new Error(), new IllegalArgumentException());
+    }
 
-    Long getIntervalDuration();
-
-    TimeUnit getIntervalUnit();
-
-    Boolean isWaitForTrue();
-
-    Boolean isWaitForNotNull();
-
-    List<ResultValidator> getResultValidators();
-
-    Set<Class<? extends Throwable>> getIncludes();
-
-    Set<Class<? extends Throwable>> getExcludes();
+    public static Throwable someOtherThrowable() {
+        return someThing(
+            new IllegalStateException(),
+            new ClassCastException(),
+            new IOException(),
+            new IllegalAccessException()
+        );
+    }
 }

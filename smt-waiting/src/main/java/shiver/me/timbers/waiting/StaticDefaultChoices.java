@@ -17,6 +17,7 @@
 package shiver.me.timbers.waiting;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -41,7 +42,9 @@ class StaticDefaultChoices implements DefaultChoices {
             DEFAULT_INTERVAL_UNIT,
             false,
             false,
-            new ArrayList<ResultValidator>()
+            new ArrayList<ResultValidator>(),
+            new HashSet<Class<? extends Throwable>>(),
+            new HashSet<Class<? extends Throwable>>()
         );
     }
 }
