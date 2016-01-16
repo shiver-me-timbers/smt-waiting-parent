@@ -16,22 +16,15 @@
 
 package shiver.me.timbers.waiting;
 
-import java.io.IOException;
-
 import static shiver.me.timbers.data.random.RandomThings.someThing;
 
 public class RandomExceptions {
 
     public static Throwable someThrowable() {
-        return someThing(new Exception(), new RuntimeException(), new Error(), new IllegalArgumentException());
+        return someThing(new RuntimeException(), new IllegalArgumentException(), new Error());
     }
 
     public static Throwable someOtherThrowable() {
-        return someThing(
-            new IllegalStateException(),
-            new ClassCastException(),
-            new IOException(),
-            new IllegalAccessException()
-        );
+        return someThing(new IllegalStateException(), new ClassCastException(), new IllegalAccessError());
     }
 }

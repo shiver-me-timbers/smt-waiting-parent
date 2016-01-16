@@ -284,7 +284,95 @@ public class ChoiceTest {
     }
 
     @Test
-    public void Can_check_that_all_exceptions_are_suppressed_if_no_includes_are_set() {
+    public void Can_check_if_an_excluded_exception_is_not_suppressed() {
+
+        // Given
+        final Throwable exception = someOtherThrowable();
+
+        // When
+        final boolean actual = new Choice(
+            mock(Sleeper.class),
+            someLong(),
+            someEnum(TimeUnit.class),
+            someLong(),
+            someEnum(TimeUnit.class),
+            Collections.<ResultValidator>emptyList(),
+            Collections.<Class<? extends Throwable>>emptySet(),
+            new HashSet<>(asList(someThrowable().getClass(), exception.getClass(), someThrowable().getClass()))
+        ).isSuppressed(exception);
+
+        // Then
+        assertThat(actual, is(false));
+    }
+
+    @Test
+    public void Can_check_if_an_exception_that_is_not_excluded_is_suppressed() {
+
+        // Given
+        final Throwable exception = someOtherThrowable();
+
+        // When
+        final boolean actual = new Choice(
+            mock(Sleeper.class),
+            someLong(),
+            someEnum(TimeUnit.class),
+            someLong(),
+            someEnum(TimeUnit.class),
+            Collections.<ResultValidator>emptyList(),
+            Collections.<Class<? extends Throwable>>emptySet(),
+            new HashSet<>(asList(someThrowable().getClass(), someThrowable().getClass(), someThrowable().getClass()))
+        ).isSuppressed(exception);
+
+        // Then
+        assertThat(actual, is(true));
+    }
+
+    @Test
+    public void Can_check_if_an_included_and_not_excluded_exception_is_suppressed() {
+
+        // Given
+        final Throwable exception = someOtherThrowable();
+
+        // When
+        final boolean actual = new Choice(
+            mock(Sleeper.class),
+            someLong(),
+            someEnum(TimeUnit.class),
+            someLong(),
+            someEnum(TimeUnit.class),
+            Collections.<ResultValidator>emptyList(),
+            new HashSet<>(asList(someThrowable().getClass(), exception.getClass(), someThrowable().getClass())),
+            new HashSet<>(asList(someThrowable().getClass(), someThrowable().getClass(), someThrowable().getClass()))
+        ).isSuppressed(exception);
+
+        // Then
+        assertThat(actual, is(true));
+    }
+
+    @Test
+    public void Excluded_exceptions_take_precedence_over_included_excpetions() {
+
+        // Given
+        final Throwable exception = someThrowable();
+
+        // When
+        final boolean actual = new Choice(
+            mock(Sleeper.class),
+            someLong(),
+            someEnum(TimeUnit.class),
+            someLong(),
+            someEnum(TimeUnit.class),
+            Collections.<ResultValidator>emptyList(),
+            new HashSet<>(asList(someThrowable().getClass(), exception.getClass(), someThrowable().getClass())),
+            new HashSet<>(asList(someThrowable().getClass(), exception.getClass(), someThrowable().getClass()))
+        ).isSuppressed(exception);
+
+        // Then
+        assertThat(actual, is(false));
+    }
+
+    @Test
+    public void Can_check_that_all_exceptions_are_suppressed_if_no_includes_or_excludes_are_set() {
 
         // Given
         final Throwable exception = someThrowable();

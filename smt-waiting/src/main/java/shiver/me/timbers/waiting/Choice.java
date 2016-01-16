@@ -85,7 +85,15 @@ class Choice {
 
         final Class<? extends Throwable> type = throwable.getClass();
 
-        if (includes.contains(type)) {
+        if (includes.contains(type) && excludes.isEmpty()) {
+            return true;
+        }
+
+        if (!excludes.contains(type) && includes.isEmpty()) {
+            return true;
+        }
+
+        if (includes.contains(type) && !excludes.contains(type)) {
             return true;
         }
 

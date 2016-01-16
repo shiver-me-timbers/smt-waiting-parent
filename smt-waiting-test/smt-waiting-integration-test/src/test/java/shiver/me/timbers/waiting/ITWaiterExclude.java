@@ -31,7 +31,7 @@ import static org.mockito.Mockito.verify;
 import static shiver.me.timbers.waiting.RandomExceptions.someOtherThrowable;
 import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
 
-public class ITWaiterInclude {
+public class ITWaiterExclude {
 
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
@@ -46,39 +46,16 @@ public class ITWaiterInclude {
     }
 
     @Test
-    public void Can_ignore_exceptions_contained_in_the_include_list() throws Throwable {
-
-        final Until until = mock(Until.class);
-
-        final Throwable include1 = someThrowable();
-        final Throwable include2 = someThrowable();
-        final Throwable include3 = someThrowable();
-
-        final Object expected = new Object();
-
-        // Given
-        options.include(include1.getClass()).include(include2.getClass()).include(include3.getClass());
-        given(until.success()).willThrow(include1, include2, include3).willReturn(expected);
-
-        // When
-        final Object actual = waiter.wait(until);
-
-        // Then
-        assertThat(actual, is(expected));
-        verify(until, times(4)).success();
-    }
-
-    @Test
-    public void Cannot_ignore_exceptions_that_are_not_contained_in_the_include_list() throws Throwable {
+    public void Cannot_ignore_exceptions_that_are_not_contained_in_the_exclude_list() throws Throwable {
 
         final Until until = mock(Until.class);
 
         final Throwable expected = someOtherThrowable();
 
         // Given
-        options.include(someThrowable().getClass())
-            .include(someThrowable().getClass())
-            .include(someThrowable().getClass());
+        options.exclude(someThrowable().getClass())
+            .exclude(expected.getClass())
+            .exclude(someThrowable().getClass());
         given(until.success()).willThrow(expected);
         expectedException.expect(is(expected));
 
@@ -87,25 +64,7 @@ public class ITWaiterInclude {
     }
 
     @Test
-    public void Can_ignore_all_exceptions_if_no_includes_set() throws Throwable {
-
-        final Until until = mock(Until.class);
-
-        final Object expected = new Object();
-
-        // Given
-        given(until.success()).willThrow(someThrowable(), someThrowable(), someThrowable()).willReturn(expected);
-
-        // When
-        final Object actual = waiter.wait(until);
-
-        // Then
-        assertThat(actual, is(expected));
-        verify(until, times(4)).success();
-    }
-
-    @Test
-    public void Can_ignore_exceptions_contained_in_the_include_list_and_not_in_the_exclude_list() throws Throwable {
+    public void Can_ignore_exceptions_not_contained_in_the_exclude_list() throws Throwable {
 
         final Until until = mock(Until.class);
 
@@ -116,7 +75,6 @@ public class ITWaiterInclude {
         final Object expected = new Object();
 
         // Given
-        options.include(include1.getClass()).include(include2.getClass()).include(include3.getClass());
         options.exclude(someOtherThrowable().getClass())
             .exclude(someOtherThrowable().getClass())
             .exclude(someOtherThrowable().getClass());
@@ -128,5 +86,21 @@ public class ITWaiterInclude {
         // Then
         assertThat(actual, is(expected));
         verify(until, times(4)).success();
+    }
+
+    @Test
+    public void Excludes_take_precedence_over_includes() throws Throwable {
+
+        final Until until = mock(Until.class);
+
+        final Throwable expected = someThrowable();
+
+        // Given
+        options.include(expected.getClass()).exclude(expected.getClass());
+        given(until.success()).willThrow(expected);
+        expectedException.expect(is(expected));
+
+        // When
+        waiter.wait(until);
     }
 }
