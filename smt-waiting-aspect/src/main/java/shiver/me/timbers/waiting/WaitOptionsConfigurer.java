@@ -28,7 +28,7 @@ class WaitOptionsConfigurer implements OptionsConfigurer<Wait> {
     public OptionsService apply(OptionsService options, Wait wait) {
         final TimeOut timeOut = wait.value();
         if (timeOut.duration() > -1) {
-            options.withTimeOut(timeOut.duration(), timeOut.unit());
+            options.withTimeout(timeOut.duration(), timeOut.unit());
         }
 
         final Interval interval = wait.interval();

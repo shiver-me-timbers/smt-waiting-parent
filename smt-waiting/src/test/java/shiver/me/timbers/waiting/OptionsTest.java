@@ -145,7 +145,7 @@ public class OptionsTest {
         given(chooser.choose(manual)).willReturn(expected);
 
         // When
-        final Choice actual = options.withTimeOut(timeoutDuration, timeoutUnit)
+        final Choice actual = options.withTimeout(timeoutDuration, timeoutUnit)
             .withInterval(intervalDuration, intervalUnit)
             .willWaitForTrue(shouldWaitForTrue)
             .willWaitForNotNull(shouldWaitForNotNull)

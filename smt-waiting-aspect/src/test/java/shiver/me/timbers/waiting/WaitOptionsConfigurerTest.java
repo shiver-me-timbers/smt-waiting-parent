@@ -108,7 +108,7 @@ public class WaitOptionsConfigurerTest {
 
         // Then
         assertThat(actual, is(options));
-        verify(options).withTimeOut(duration, unit);
+        verify(options).withTimeout(duration, unit);
         verifyNoMoreInteractions(options);
     }
 

@@ -71,21 +71,9 @@ public class Options implements OptionsService {
     }
 
     @Override
-    public Options withTimeOut(Long duration, TimeUnit unit) {
+    public Options withTimeout(Long duration, TimeUnit unit) {
         this.timeoutDuration = duration;
         this.timeoutUnit = unit;
-        return this;
-    }
-
-    @Override
-    public Options willWaitForTrue(boolean shouldWait) {
-        this.waitForTrue = shouldWait;
-        return this;
-    }
-
-    @Override
-    public Options willWaitForNotNull(boolean shouldWait) {
-        this.waitForNotNull = shouldWait;
         return this;
     }
 
@@ -99,6 +87,18 @@ public class Options implements OptionsService {
     @Override
     public Options waitFor(ResultValidator resultValidator) {
         this.resultValidators.add(resultValidator);
+        return this;
+    }
+
+    @Override
+    public Options willWaitForTrue(boolean shouldWait) {
+        this.waitForTrue = shouldWait;
+        return this;
+    }
+
+    @Override
+    public Options willWaitForNotNull(boolean shouldWait) {
+        this.waitForNotNull = shouldWait;
         return this;
     }
 

@@ -25,15 +25,15 @@ interface OptionsService {
 
     OptionsService withDefaults(boolean useDefaults);
 
-    OptionsService withTimeOut(Long duration, TimeUnit unit);
-
-    OptionsService willWaitForTrue(boolean shouldWait);
-
-    OptionsService willWaitForNotNull(boolean shouldWait);
+    OptionsService withTimeout(Long duration, TimeUnit unit);
 
     OptionsService withInterval(long duration, TimeUnit unit);
 
     OptionsService waitFor(ResultValidator resultValidator);
+
+    OptionsService willWaitForTrue(boolean shouldWait);
+
+    OptionsService willWaitForNotNull(boolean shouldWait);
 
     OptionsService include(Class<? extends Throwable> throwable);
 
