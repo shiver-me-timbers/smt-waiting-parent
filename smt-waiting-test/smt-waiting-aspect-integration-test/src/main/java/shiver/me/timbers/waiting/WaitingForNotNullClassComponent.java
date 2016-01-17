@@ -26,7 +26,7 @@ import static shiver.me.timbers.waiting.Decision.YES;
 
 @Component
 @Primary
-@Wait(value = @TimeOut(duration = 500, unit = MILLISECONDS), waitForNotNull = YES)
+@Wait(value = @Timeout(duration = 500, unit = MILLISECONDS), waitForNotNull = YES)
 public class WaitingForNotNullClassComponent implements WaitingForNotNullComponent {
 
     @Override

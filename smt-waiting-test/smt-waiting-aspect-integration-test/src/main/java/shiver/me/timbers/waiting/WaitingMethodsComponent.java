@@ -32,32 +32,32 @@ public class WaitingMethodsComponent implements WaitingComponent {
         return callable.call();
     }
 
-    @Wait(@TimeOut(duration = 500, unit = MILLISECONDS))
+    @Wait(@Timeout(duration = 500, unit = MILLISECONDS))
     @Override
     public <T> T durationSetMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
 
-    @Wait(value = @TimeOut(duration = 500, unit = MILLISECONDS), waitForTrue = YES)
+    @Wait(value = @Timeout(duration = 500, unit = MILLISECONDS), waitForTrue = YES)
     @Override
     public <T> T waitForTrueMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
 
-    @Wait(value = @TimeOut(duration = 500, unit = MILLISECONDS), waitForNotNull = YES)
+    @Wait(value = @Timeout(duration = 500, unit = MILLISECONDS), waitForNotNull = YES)
     @Override
     public <T> T waitForNotNullMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
 
-    @Wait(value = @TimeOut(duration = 500, unit = MILLISECONDS), waitFor = ContainsValidResult.class)
+    @Wait(value = @Timeout(duration = 500, unit = MILLISECONDS), waitFor = ContainsValidResult.class)
     @Override
     public <T> T waitingForMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
 
     @Wait(
-        value = @TimeOut(duration = 500, unit = MILLISECONDS),
+        value = @Timeout(duration = 500, unit = MILLISECONDS),
         interval = @Interval(duration = 200, unit = MILLISECONDS)
     )
     @Override

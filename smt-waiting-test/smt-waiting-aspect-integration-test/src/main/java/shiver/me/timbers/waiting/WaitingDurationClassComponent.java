@@ -25,7 +25,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 @Component
 @Primary
-@Wait(@TimeOut(duration = 500, unit = MILLISECONDS))
+@Wait(@Timeout(duration = 500, unit = MILLISECONDS))
 public class WaitingDurationClassComponent implements WaitingDurationComponent {
 
     @Override

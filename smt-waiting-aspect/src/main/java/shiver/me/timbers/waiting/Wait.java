@@ -32,7 +32,7 @@ import static shiver.me.timbers.waiting.Decision.UNDECIDED;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Wait {
 
-    TimeOut value() default @TimeOut(duration = -1, unit = SECONDS);
+    Timeout value() default @Timeout(duration = -1, unit = SECONDS);
 
     Interval interval() default @Interval(duration = -1, unit = MILLISECONDS);
 
@@ -41,4 +41,8 @@ public @interface Wait {
     Decision waitForTrue() default UNDECIDED;
 
     Decision waitForNotNull() default UNDECIDED;
+
+    Class<? extends Throwable>[] include() default {};
+
+    Class<? extends Throwable>[] exclude() default {};
 }

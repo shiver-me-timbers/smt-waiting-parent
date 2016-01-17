@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Target({})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface TimeOut {
+public @interface Timeout {
 
     long duration();
 

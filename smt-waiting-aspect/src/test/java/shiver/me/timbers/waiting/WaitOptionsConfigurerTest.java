@@ -47,11 +47,13 @@ public class WaitOptionsConfigurerTest {
     private WaitOptionsConfigurer configurer;
     private Wait wait;
 
-    private TimeOut defaultTimeout;
+    private Timeout defaultTimeout;
     private Interval defaultInterval;
     private Decision defaultWaitForTrue;
     private Decision defaultWaitForNotNull;
     private Class<ResultValidator>[] defaultWaitFor;
+    private Class<? extends Throwable>[] defaultInclude;
+    private Class<? extends Throwable>[] defaultExclude;
 
     @Before
     @SuppressWarnings("unchecked")
@@ -60,13 +62,15 @@ public class WaitOptionsConfigurerTest {
         wait = mock(Wait.class);
         configurer = new WaitOptionsConfigurer();
 
-        defaultTimeout = mock(TimeOut.class);
+        defaultTimeout = mock(Timeout.class);
         given(defaultTimeout.duration()).willReturn(-1L);
         defaultInterval = mock(Interval.class);
         given(defaultInterval.duration()).willReturn(-1L);
         defaultWaitForTrue = UNDECIDED;
         defaultWaitForNotNull = UNDECIDED;
         defaultWaitFor = new Class[0];
+        defaultInclude = new Class[0];
+        defaultExclude = new Class[0];
     }
 
     @Test
@@ -78,6 +82,8 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
         given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(defaultWaitFor);
+        given(wait.include()).willReturn(defaultInclude);
+        given(wait.exclude()).willReturn(defaultExclude);
 
         // When
         final OptionsService actual = configurer.apply(options, wait);
@@ -90,18 +96,20 @@ public class WaitOptionsConfigurerTest {
     @Test
     public void Can_configure_the_timeout() {
 
-        final TimeOut timeOut = mock(TimeOut.class);
+        final Timeout timeout = mock(Timeout.class);
         final Long duration = someLongBetween(0L, 100L);
         final TimeUnit unit = someEnum(TimeUnit.class);
 
         // Given
-        given(wait.value()).willReturn(timeOut);
-        given(timeOut.duration()).willReturn(duration);
-        given(timeOut.unit()).willReturn(unit);
+        given(wait.value()).willReturn(timeout);
+        given(timeout.duration()).willReturn(duration);
+        given(timeout.unit()).willReturn(unit);
         given(wait.interval()).willReturn(defaultInterval);
         given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
         given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(defaultWaitFor);
+        given(wait.include()).willReturn(defaultInclude);
+        given(wait.exclude()).willReturn(defaultExclude);
 
         // When
         final OptionsService actual = configurer.apply(options, wait);
@@ -128,6 +136,8 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
         given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(defaultWaitFor);
+        given(wait.include()).willReturn(defaultInclude);
+        given(wait.exclude()).willReturn(defaultExclude);
 
         // When
         final OptionsService actual = configurer.apply(options, wait);
@@ -148,6 +158,8 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
         given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(new Class[]{TestResultOne.class, TestResultTwo.class});
+        given(wait.include()).willReturn(defaultInclude);
+        given(wait.exclude()).willReturn(defaultExclude);
 
         // When
         final OptionsService actual = configurer.apply(options, wait);
@@ -161,10 +173,7 @@ public class WaitOptionsConfigurerTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void Can_configure_what_to_wait_for_result_when_a_validator_does_not_have_a_default_constructor() {
-
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectCause(isA(InstantiationException.class));
+    public void Cannot_configure_what_to_wait_for_if_the_result_validator_does_not_have_a_default_constructor() {
 
         // Given
         given(wait.value()).willReturn(defaultTimeout);
@@ -172,6 +181,10 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
         given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(new Class[]{TestResultOne.class, NoDefaultTestResult.class});
+        given(wait.include()).willReturn(defaultInclude);
+        given(wait.exclude()).willReturn(defaultExclude);
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectCause(isA(InstantiationException.class));
 
         // When
         configurer.apply(options, wait);
@@ -179,10 +192,7 @@ public class WaitOptionsConfigurerTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void Can_configure_what_to_wait_for_result_when_a_validator_does_not_have_a_public_constructor() {
-
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectCause(isA(IllegalAccessException.class));
+    public void Cannot_configure_what_to_wait_for_if_the_result_validator_does_not_have_a_public_constructor() {
 
         // Given
         given(wait.value()).willReturn(defaultTimeout);
@@ -190,13 +200,17 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
         given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(new Class[]{TestResultOne.class, NoPublicTestResult.class});
+        given(wait.include()).willReturn(defaultInclude);
+        given(wait.exclude()).willReturn(defaultExclude);
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectCause(isA(IllegalAccessException.class));
 
         // When
         configurer.apply(options, wait);
     }
 
     @Test
-    public void Can_configure_what_to_wait_for_true() {
+    public void Can_configure_wait_for_true() {
 
         // Given
         given(wait.value()).willReturn(defaultTimeout);
@@ -204,6 +218,8 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(YES);
         given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(defaultWaitFor);
+        given(wait.include()).willReturn(defaultInclude);
+        given(wait.exclude()).willReturn(defaultExclude);
 
         // When
         final OptionsService actual = configurer.apply(options, wait);
@@ -215,7 +231,7 @@ public class WaitOptionsConfigurerTest {
     }
 
     @Test
-    public void Can_configure_what_to_wait_for_not_null() {
+    public void Can_configure_wait_for_not_null() {
 
         // Given
         given(wait.value()).willReturn(defaultTimeout);
@@ -223,6 +239,8 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
         given(wait.waitForNotNull()).willReturn(YES);
         given(wait.waitFor()).willReturn(defaultWaitFor);
+        given(wait.include()).willReturn(defaultInclude);
+        given(wait.exclude()).willReturn(defaultExclude);
 
         // When
         final OptionsService actual = configurer.apply(options, wait);
@@ -230,6 +248,54 @@ public class WaitOptionsConfigurerTest {
         // Then
         assertThat(actual, is(options));
         verify(options).willWaitForNotNull(true);
+        verifyNoMoreInteractions(options);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Can_configure_includes() {
+
+        final Class<? extends Throwable> exceptionClass = IllegalArgumentException.class;
+
+        // Given
+        given(wait.value()).willReturn(defaultTimeout);
+        given(wait.interval()).willReturn(defaultInterval);
+        given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
+        given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
+        given(wait.waitFor()).willReturn(defaultWaitFor);
+        given(wait.include()).willReturn(new Class[]{exceptionClass});
+        given(wait.exclude()).willReturn(defaultExclude);
+
+        // When
+        final OptionsService actual = configurer.apply(options, wait);
+
+        // Then
+        assertThat(actual, is(options));
+        verify(options).include(exceptionClass);
+        verifyNoMoreInteractions(options);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Can_configure_excludes() {
+
+        final Class<? extends Throwable> exceptionClass = IllegalArgumentException.class;
+
+        // Given
+        given(wait.value()).willReturn(defaultTimeout);
+        given(wait.interval()).willReturn(defaultInterval);
+        given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
+        given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
+        given(wait.waitFor()).willReturn(defaultWaitFor);
+        given(wait.include()).willReturn(defaultInclude);
+        given(wait.exclude()).willReturn(new Class[]{exceptionClass});
+
+        // When
+        final OptionsService actual = configurer.apply(options, wait);
+
+        // Then
+        assertThat(actual, is(options));
+        verify(options).exclude(exceptionClass);
         verifyNoMoreInteractions(options);
     }
 

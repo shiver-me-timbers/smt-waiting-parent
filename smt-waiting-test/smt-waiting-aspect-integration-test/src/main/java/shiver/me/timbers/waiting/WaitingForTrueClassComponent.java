@@ -26,7 +26,7 @@ import static shiver.me.timbers.waiting.Decision.YES;
 
 @Component
 @Primary
-@Wait(value = @TimeOut(duration = 500, unit = MILLISECONDS), waitForTrue = YES)
+@Wait(value = @Timeout(duration = 500, unit = MILLISECONDS), waitForTrue = YES)
 public class WaitingForTrueClassComponent implements WaitingForTrueComponent {
 
     @Override

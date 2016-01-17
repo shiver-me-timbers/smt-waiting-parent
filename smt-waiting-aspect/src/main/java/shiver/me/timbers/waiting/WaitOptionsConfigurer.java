@@ -26,32 +26,64 @@ class WaitOptionsConfigurer implements OptionsConfigurer<Wait> {
 
     @Override
     public OptionsService apply(OptionsService options, Wait wait) {
-        final TimeOut timeOut = wait.value();
-        if (timeOut.duration() > -1) {
-            options.withTimeout(timeOut.duration(), timeOut.unit());
-        }
+        applyTimeout(options, wait);
+        applyInterval(options, wait);
+        applyResultValidators(options, wait);
+        applyWaitForTrue(options, wait);
+        applyWaitForNotNull(options, wait);
+        applyIncludes(options, wait);
+        applyExcludes(options, wait);
+        return options;
+    }
 
+    private static void applyTimeout(OptionsService options, Wait wait) {
+        final Timeout timeout = wait.value();
+        if (timeout.duration() > -1) {
+            options.withTimeout(timeout.duration(), timeout.unit());
+        }
+    }
+
+    private static void applyInterval(OptionsService options, Wait wait) {
         final Interval interval = wait.interval();
         if (interval.duration() > -1) {
             options.withInterval(interval.duration(), interval.unit());
         }
+    }
 
+    private static void applyResultValidators(OptionsService options, Wait wait) {
         final Class<? extends ResultValidator>[] waitFor = wait.waitFor();
         for (Class<? extends ResultValidator> validator : waitFor) {
             options.waitFor(newInstance(validator));
         }
+    }
 
+    private static void applyWaitForTrue(OptionsService options, Wait wait) {
         if (!UNDECIDED.equals(wait.waitForTrue())) {
             options.willWaitForTrue(YES.equals(wait.waitForTrue()));
         }
+    }
+
+    private static void applyWaitForNotNull(OptionsService options, Wait wait) {
         if (!UNDECIDED.equals(wait.waitForNotNull())) {
             options.willWaitForNotNull(YES.equals(wait.waitForNotNull()));
         }
-
-        return options;
     }
 
-    private <T> T newInstance(Class<T> type) {
+    private static void applyIncludes(OptionsService options, Wait wait) {
+        final Class<? extends Throwable>[] includes = wait.include();
+        for (Class<? extends Throwable> include : includes) {
+            options.include(include);
+        }
+    }
+
+    private static void applyExcludes(OptionsService options, Wait wait) {
+        final Class<? extends Throwable>[] excludes = wait.exclude();
+        for (Class<? extends Throwable> exclude : excludes) {
+            options.exclude(exclude);
+        }
+    }
+
+    private static <T> T newInstance(Class<T> type) {
         try {
             return type.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
