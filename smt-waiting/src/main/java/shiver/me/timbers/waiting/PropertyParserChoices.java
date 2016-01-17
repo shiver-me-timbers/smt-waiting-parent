@@ -18,6 +18,7 @@ package shiver.me.timbers.waiting;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -42,14 +43,19 @@ class PropertyParserChoices implements PropertyChoices {
             propertyParser.getBooleanProperty("smt.waiting.waitForTrue", choices.isWaitForTrue()),
             propertyParser.getBooleanProperty("smt.waiting.waitForNotNull", choices.isWaitForNotNull()),
             propertyParser.getInstanceProperty("smt.waiting.waitFor", choices.getResultValidators()),
-            new HashSet<>(propertyParser.getClassProperty(
-                "smt.waiting.include",
-                new ArrayList<>((Set) choices.getIncludes())
-            )),
-            new HashSet<>(propertyParser.getClassProperty(
-                "smt.waiting.exclude",
-                new ArrayList<>((Set) choices.getExcludes())
+            toSet(propertyParser.getClassProperty("smt.waiting.include", toList(choices.getIncludes()))),
+            toSet(propertyParser.getClassProperty("smt.waiting.exclude", toList(choices.getExcludes())
             ))
         );
+    }
+
+    @SuppressWarnings("unchecked")
+    private static List toList(Set includes) {
+        return new ArrayList(includes);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static HashSet<Class<? extends Throwable>> toSet(List classProperty) {
+        return new HashSet<>(classProperty);
     }
 }
