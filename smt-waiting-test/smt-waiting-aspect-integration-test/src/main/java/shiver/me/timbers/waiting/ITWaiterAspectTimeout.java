@@ -28,16 +28,16 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.waiting.WasDurationMatcher.durationWas;
 
-public abstract class ITWaiterAspectDuration {
+public abstract class ITWaiterAspectTimeout {
 
     protected abstract ExpectedException expectedException();
 
-    protected abstract WaitingDurationComponent durationComponent();
+    protected abstract WaitingTimeoutComponent durationComponent();
 
     @Test
     public void Can_wait_until_time_out_if_exception_always_thrown() throws Throwable {
 
-        final TestTimeOutException exception = new TestTimeOutException();
+        final TestTimeoutException exception = new TestTimeoutException();
 
         expectedException().expect(WaitedTooLongException.class);
         expectedException().expectMessage(containsString("Waited too long for"));
@@ -56,7 +56,7 @@ public abstract class ITWaiterAspectDuration {
     @Test
     public void Can_directly_throw_a_runtime_exception() throws Throwable {
 
-        final TestTimeOutRuntimeException exception = new TestTimeOutRuntimeException();
+        final TestTimeoutRuntimeException exception = new TestTimeoutRuntimeException();
 
         expectedException().expect(is(exception));
         expectedException().expect(durationWas(500, MILLISECONDS));
@@ -73,7 +73,7 @@ public abstract class ITWaiterAspectDuration {
     @Test
     public void Can_directly_throw_an_error() throws Throwable {
 
-        final TestTimeOutError error = new TestTimeOutError();
+        final TestTimeoutError error = new TestTimeoutError();
 
         expectedException().expect(is(error));
         expectedException().expect(durationWas(500, MILLISECONDS));

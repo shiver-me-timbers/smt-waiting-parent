@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Karl Bennett
+ * Copyright 2016 Karl Bennett
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 package shiver.me.timbers.waiting;
 
-public class ITSpringLoadTimeWaiterAspectMethodsWaitForNotNull extends ITSpringWaiterAspectClassWaitForNotNull {
+import java.util.concurrent.Callable;
 
-    @Override
-    protected WaitingDefaultsComponent component() {
-        return new WaitingDefaultsClassComponent();
-    }
+public interface WaitingIncludeComponent {
+
+    <T> T includeMethod(Callable<T> callable) throws Exception;
 }

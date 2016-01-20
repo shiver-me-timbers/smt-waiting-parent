@@ -24,8 +24,8 @@ public class ITCompileTimeWaiterAspectClass extends ITWaiterAspect {
     }
 
     @Override
-    protected WaitingDurationComponent durationComponent() {
-        return new WaitingDurationClassComponent();
+    protected WaitingTimeoutComponent timeoutComponent() {
+        return new WaitingTimeoutClassComponent();
     }
 
     @Override
@@ -46,5 +46,10 @@ public class ITCompileTimeWaiterAspectClass extends ITWaiterAspect {
     @Override
     protected WaitingIntervalComponent intervalComponent() {
         return new WaitingIntervalClassComponent();
+    }
+
+    @Override
+    protected WaitingIncludeComponent includeComponent() {
+        return new WaitingIncludeClassComponent();
     }
 }

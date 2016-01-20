@@ -17,6 +17,6 @@
 package shiver.me.timbers.waiting;
 
 public interface WaitingComponent extends
-    WaitingDefaultsComponent, WaitingDurationComponent, WaitingForComponent, WaitingForTrueComponent,
-    WaitingForNotNullComponent, WaitingIntervalComponent {
+    WaitingDefaultsComponent, WaitingTimeoutComponent, WaitingForComponent, WaitingForTrueComponent,
+    WaitingForNotNullComponent, WaitingIntervalComponent, WaitingIncludeComponent {
 }

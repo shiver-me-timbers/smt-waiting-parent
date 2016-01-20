@@ -16,5 +16,5 @@
 
 package shiver.me.timbers.waiting;
 
-public class TestTimeOutException extends Exception {
+public class TestTimeoutError extends Error {
 }

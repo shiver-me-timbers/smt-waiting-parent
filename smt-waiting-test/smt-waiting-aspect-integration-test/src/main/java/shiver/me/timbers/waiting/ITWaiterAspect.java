@@ -32,15 +32,22 @@ public abstract class ITWaiterAspect {
         }
     };
 
-    private final ITWaiterAspectDuration duration = new ITWaiterAspectDuration() {
+    private final ITWaiterAspectTimeout timeout = new ITWaiterAspectTimeout() {
         @Override
         protected ExpectedException expectedException() {
             return expectedException;
         }
 
         @Override
-        protected WaitingDurationComponent durationComponent() {
-            return ITWaiterAspect.this.durationComponent();
+        protected WaitingTimeoutComponent durationComponent() {
+            return ITWaiterAspect.this.timeoutComponent();
+        }
+    };
+
+    private final ITWaiterAspectInterval interval = new ITWaiterAspectInterval() {
+        @Override
+        protected WaitingIntervalComponent intervalComponent() {
+            return ITWaiterAspect.this.intervalComponent();
         }
     };
 
@@ -65,16 +72,21 @@ public abstract class ITWaiterAspect {
         }
     };
 
-    private final ITWaiterAspectInterval interval = new ITWaiterAspectInterval() {
+    private final ITWaiterAspectInclude include = new ITWaiterAspectInclude() {
         @Override
-        protected WaitingIntervalComponent intervalComponent() {
-            return ITWaiterAspect.this.intervalComponent();
+        protected ExpectedException expectedException() {
+            return expectedException;
+        }
+
+        @Override
+        protected WaitingIncludeComponent includeComponent() {
+            return ITWaiterAspect.this.includeComponent();
         }
     };
 
     protected abstract WaitingDefaultsComponent defaultsComponent();
 
-    protected abstract WaitingDurationComponent durationComponent();
+    protected abstract WaitingTimeoutComponent timeoutComponent();
 
     protected abstract WaitingForComponent waitForComponent();
 
@@ -84,75 +96,75 @@ public abstract class ITWaiterAspect {
 
     protected abstract WaitingIntervalComponent intervalComponent();
 
+    protected abstract WaitingIncludeComponent includeComponent();
+
     @Test
     public void Can_wait_until_no_exception_is_thrown() throws Exception {
-
         defaults.Can_wait_until_no_exception_is_thrown();
     }
 
     @Test
     public void Can_wait_until_time_out_if_exception_always_thrown() throws Throwable {
-
-        duration.Can_wait_until_time_out_if_exception_always_thrown();
+        timeout.Can_wait_until_time_out_if_exception_always_thrown();
     }
 
     @Test
     public void Can_directly_throw_a_runtime_exception() throws Throwable {
-
-        duration.Can_directly_throw_a_runtime_exception();
+        timeout.Can_directly_throw_a_runtime_exception();
     }
 
     @Test
     public void Can_directly_throw_an_error() throws Throwable {
-
-        duration.Can_directly_throw_an_error();
+        timeout.Can_directly_throw_an_error();
     }
 
     @Test
     public void Can_wait_until_valid_result_is_returned() throws Throwable {
-
         waitFor.Can_wait_until_valid_result_is_returned();
     }
 
     @Test
     public void Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned() throws Throwable {
-
         waitFor.Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned();
     }
 
     @Test
     public void Can_wait_until_true_is_returned() throws Throwable {
-
         waitForTrue.Can_wait_until_true_is_returned();
     }
 
     @Test
     public void Can_wait_until_time_out_for_true_when_false_always_returned() throws Throwable {
-
         waitForTrue.Can_wait_until_time_out_for_true_when_false_always_returned();
     }
 
     @Test
     public void Can_wait_until_time_out_for_true_when_null_always_returned() throws Throwable {
-
         waitForTrue.Can_wait_until_time_out_for_true_when_null_always_returned();
     }
 
     @Test
     public void Can_wait_for_a_non_null_value() throws Throwable {
-
         waitForNotNull.Can_wait_for_a_non_null_value();
     }
 
     @Test
     public void Can_wait_until_time_out_for_non_null_when_null_always_returned() throws Throwable {
-
         waitForNotNull.Can_wait_until_time_out_for_non_null_when_null_always_returned();
     }
 
     @Test
     public void Can_change_the_interval() throws Throwable {
-
         interval.Can_change_the_interval();
+    }
+
+    @Test
+    public void Can_ignore_exceptions_contained_in_the_include_list() throws Throwable {
+        include.Can_ignore_exceptions_contained_in_the_include_list();
+    }
+
+    @Test
+    public void Cannot_ignore_exceptions_that_are_not_contained_in_the_include_list() throws Throwable {
+        include.Cannot_ignore_exceptions_that_are_not_contained_in_the_include_list();
     }
 }

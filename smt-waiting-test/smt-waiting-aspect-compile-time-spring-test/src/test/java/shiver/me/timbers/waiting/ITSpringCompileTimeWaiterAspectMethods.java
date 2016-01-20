@@ -26,7 +26,7 @@ public class ITSpringCompileTimeWaiterAspectMethods extends ITWaiterAspect {
     }
 
     @Override
-    protected WaitingDurationComponent durationComponent() {
+    protected WaitingTimeoutComponent timeoutComponent() {
         return component;
     }
 
@@ -47,6 +47,11 @@ public class ITSpringCompileTimeWaiterAspectMethods extends ITWaiterAspect {
 
     @Override
     protected WaitingIntervalComponent intervalComponent() {
+        return component;
+    }
+
+    @Override
+    protected WaitingIncludeComponent includeComponent() {
         return component;
     }
 }

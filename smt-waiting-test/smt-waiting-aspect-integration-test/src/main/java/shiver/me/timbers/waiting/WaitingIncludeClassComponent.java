@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Karl Bennett
+ * Copyright 2016 Karl Bennett
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,15 +21,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Callable;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-
 @Component
 @Primary
-@Wait(@Timeout(duration = 500, unit = MILLISECONDS))
-public class WaitingDurationClassComponent implements WaitingDurationComponent {
+@Wait(include = TestIncludeRuntimeException.class)
+public class WaitingIncludeClassComponent implements WaitingIncludeComponent {
 
     @Override
-    public <T> T durationSetMethod(Callable<T> callable) throws Exception {
+    public <T> T includeMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
 }

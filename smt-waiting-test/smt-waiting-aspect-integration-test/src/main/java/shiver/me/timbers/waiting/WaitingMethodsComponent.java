@@ -64,4 +64,10 @@ public class WaitingMethodsComponent implements WaitingComponent {
     public <T> T intervalMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
+
+    @Wait(include = TestIncludeRuntimeException.class)
+    @Override
+    public <T> T includeMethod(Callable<T> callable) throws Exception {
+        return callable.call();
+    }
 }

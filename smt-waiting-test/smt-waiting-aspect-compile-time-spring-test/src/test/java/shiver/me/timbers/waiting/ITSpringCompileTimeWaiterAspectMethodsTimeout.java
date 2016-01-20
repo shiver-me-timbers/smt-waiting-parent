@@ -16,5 +16,10 @@
 
 package shiver.me.timbers.waiting;
 
-public class TestTimeOutError extends Error {
+public class ITSpringCompileTimeWaiterAspectMethodsTimeout extends ITSpringWaiterAspectClassTimeout {
+
+    @Override
+    protected WaitingDefaultsComponent component() {
+        return new WaitingDefaultsClassComponent();
+    }
 }

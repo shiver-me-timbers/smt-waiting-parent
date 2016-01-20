@@ -30,7 +30,7 @@ public class ITSpringAutoProxyWaiterAspectClass extends ITWaiterAspect {
     private WaitingDefaultsComponent defaultsComponent;
 
     @Autowired
-    private WaitingDurationComponent durationComponent;
+    private WaitingTimeoutComponent durationComponent;
 
     @Autowired
     private WaitingForComponent waitingForComponent;
@@ -44,13 +44,16 @@ public class ITSpringAutoProxyWaiterAspectClass extends ITWaiterAspect {
     @Autowired
     private WaitingIntervalComponent intervalComponent;
 
+    @Autowired
+    private WaitingIncludeComponent includeComponent;
+
     @Override
     protected WaitingDefaultsComponent defaultsComponent() {
         return defaultsComponent;
     }
 
     @Override
-    protected WaitingDurationComponent durationComponent() {
+    protected WaitingTimeoutComponent timeoutComponent() {
         return durationComponent;
     }
 
@@ -72,5 +75,10 @@ public class ITSpringAutoProxyWaiterAspectClass extends ITWaiterAspect {
     @Override
     protected WaitingIntervalComponent intervalComponent() {
         return intervalComponent;
+    }
+
+    @Override
+    protected WaitingIncludeComponent includeComponent() {
+        return includeComponent;
     }
 }

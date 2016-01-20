@@ -16,10 +16,15 @@
 
 package shiver.me.timbers.waiting;
 
-public class ITSpringLoadTimeWaiterAspectMethodsWaitForNotNull extends ITSpringWaiterAspectClassWaitForNotNull {
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class ITSpringAutoProxyWaiterAspectMethodsTimeout extends ITSpringWaiterAspectClassTimeout {
+
+    @Autowired
+    private WaitingComponent component;
 
     @Override
     protected WaitingDefaultsComponent component() {
-        return new WaitingDefaultsClassComponent();
+        return component;
     }
 }

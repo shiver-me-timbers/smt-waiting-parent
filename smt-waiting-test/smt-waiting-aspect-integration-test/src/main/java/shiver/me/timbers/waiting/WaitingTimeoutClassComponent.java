@@ -16,10 +16,20 @@
 
 package shiver.me.timbers.waiting;
 
-public class ITSpringLoadTimeWaiterAspectMethodsWaitForNotNull extends ITSpringWaiterAspectClassWaitForNotNull {
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
+
+import java.util.concurrent.Callable;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
+@Component
+@Primary
+@Wait(@Timeout(duration = 500, unit = MILLISECONDS))
+public class WaitingTimeoutClassComponent implements WaitingTimeoutComponent {
 
     @Override
-    protected WaitingDefaultsComponent component() {
-        return new WaitingDefaultsClassComponent();
+    public <T> T durationSetMethod(Callable<T> callable) throws Exception {
+        return callable.call();
     }
 }

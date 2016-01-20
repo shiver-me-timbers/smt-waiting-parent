@@ -16,5 +16,10 @@
 
 package shiver.me.timbers.waiting;
 
-public class TestTimeOutRuntimeException extends RuntimeException {
+public class ITSpringLoadTimeWaiterAspectMethodsTimeout extends ITSpringWaiterAspectClassTimeout {
+
+    @Override
+    protected WaitingDefaultsComponent component() {
+        return new WaitingDefaultsClassComponent();
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Karl Bennett
+ * Copyright 2016 Karl Bennett
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,5 @@
 
 package shiver.me.timbers.waiting;
 
-import java.util.concurrent.Callable;
-
-public interface WaitingDurationComponent {
-
-    <T> T durationSetMethod(Callable<T> callable) throws Exception;
+public class TestIncludeRuntimeException extends RuntimeException {
 }

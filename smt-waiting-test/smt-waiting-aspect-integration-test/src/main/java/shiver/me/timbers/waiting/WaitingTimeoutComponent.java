@@ -16,15 +16,9 @@
 
 package shiver.me.timbers.waiting;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.concurrent.Callable;
 
-public class ITSpringLoadTimeWaiterAspectClassDuration extends ITSpringWaiterAspectClassDuration {
+public interface WaitingTimeoutComponent {
 
-    @Autowired
-    private WaitingDefaultsComponent component;
-
-    @Override
-    protected WaitingDefaultsComponent component() {
-        return component;
-    }
+    <T> T durationSetMethod(Callable<T> callable) throws Exception;
 }

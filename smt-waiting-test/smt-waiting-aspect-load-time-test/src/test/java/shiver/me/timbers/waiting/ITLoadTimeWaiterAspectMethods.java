@@ -17,7 +17,6 @@
 package shiver.me.timbers.waiting;
 
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -25,8 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SpringApplicationConfiguration(classes = WaiterConfiguration.class)
 public class ITLoadTimeWaiterAspectMethods extends ITWaiterAspect {
 
-    @Autowired
-    private WaitingComponent component;
+    private WaitingComponent component = new WaitingMethodsComponent();
 
     @Override
     protected WaitingDefaultsComponent defaultsComponent() {
@@ -34,7 +32,7 @@ public class ITLoadTimeWaiterAspectMethods extends ITWaiterAspect {
     }
 
     @Override
-    protected WaitingDurationComponent durationComponent() {
+    protected WaitingTimeoutComponent timeoutComponent() {
         return component;
     }
 
@@ -55,6 +53,11 @@ public class ITLoadTimeWaiterAspectMethods extends ITWaiterAspect {
 
     @Override
     protected WaitingIntervalComponent intervalComponent() {
+        return component;
+    }
+
+    @Override
+    protected WaitingIncludeComponent includeComponent() {
         return component;
     }
 }

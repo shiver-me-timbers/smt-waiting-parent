@@ -17,7 +17,6 @@
 package shiver.me.timbers.waiting;
 
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -25,51 +24,38 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SpringApplicationConfiguration(classes = WaiterConfiguration.class)
 public class ITLoadTimeWaiterAspectClass extends ITWaiterAspect {
 
-    @Autowired
-    private WaitingDefaultsComponent defaultsComponent;
-
-    @Autowired
-    private WaitingDurationComponent durationComponent;
-
-    @Autowired
-    private WaitingForComponent waitingForComponent;
-
-    @Autowired
-    private WaitingForTrueComponent forTrueComponent;
-
-    @Autowired
-    private WaitingForNotNullComponent forNotNullComponent;
-
-    @Autowired
-    private WaitingIntervalComponent intervalComponent;
-
     @Override
     protected WaitingDefaultsComponent defaultsComponent() {
-        return defaultsComponent;
+        return new WaitingDefaultsClassComponent();
     }
 
     @Override
-    protected WaitingDurationComponent durationComponent() {
-        return durationComponent;
+    protected WaitingTimeoutComponent timeoutComponent() {
+        return new WaitingTimeoutClassComponent();
     }
 
     @Override
     protected WaitingForComponent waitForComponent() {
-        return waitingForComponent;
+        return new WaitingForClassComponent();
     }
 
     @Override
     protected WaitingForTrueComponent waitForTrueComponent() {
-        return forTrueComponent;
+        return new WaitingForTrueClassComponent();
     }
 
     @Override
     protected WaitingForNotNullComponent waitForNotNullComponent() {
-        return forNotNullComponent;
+        return new WaitingForNotNullClassComponent();
     }
 
     @Override
     protected WaitingIntervalComponent intervalComponent() {
-        return intervalComponent;
+        return new WaitingIntervalClassComponent();
+    }
+
+    @Override
+    protected WaitingIncludeComponent includeComponent() {
+        return new WaitingIncludeClassComponent();
     }
 }

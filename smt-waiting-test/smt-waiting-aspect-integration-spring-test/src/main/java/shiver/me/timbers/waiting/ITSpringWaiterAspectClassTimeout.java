@@ -31,7 +31,7 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = WaiterDurationConfiguration.class)
 @DirtiesContext(classMode = AFTER_CLASS)
-public abstract class ITSpringWaiterAspectClassDuration extends ITWaiterAspectDuration {
+public abstract class ITSpringWaiterAspectClassTimeout extends ITWaiterAspectTimeout {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -42,8 +42,8 @@ public abstract class ITSpringWaiterAspectClassDuration extends ITWaiterAspectDu
     }
 
     @Override
-    protected WaitingDurationComponent durationComponent() {
-        return new WaitingDurationComponent() {
+    protected WaitingTimeoutComponent durationComponent() {
+        return new WaitingTimeoutComponent() {
             @Override
             public <T> T durationSetMethod(Callable<T> callable) throws Exception {
                 return component().defaultsMethod(callable);

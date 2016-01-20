@@ -16,15 +16,5 @@
 
 package shiver.me.timbers.waiting;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-public class ITSpringAutoProxyWaiterAspectMethodsDuration extends ITSpringWaiterAspectClassDuration {
-
-    @Autowired
-    private WaitingComponent component;
-
-    @Override
-    protected WaitingDefaultsComponent component() {
-        return component;
-    }
+public class TestTimeoutRuntimeException extends RuntimeException {
 }

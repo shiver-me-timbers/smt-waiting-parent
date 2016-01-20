@@ -16,7 +16,7 @@
 
 package shiver.me.timbers.waiting;
 
-public class ITSpringCompileTimeWaiterAspectClassDuration extends ITSpringWaiterAspectClassDuration {
+public class ITSpringCompileTimeWaiterAspectClassTimeout extends ITSpringWaiterAspectClassTimeout {
 
     @Override
     protected WaitingDefaultsComponent component() {
