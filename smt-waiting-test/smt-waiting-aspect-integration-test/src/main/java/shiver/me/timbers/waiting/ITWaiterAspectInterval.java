@@ -47,6 +47,6 @@ public abstract class ITWaiterAspectInterval {
 
         // Then
         verify(callable, times(2)).call();
-        assertThat(System.currentTimeMillis() - start, allOf(greaterThanOrEqualTo(200L), lessThan(400L)));
+        assertThat(System.currentTimeMillis() - start, allOf(greaterThanOrEqualTo(200L), lessThan(500L)));
     }
 }
