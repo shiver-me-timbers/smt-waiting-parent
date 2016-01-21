@@ -67,11 +67,8 @@
     <modules>
         <module>smt-waiting-integration-test</module>
         <module>smt-waiting-spring-integration-test</module>
-        <module>smt-waiting-aspect-integration-test</module>
-        <module>smt-waiting-aspect-load-time-test</module>
-        <module>smt-waiting-aspect-compile-time-test</module>
-        <module>smt-waiting-aspect-integration-spring-test</module>
-        <module>smt-waiting-aspect-load-time-spring-test</module>
-        <module>smt-waiting-aspect-compile-time-spring-test</module>
+        <module>smt-waiting-aspect-integration</module>
+        <module>smt-waiting-aspect-load-time</module>
+        <module>smt-waiting-aspect-compile-time</module>
     </modules>
 </project>
