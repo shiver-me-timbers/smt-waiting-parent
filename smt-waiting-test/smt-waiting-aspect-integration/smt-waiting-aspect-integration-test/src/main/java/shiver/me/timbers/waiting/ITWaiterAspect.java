@@ -84,6 +84,18 @@ public abstract class ITWaiterAspect {
         }
     };
 
+    private final ITWaiterAspectExclude exclude = new ITWaiterAspectExclude() {
+        @Override
+        protected ExpectedException expectedException() {
+            return expectedException;
+        }
+
+        @Override
+        protected WaitingExcludeComponent excludeComponent() {
+            return ITWaiterAspect.this.excludeComponent();
+        }
+    };
+
     protected abstract WaitingDefaultsComponent defaultsComponent();
 
     protected abstract WaitingTimeoutComponent timeoutComponent();
@@ -97,6 +109,8 @@ public abstract class ITWaiterAspect {
     protected abstract WaitingIntervalComponent intervalComponent();
 
     protected abstract WaitingIncludeComponent includeComponent();
+
+    protected abstract WaitingExcludeComponent excludeComponent();
 
     @Test
     public void Can_wait_until_no_exception_is_thrown() throws Exception {
@@ -166,5 +180,15 @@ public abstract class ITWaiterAspect {
     @Test
     public void Cannot_ignore_exceptions_that_are_not_contained_in_the_include_list() throws Throwable {
         include.Cannot_ignore_exceptions_that_are_not_contained_in_the_include_list();
+    }
+
+    @Test
+    public void Cannot_ignore_exceptions_contained_in_the_exclude_list() throws Throwable {
+        exclude.Cannot_ignore_exceptions_contained_in_the_exclude_list();
+    }
+
+    @Test
+    public void Can_ignore_exceptions_that_are_not_contained_in_the_exclude_list() throws Throwable {
+        exclude.Can_ignore_exceptions_that_are_not_contained_in_the_exclude_list();
     }
 }

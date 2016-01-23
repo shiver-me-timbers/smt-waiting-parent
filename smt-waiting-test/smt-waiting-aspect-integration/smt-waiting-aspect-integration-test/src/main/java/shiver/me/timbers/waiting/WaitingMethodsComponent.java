@@ -70,4 +70,10 @@ public class WaitingMethodsComponent implements WaitingComponent {
     public <T> T includeMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
+
+    @Wait(exclude = TestExcludeRuntimeException.class)
+    @Override
+    public <T> T excludeMethod(Callable<T> callable) throws Exception {
+        return callable.call();
+    }
 }

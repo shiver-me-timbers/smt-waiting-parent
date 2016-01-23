@@ -58,4 +58,9 @@ public class ITLoadTimeWaiterAspectClass extends ITWaiterAspect {
     protected WaitingIncludeComponent includeComponent() {
         return new WaitingIncludeClassComponent();
     }
+
+    @Override
+    protected WaitingExcludeComponent excludeComponent() {
+        return new WaitingExcludeClassComponent();
+    }
 }

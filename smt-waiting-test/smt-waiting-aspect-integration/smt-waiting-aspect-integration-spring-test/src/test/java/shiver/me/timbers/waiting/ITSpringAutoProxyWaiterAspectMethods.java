@@ -63,4 +63,9 @@ public class ITSpringAutoProxyWaiterAspectMethods extends ITWaiterAspect {
     protected WaitingIncludeComponent includeComponent() {
         return component;
     }
+
+    @Override
+    protected WaitingExcludeComponent excludeComponent() {
+        return component;
+    }
 }

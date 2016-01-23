@@ -52,4 +52,9 @@ public class ITCompileTimeWaiterAspectClass extends ITWaiterAspect {
     protected WaitingIncludeComponent includeComponent() {
         return new WaitingIncludeClassComponent();
     }
+
+    @Override
+    protected WaitingExcludeComponent excludeComponent() {
+        return new WaitingExcludeClassComponent();
+    }
 }

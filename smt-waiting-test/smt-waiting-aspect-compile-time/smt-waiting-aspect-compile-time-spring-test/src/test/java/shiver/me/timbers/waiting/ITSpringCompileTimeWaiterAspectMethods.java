@@ -54,4 +54,9 @@ public class ITSpringCompileTimeWaiterAspectMethods extends ITWaiterAspect {
     protected WaitingIncludeComponent includeComponent() {
         return component;
     }
+
+    @Override
+    protected WaitingExcludeComponent excludeComponent() {
+        return new WaitingExcludeClassComponent();
+    }
 }

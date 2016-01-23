@@ -47,6 +47,9 @@ public class ITSpringAutoProxyWaiterAspectClass extends ITWaiterAspect {
     @Autowired
     private WaitingIncludeComponent includeComponent;
 
+    @Autowired
+    private WaitingExcludeComponent excludeComponent;
+
     @Override
     protected WaitingDefaultsComponent defaultsComponent() {
         return defaultsComponent;
@@ -80,5 +83,10 @@ public class ITSpringAutoProxyWaiterAspectClass extends ITWaiterAspect {
     @Override
     protected WaitingIncludeComponent includeComponent() {
         return includeComponent;
+    }
+
+    @Override
+    protected WaitingExcludeComponent excludeComponent() {
+        return excludeComponent;
     }
 }
