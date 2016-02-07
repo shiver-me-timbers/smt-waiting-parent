@@ -21,7 +21,7 @@
     <parent>
         <groupId>com.github.shiver-me-timbers</groupId>
         <artifactId>smt-waiting-parent</artifactId>
-        <version>3.0-SNAPSHOT</version>
+        <version>3.0</version>
     </parent>
 
     <artifactId>smt-waiting-spring</artifactId>
@@ -74,7 +74,7 @@
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-waiting</artifactId>
-            <version>3.0-SNAPSHOT</version>
+            <version>3.0</version>
         </dependency>
         <!-- The AspectJ and Spring dependencies are set with provided scope so that they don't clash with the versions -->
         <!-- used by the users of this library. -->
