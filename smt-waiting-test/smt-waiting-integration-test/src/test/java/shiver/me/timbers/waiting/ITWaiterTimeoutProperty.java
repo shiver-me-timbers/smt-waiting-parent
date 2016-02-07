@@ -74,7 +74,7 @@ public class ITWaiterTimeoutProperty {
         }
 
         // Then
-        assertThat(System.currentTimeMillis() - start, allOf(greaterThanOrEqualTo(200L), lessThan(300L)));
+        assertThat(System.currentTimeMillis() - start, allOf(greaterThanOrEqualTo(200L), lessThan(400L)));
     }
 
     @Test
