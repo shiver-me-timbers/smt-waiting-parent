@@ -186,16 +186,16 @@ new Waiter(new Options().withDefaults(true)).wait(new Until<Void>() {
 You can apply global configuration for all instantiated `Waiter`s with the following Java properties.
 * `smt.waiting.timeout.duration`, `smt.waiting.timeout.unit`: Set the global timeout.
   * Example:
-    ```
+    <pre>
     smt.waiting.timeout.duration=1
     smt.waiting.timeout.unit=SECONDS # java.util.concurrent.TimeUnit name.
-    ```
+    </pre>
 * `smt.waiting.interval.duration`, `smt.waiting.interval.unit`: Set the global interval.
   * Example:
-    ```
+    <pre>
     smt.waiting.interval.duration=100
     smt.waiting.interval.unit=MILLISECONDS # java.util.concurrent.TimeUnit name.
-    ```
+    </pre>
 * `smt.waiting.waitForTrue`: Set if all `Waiter`s should wait for
 [`Until#success()`](src/main/java/shiver/me/timbers/waiting/Until.java#L30) to return `true`.
   * Example: `smt.waiting.waitForTrue=true`
