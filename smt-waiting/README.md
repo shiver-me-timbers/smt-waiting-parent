@@ -181,6 +181,33 @@ new Waiter(new Options().withDefaults(true)).wait(new Until<Void>() {
     }
 });
 ```
+#### Properties
+
+You can apply global configuration for all instantiated `Waiter`s with the following Java properties.
+* `smt.waiting.timeout.duration`, `smt.waiting.timeout.unit`: Set the global timeout.
+  * Example:
+    ```
+    smt.waiting.timeout.duration=1
+    smt.waiting.timeout.unit=SECONDS # java.util.concurrent.TimeUnit name.
+    ```
+* `smt.waiting.interval.duration`, `smt.waiting.interval.unit`: Set the global interval.
+  * Example:
+    ```
+    smt.waiting.interval.duration=100
+    smt.waiting.interval.unit=MILLISECONDS # java.util.concurrent.TimeUnit name.
+    ```
+* `smt.waiting.waitForTrue`: Set if all `Waiter`s should wait for
+[`Until#success()`](src/main/java/shiver/me/timbers/waiting/Until.java#L30) to return `true`.
+  * Example: `smt.waiting.waitForTrue=true`
+* `smt.waiting.waitForNotNull`: Set if all `Waiter`s should wait for `Until#success()` to return a nonnull value.
+  * Example: `smt.waiting.waitForNotNull=true`
+* `smt.waiting.waitFor`: Set any [`ResultValidator`s](src/main/java/shiver/me/timbers/waiting/ResultValidator.java) that
+should be automatically applied to all `Waiter`s.
+  * Example: `smt.waiting.waitFor=org.example.ExampleResultOne,org.example.ExampleResultTwo`
+* `smt.waiting.include`: Set a global include exceptions list.
+  * Example: `smt.waiting.include=org.example.ExampleOneException,org.example.ExampleTwoError`
+* `smt.waiting.exclude`: Set a global exclude exceptions list.
+  * Example: `smt.waiting.exclude=org.example.ExampleOneException,org.example.ExampleTwoError`
 
 ## License
 
