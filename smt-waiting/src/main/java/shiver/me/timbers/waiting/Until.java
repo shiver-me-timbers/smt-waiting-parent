@@ -17,9 +17,15 @@
 package shiver.me.timbers.waiting;
 
 /**
+ * Implement this interface with a call to a method or code block that needs to be waited on.
+ *
  * @author Karl Bennett
  */
 public interface Until<T> {
 
+    /**
+     * This method will be rerun until it completes successfully byt not throwing an exception and fulfilling all the
+     * {@link Options} requirements.
+     */
     T success() throws Throwable;
 }

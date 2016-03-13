@@ -35,12 +35,10 @@ public class ITWaiterWaitForProperty {
     private PropertyManager properties;
 
     private Options options;
-    private Waiter waiter;
 
     @Before
     public void setUp() {
         options = new Options().withTimeout(500L, MILLISECONDS);
-        waiter = new Waiter(options);
 
         properties = new PropertyManager();
     }
@@ -62,7 +60,7 @@ public class ITWaiterWaitForProperty {
         given(until.success()).willReturn(someString(), someString(), expected);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = new Waiter(options).wait(until);
 
         // Then
         assertThat(actual, is(expected));
@@ -84,7 +82,7 @@ public class ITWaiterWaitForProperty {
         given(until.success()).willReturn("valid", "success", expected);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = new Waiter(options).wait(until);
 
         // Then
         assertThat(actual, is(expected));
@@ -104,7 +102,7 @@ public class ITWaiterWaitForProperty {
         given(until.success()).willReturn("valid", "success", expected);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = new Waiter(options).wait(until);
 
         // Then
         assertThat(actual, is(expected));

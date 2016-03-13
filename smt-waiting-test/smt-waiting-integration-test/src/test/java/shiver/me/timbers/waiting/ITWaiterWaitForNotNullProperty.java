@@ -34,12 +34,10 @@ public class ITWaiterWaitForNotNullProperty {
     private PropertyManager properties;
 
     private Options options;
-    private Waiter waiter;
 
     @Before
     public void setUp() {
         options = new Options().withTimeout(500L, MILLISECONDS);
-        waiter = new Waiter(options);
 
         properties = new PropertyManager();
     }
@@ -61,7 +59,7 @@ public class ITWaiterWaitForNotNullProperty {
         given(until.success()).willReturn(null, null, expected);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = new Waiter(options).wait(until);
 
         // Then
         assertThat(actual, is(expected));
@@ -79,7 +77,7 @@ public class ITWaiterWaitForNotNullProperty {
         given(until.success()).willReturn(null);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = new Waiter(options).wait(until);
 
         // Then
         assertThat(actual, nullValue());

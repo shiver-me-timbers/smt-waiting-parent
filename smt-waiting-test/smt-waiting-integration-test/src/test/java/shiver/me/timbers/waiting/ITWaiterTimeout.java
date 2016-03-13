@@ -30,12 +30,10 @@ import static org.mockito.Mockito.mock;
 public class ITWaiterTimeout {
 
     private Options options;
-    private Waiter waiter;
 
     @Before
     public void setUp() {
         options = new Options();
-        waiter = new Waiter(options);
     }
 
     @Test
@@ -50,7 +48,7 @@ public class ITWaiterTimeout {
 
         // When
         try {
-            waiter.wait(until);
+            new Waiter(options).wait(until);
         } catch (Exception e) {
             // We only care about the number of calls, not how it failed.
         }

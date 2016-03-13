@@ -21,7 +21,7 @@
     <parent>
         <groupId>com.github.shiver-me-timbers</groupId>
         <artifactId>smt-waiting-aspect-load-time</artifactId>
-        <version>3.1-SNAPSHOT</version>
+        <version>4.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>smt-waiting-aspect-load-time-test</artifactId>
@@ -34,7 +34,7 @@
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-waiting-aspect-integration-test</artifactId>
-            <version>3.1-SNAPSHOT</version>
+            <version>4.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

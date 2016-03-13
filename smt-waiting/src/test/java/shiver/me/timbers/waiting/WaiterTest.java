@@ -21,6 +21,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -36,19 +40,20 @@ public class WaiterTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     private Options options;
-    private Waiter waiter;
 
     @Before
     public void setUp() {
         options = mock(Options.class);
-        waiter = new Waiter(options);
     }
 
     @Test
     public void can_create_a_waiter() {
 
         // When
-        new Waiter();
+        new Waiter(options);
+
+        // Then
+        verify(options).choose();
     }
 
     @Test
@@ -72,7 +77,7 @@ public class WaiterTest {
         given(choice.isValid(expected)).willReturn(true);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = new Waiter(options).wait(until);
 
         // Then
         assertThat(actual, is(expected));
@@ -102,7 +107,7 @@ public class WaiterTest {
         expectedException.expectCause(is(exception));
 
         // When
-        waiter.wait(until);
+        new Waiter(options).wait(until);
     }
 
     @Test
@@ -124,7 +129,7 @@ public class WaiterTest {
         expectedException.expect(is(exception));
 
         // When
-        waiter.wait(until);
+        new Waiter(options).wait(until);
     }
 
     @Test
@@ -145,7 +150,7 @@ public class WaiterTest {
         expectedException.expect(is(error));
 
         // When
-        waiter.wait(until);
+        new Waiter(options).wait(until);
     }
 
     @Test
@@ -167,7 +172,7 @@ public class WaiterTest {
         given(choice.isValid(expected)).willReturn(false, false, true);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = new Waiter(options).wait(until);
 
         // Then
         assertThat(actual, is(expected));
@@ -194,7 +199,7 @@ public class WaiterTest {
         given(choice.isValid(expected)).willReturn(false);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = new Waiter(options).wait(until);
 
         // Then
         assertThat(actual, is(expected));
@@ -223,7 +228,7 @@ public class WaiterTest {
         given(choice.isValid(expected)).willReturn(false);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = new Waiter(options).wait(until);
 
         // Then
         assertThat(actual, is(expected));
@@ -252,7 +257,7 @@ public class WaiterTest {
         given(choice.isValid(expected)).willReturn(true);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = new Waiter(options).wait(until);
 
         // Then
         assertThat(actual, is(expected));
@@ -278,6 +283,42 @@ public class WaiterTest {
         expectedException.expect(is(exception));
 
         // When
-        waiter.wait(until);
+        new Waiter(options).wait(until);
+    }
+
+    @Test
+    public void name() {
+
+        class BecauseResult implements ResultValidator<String> {
+            public boolean isValid(String result) throws Throwable {
+                return result.toLowerCase().contains("because");
+            }
+        }
+
+        final Options options = new Options()
+            .withTimeout(10L, TimeUnit.MINUTES)
+            .withInterval(1L, TimeUnit.MILLISECONDS)
+            .willWaitForTrue(false)
+            .willWaitForNotNull(true)
+            .waitFor(new BecauseResult())
+            .include(IllegalStateException.class)
+            .exclude(IllegalArgumentException.class);
+        new Waiter(options).wait(new Until<String>() {
+            private final List<String> sentences = new ArrayList<String>() {{
+                add("Also all of these options can be combined.");
+                add("Just because.");
+            }};
+            private Exception exception;
+
+            public String success() throws Throwable {
+                final String sentence = sentences.remove(0);
+                System.out.println(sentence);
+                if (exception == null) {
+                    throw (exception = new IllegalStateException());
+                }
+                return sentence;
+            }
+        });
+
     }
 }

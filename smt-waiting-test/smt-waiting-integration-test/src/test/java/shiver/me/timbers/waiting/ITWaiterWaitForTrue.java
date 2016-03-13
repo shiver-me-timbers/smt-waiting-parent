@@ -32,12 +32,10 @@ import static org.mockito.Mockito.verify;
 public class ITWaiterWaitForTrue {
 
     private Options options;
-    private Waiter waiter;
 
     @Before
     public void setUp() {
         options = new Options().withTimeout(500L, MILLISECONDS);
-        waiter = new Waiter(options);
     }
 
     @Test
@@ -50,7 +48,7 @@ public class ITWaiterWaitForTrue {
         given(until.success()).willReturn(false, false, true);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = new Waiter(options).wait(until);
 
         // Then
         assertThat(actual, is((Object) true));
@@ -67,7 +65,7 @@ public class ITWaiterWaitForTrue {
         given(until.success()).willReturn(false);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = new Waiter(options).wait(until);
 
         // Then
         assertThat(actual, is((Object) false));
@@ -84,7 +82,7 @@ public class ITWaiterWaitForTrue {
         given(until.success()).willReturn(null);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = new Waiter(options).wait(until);
 
         // Then
         assertThat(actual, nullValue());

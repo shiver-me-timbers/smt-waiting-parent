@@ -20,24 +20,52 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author Karl Bennett
+ * @see Options
  */
 interface OptionsService {
 
+    /**
+     * @see Options#withDefaults(boolean)
+     */
     OptionsService withDefaults(boolean useDefaults);
 
+    /**
+     * @see Options#withTimeout(Long, TimeUnit)
+     */
     OptionsService withTimeout(Long duration, TimeUnit unit);
 
+    /**
+     * @see Options#withInterval(long, TimeUnit)
+     */
     OptionsService withInterval(long duration, TimeUnit unit);
 
+    /**
+     * @see Options#waitFor(ResultValidator)
+     */
     OptionsService waitFor(ResultValidator resultValidator);
 
+    /**
+     * @see Options#willWaitForTrue(boolean)
+     */
     OptionsService willWaitForTrue(boolean shouldWait);
 
+    /**
+     * @see Options#willWaitForNotNull(boolean)
+     */
     OptionsService willWaitForNotNull(boolean shouldWait);
 
+    /**
+     * @see Options#include(Class)
+     */
     OptionsService include(Class<? extends Throwable> throwable);
 
+    /**
+     * @see Options#exclude(Class)
+     */
     OptionsService exclude(Class<? extends Throwable> throwable);
 
+    /**
+     * @see Options#choose()
+     */
     Choice choose();
 }

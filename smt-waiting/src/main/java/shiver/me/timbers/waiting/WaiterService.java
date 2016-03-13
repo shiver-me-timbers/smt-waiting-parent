@@ -18,8 +18,12 @@ package shiver.me.timbers.waiting;
 
 /**
  * @author Karl Bennett
+ * @see Waiter
  */
 interface WaiterService {
 
+    /**
+     * @see Waiter#wait(Until)
+     */
     <T> T wait(Until<T> until);
 }

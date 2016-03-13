@@ -39,14 +39,11 @@ public class ITWaiterIntervalProperty {
 
     private PropertyManager properties;
 
-    private Waiter waiter;
     private Options options;
 
     @Before
     public void setUp() {
         options = new Options().withTimeout(500L, MILLISECONDS);
-        waiter = new Waiter(options);
-
         properties = new PropertyManager();
     }
 
@@ -67,7 +64,7 @@ public class ITWaiterIntervalProperty {
         given(until.success()).willThrow(new Exception()).willReturn(new Object());
 
         // When
-        waiter.wait(until);
+        new Waiter(options).wait(until);
 
         // Then
         assertThat(System.currentTimeMillis() - start, allOf(greaterThanOrEqualTo(200L), lessThan(300L)));
@@ -86,7 +83,7 @@ public class ITWaiterIntervalProperty {
         given(until.success()).willThrow(new Exception()).willReturn(new Object());
 
         // When
-        waiter.wait(until);
+        new Waiter(options).wait(until);
 
         // Then
         assertThat(System.currentTimeMillis() - start, allOf(greaterThanOrEqualTo(200L), lessThan(300L)));
@@ -107,6 +104,6 @@ public class ITWaiterIntervalProperty {
         expectedException.expectMessage(containsString(invalidTimeUnit));
 
         // When
-        waiter.wait(until);
+        new Waiter(options).wait(until);
     }
 }

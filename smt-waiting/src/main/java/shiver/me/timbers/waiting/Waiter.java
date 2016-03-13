@@ -17,25 +17,48 @@
 package shiver.me.timbers.waiting;
 
 /**
- * Waits until some evaluation succeeds or the wait times out.
+ * Waits {@link Until} an execution succeeds by not throwing an exception and fulfilling any requirements set by the
+ * {@link Options} passed into the constructor or {@code Options} timeout is reached.
  *
  * @author Karl Bennett
  */
 public class Waiter implements WaiterService {
 
-    private Options options;
+    final Choice choice;
 
+    /**
+     * Create a new waiter with the default options.
+     * <code>
+     * smt.waiting.timeout.duration  # 10
+     * smt.waiting.timeout.unit      # SECONDS
+     * smt.waiting.interval.duration # 100
+     * smt.waiting.interval.unit     # MILLISECONDS
+     * smt.waiting.waitForTrue       # false
+     * smt.waiting.waitForNotNull    # false
+     * smt.waiting.waitFor           # empty
+     * smt.waiting.include           # empty
+     * smt.waiting.exclude           # empty
+     * </code>
+     */
     public Waiter() {
         this(new Options());
     }
 
+    /**
+     * Create a new waiter with custom options.
+     */
     public Waiter(Options options) {
-        this.options = options;
+        this.choice = options.choose();
     }
 
+    /**
+     * Wait for the {@link Until} execution to succeed and meet the requirements set by the waiters {@link Options}.
+     *
+     * @param until the operation that will be executed until success or timeout.
+     * @param <T>   the type returned by the method that is being waited on.
+     * @return the result of the waited method call or {@code null} for a {@code void} method.
+     */
     public <T> T wait(Until<T> until) {
-
-        final Choice choice = options.choose();
 
         final Timer timer = choice.startTimer();
 

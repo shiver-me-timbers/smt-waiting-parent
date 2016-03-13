@@ -17,6 +17,8 @@
 package shiver.me.timbers.waiting;
 
 /**
+ * Validates that the result of a method being waited on is not null.
+ *
  * @author Karl Bennett
  */
 public class NotNullResult implements ResultValidator {

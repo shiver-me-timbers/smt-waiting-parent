@@ -32,12 +32,10 @@ import static org.mockito.Mockito.verify;
 public class ITWaiterWaitForNotNull {
 
     private Options options;
-    private Waiter waiter;
 
     @Before
     public void setUp() {
         options = new Options().withTimeout(500L, MILLISECONDS);
-        waiter = new Waiter(options);
     }
 
     @Test
@@ -52,7 +50,7 @@ public class ITWaiterWaitForNotNull {
         given(until.success()).willReturn(null, null, expected);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = new Waiter(options).wait(until);
 
         // Then
         assertThat(actual, is(expected));
@@ -69,7 +67,7 @@ public class ITWaiterWaitForNotNull {
         given(until.success()).willReturn(null);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = new Waiter(options).wait(until);
 
         // Then
         assertThat(actual, nullValue());

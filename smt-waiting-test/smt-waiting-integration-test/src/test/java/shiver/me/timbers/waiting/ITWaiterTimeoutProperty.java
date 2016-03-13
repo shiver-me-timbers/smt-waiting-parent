@@ -39,14 +39,11 @@ public class ITWaiterTimeoutProperty {
 
     private PropertyManager properties;
 
-    private Waiter waiter;
     private Options options;
 
     @Before
     public void setUp() {
         options = new Options();
-        waiter = new Waiter(options);
-
         properties = new PropertyManager();
     }
 
@@ -68,7 +65,7 @@ public class ITWaiterTimeoutProperty {
 
         // When
         try {
-            waiter.wait(until);
+            new Waiter(options).wait(until);
         } catch (Exception e) {
             // We only care about the number of calls, not how it failed.
         }
@@ -91,7 +88,7 @@ public class ITWaiterTimeoutProperty {
 
         // When
         try {
-            waiter.wait(until);
+            new Waiter(options).wait(until);
         } catch (Exception e) {
             // We only care about the number of calls, not how it failed.
         }
@@ -115,6 +112,6 @@ public class ITWaiterTimeoutProperty {
         expectedException.expectMessage(containsString(invalidTimeUnit));
 
         // When
-        waiter.wait(until);
+        new Waiter(options).wait(until);
     }
 }

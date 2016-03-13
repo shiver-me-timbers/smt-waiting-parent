@@ -17,9 +17,14 @@
 package shiver.me.timbers.waiting;
 
 /**
+ * Implement this interface to apply custom validation logic to the {@link Waiter}.
+ *
  * @author Karl Bennett
  */
 public interface ResultValidator<T> {
 
+    /**
+     * If this method does not return {@code true} then the method being waited on will be rerun.
+     */
     boolean isValid(T result) throws Throwable;
 }
