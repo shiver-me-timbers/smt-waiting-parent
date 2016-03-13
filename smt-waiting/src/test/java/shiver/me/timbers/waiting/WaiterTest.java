@@ -47,6 +47,13 @@ public class WaiterTest {
     }
 
     @Test
+    public void can_create_a_default_waiter() {
+
+        // When
+        new Waiter();
+    }
+
+    @Test
     public void can_create_a_waiter() {
 
         // When
@@ -284,41 +291,5 @@ public class WaiterTest {
 
         // When
         new Waiter(options).wait(until);
-    }
-
-    @Test
-    public void name() {
-
-        class BecauseResult implements ResultValidator<String> {
-            public boolean isValid(String result) throws Throwable {
-                return result.toLowerCase().contains("because");
-            }
-        }
-
-        final Options options = new Options()
-            .withTimeout(10L, TimeUnit.MINUTES)
-            .withInterval(1L, TimeUnit.MILLISECONDS)
-            .willWaitForTrue(false)
-            .willWaitForNotNull(true)
-            .waitFor(new BecauseResult())
-            .include(IllegalStateException.class)
-            .exclude(IllegalArgumentException.class);
-        new Waiter(options).wait(new Until<String>() {
-            private final List<String> sentences = new ArrayList<String>() {{
-                add("Also all of these options can be combined.");
-                add("Just because.");
-            }};
-            private Exception exception;
-
-            public String success() throws Throwable {
-                final String sentence = sentences.remove(0);
-                System.out.println(sentence);
-                if (exception == null) {
-                    throw (exception = new IllegalStateException());
-                }
-                return sentence;
-            }
-        });
-
     }
 }
