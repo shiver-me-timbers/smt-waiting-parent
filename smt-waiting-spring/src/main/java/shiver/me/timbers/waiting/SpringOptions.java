@@ -17,6 +17,9 @@
 package shiver.me.timbers.waiting;
 
 /**
+ * This is exactly the same as the {@link Options} class except it gets it's global property configuration from the
+ * Spring context.
+ *
  * @author Karl Bennett
  */
 public class SpringOptions extends Options {

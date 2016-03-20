@@ -17,6 +17,8 @@
 package shiver.me.timbers.waiting;
 
 /**
+ * This is exactly the same as the {@link Waiter} except it can only be configured with {@link SpringOptions}.
+ *
  * @author Karl Bennett
  */
 public class SpringWaiter extends Waiter {
