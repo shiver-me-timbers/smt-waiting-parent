@@ -64,8 +64,8 @@ class Examples {
 #### Options
 
 All the [`Options`](../smt-waiting/src/main/java/shiver/me/timbers/waiting/Options.java) can be set with the annotation.
-Also annotated [`Waiter`](../smt-waiting/src/main/java/shiver/me/timbers/waiting/Waiter.java)s pick up all globally
-configured values, so any options that haven't been manually overridden with the annotation can be controlled with
+Also annotated `Waiter`s pick up all globally configured values, so any options that haven't been manually overridden
+with the annotation can be controlled with
 [JVM](../smt-waiting#properties) or [Spring](../smt-waiting-spring#properties) properties.
 
 ```java
