@@ -17,6 +17,10 @@
 package shiver.me.timbers.waiting;
 
 /**
+ * This enum is used to set boolean annotation attributes. Setting the attributes default value as {@link #UNDECIDED}
+ * makes it possible to know if a value has been set with the annotation or not. If this is the case then the attribute
+ * can be set with any related global property value.
+ *
  * @author Karl Bennett
  */
 public enum Decision {

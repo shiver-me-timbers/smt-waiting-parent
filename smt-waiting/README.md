@@ -117,7 +117,7 @@ class Examples {
         new Waiter(new Options().waitFor(new BecauseResult())).wait(new Until<String>() {
             private final List<String> sentences = new ArrayList<String>() {{
                add("This will run twice.");
-               add("Because it need to return this sentence.");
+               add("Because it needs to return this sentence.");
             }};
 
             public String success() throws Throwable {

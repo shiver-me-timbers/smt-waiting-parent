@@ -22,6 +22,9 @@ import java.lang.annotation.Target;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * This annotation is used within the {@link Wait} annotation to set how long the to wait in between executions of the
+ * annotated method.
+ *
  * @author Karl Bennett
  */
 @Target({})

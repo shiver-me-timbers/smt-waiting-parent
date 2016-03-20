@@ -26,23 +26,54 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static shiver.me.timbers.waiting.Decision.UNDECIDED;
 
 /**
+ * Add this annotation to any class or method to wrap the method call within a {@link Waiter}. Annotating at the class
+ * level will wrap all methods within that class.
+ * <p>
+ * All {@link Options} values can be set with this annotation.
+ * <p>
+ * Note: This annotation is not inherited.
+ *
  * @author Karl Bennett
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Wait {
 
+    /**
+     * Set how long we should wait for the method to succeed.
+     */
     Timeout value() default @Timeout(duration = -1, unit = SECONDS);
 
+    /**
+     * Set how long we should wait in between executions of the method.
+     */
     Interval interval() default @Interval(duration = -1, unit = MILLISECONDS);
 
+    /**
+     * Add {@code ResultValidator}s that must pass before the method is considered to have succeeded in executing.
+     */
     Class<? extends ResultValidator>[] waitFor() default {};
 
+    /**
+     * If set to {@link Decision#YES} the methods execution will not be considered successful until it returns true.
+     */
     Decision waitForTrue() default UNDECIDED;
 
+    /**
+     * If set to {@link Decision#YES} the methods execution will not be considered successful until it returns a nonnull
+     * value.
+     */
     Decision waitForNotNull() default UNDECIDED;
 
+    /**
+     * The {@code Waiter} will rerun the method being waited on if it throws any {@code Throwable}s added to the include
+     * list, any other {@code Throwable}s will be instantly rethrown and the method will not be rerun.
+     */
     Class<? extends Throwable>[] include() default {};
 
+    /**
+     * The {@code Waiter} will not rerun the method being waited on if it throws any {@code Throwable}s added to the
+     * exclude list, it will instead rethrow. Any other {@code Throwable}s will cause the method to be rerun.
+     */
     Class<? extends Throwable>[] exclude() default {};
 }

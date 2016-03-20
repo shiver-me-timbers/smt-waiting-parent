@@ -142,7 +142,7 @@ public class Options implements OptionsService {
 
     /**
      * The {@code Waiter} will rerun the method being waited on if it throws any {@code Throwable}s added to the include
-     * list, any other {@code Throwable} will be instantly rethrown and the method will not be rerun.
+     * list, any other {@code Throwable}s will be instantly rethrown and the method will not be rerun.
      */
     @Override
     public Options include(Class<? extends Throwable> throwable) {
@@ -151,8 +151,8 @@ public class Options implements OptionsService {
     }
 
     /**
-     * The {@code Waiter} will instantly rethrown any {@code Throwable}s added to the exclude list by the method being
-     * waited on, any other {@code Throwable} will cause the method to be rerun.
+     * The {@code Waiter} will not rerun the method being waited on if it throws any {@code Throwable}s added to the
+     * exclude list, it will instead rethrow. Any other {@code Throwable}s will cause the method to be rerun.
      */
     @Override
     public Options exclude(Class<? extends Throwable> throwable) {

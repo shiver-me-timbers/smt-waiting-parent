@@ -22,6 +22,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
 /**
+ * Use this aspect to add support for the {@link Wait} annotation at the class and method level
+ *
  * @author Karl Bennett
  */
 @Aspect
