@@ -17,7 +17,7 @@ smt-waiting-spring
 ===========
 [![Build Status](https://travis-ci.org/shiver-me-timbers/smt-waiting-parent.svg)](https://travis-ci.org/shiver-me-timbers/smt-waiting-parent) [![Coverage Status](https://coveralls.io/repos/shiver-me-timbers/smt-waiting-parent/badge.svg?branch=master&service=github)](https://coveralls.io/github/shiver-me-timbers/smt-waiting-parent?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.shiver-me-timbers/smt-waiting-spring/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.shiver-me-timbers/smt-waiting-spring/)
 
-This library contains the ['SpringOptions'](src/main/java/shiver/me/timbers/waiting/SpringOptions.java) that can be
+This library contains the [`SpringOptions`](src/main/java/shiver/me/timbers/waiting/SpringOptions.java) that can be
 used to configure a [`Waiter`](../smt-waiting/src/main/java/shiver/me/timbers/waiting/Waiter.java) instance. If used,
 any options that haven't been set will check within the
 [Spring context](src/main/java/shiver/me/timbers/waiting/SpringPropertyGetter.java) for any related property values. The
