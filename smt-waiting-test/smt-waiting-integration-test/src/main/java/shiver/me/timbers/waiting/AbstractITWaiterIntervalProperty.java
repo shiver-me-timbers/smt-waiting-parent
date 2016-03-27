@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Karl Bennett
+ * Copyright 2015 Karl Bennett
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,12 @@
 
 package shiver.me.timbers.waiting;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.allOf;
@@ -32,58 +33,46 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
 
-public class ITWaiterIntervalProperty {
+public abstract class AbstractITWaiterIntervalProperty extends AbstractITWaiterInterval implements ITWaiterDefaults {
+
+    @Rule
+    public final PropertyRule properties = new PropertyRule();
 
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 
-    private PropertyManager properties;
-
-    private Options options;
-
-    @Before
-    public void setUp() {
-        options = new Options().withTimeout(500L, MILLISECONDS);
-        properties = new PropertyManager();
+    @Override
+    public WaitingInterval interval(long duration, TimeUnit unit) {
+        return new WaitingInterval() {
+            @Override
+            public <T> T intervalMethod(Callable<T> callable) throws Exception {
+                return defaults().defaultsMethod(callable);
+            }
+        };
     }
 
-    @After
-    public void tearDown() {
-        properties.restoreProperties();
-    }
+    protected abstract WaitingInterval overrideInterval(long duration, TimeUnit unit);
 
-    @Test
-    public void Can_configure_the_interval_with_system_properties() throws Throwable {
-
-        final Until until = mock(Until.class);
-        final long start = System.currentTimeMillis();
-
-        // Given
+    @Override
+    public void Can_change_the_interval() throws Throwable {
         properties.setProperty("smt.waiting.interval.duration", "200");
-        properties.setProperty("smt.waiting.interval.unit", "MILLISECONDS");
-        given(until.success()).willThrow(new Exception()).willReturn(new Object());
-
-        // When
-        new Waiter(options).wait(until);
-
-        // Then
-        assertThat(System.currentTimeMillis() - start, allOf(greaterThanOrEqualTo(200L), lessThan(300L)));
+        properties.setProperty("smt.waiting.interval.unit", MILLISECONDS.name());
+        super.Can_change_the_interval();
     }
 
     @Test
     public void Can_override_the_interval_system_properties() throws Throwable {
 
-        final Until until = mock(Until.class);
+        final Callable callable = mock(Callable.class);
         final long start = System.currentTimeMillis();
 
         // Given
         properties.setProperty("smt.waiting.interval.duration", "1");
         properties.setProperty("smt.waiting.interval.unit", "SECONDS");
-        options.withInterval(200L, MILLISECONDS);
-        given(until.success()).willThrow(new Exception()).willReturn(new Object());
+        given(callable.call()).willThrow(new Exception()).willReturn(new Object());
 
         // When
-        new Waiter(options).wait(until);
+        overrideInterval(200L, MILLISECONDS).intervalMethod(callable);
 
         // Then
         assertThat(System.currentTimeMillis() - start, allOf(greaterThanOrEqualTo(200L), lessThan(300L)));
@@ -92,18 +81,17 @@ public class ITWaiterIntervalProperty {
     @Test
     public void Can_handle_invalid_time_unit_property() throws Throwable {
 
-        final Until until = mock(Until.class);
+        final Callable callable = mock(Callable.class);
 
         final String invalidTimeUnit = someString();
 
         // Given
         properties.setProperty("smt.waiting.interval.duration", "1");
         properties.setProperty("smt.waiting.interval.unit", invalidTimeUnit);
-        given(until.success()).willThrow(new Exception());
         expectedException.expect(IllegalStateException.class);
         expectedException.expectMessage(containsString(invalidTimeUnit));
 
         // When
-        new Waiter(options).wait(until);
+        defaults().defaultsMethod(callable);
     }
 }

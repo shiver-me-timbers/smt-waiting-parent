@@ -16,11 +16,11 @@
 
 package shiver.me.timbers.waiting;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import java.util.concurrent.Callable;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -28,30 +28,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class ITWaiterDefaultValues {
+public abstract class AbstractITWaiterWithDefaults implements ITWaiterWithDefaults {
 
-    private PropertyManager properties;
-
-    private Options options;
-    private Waiter waiter;
-
-    @Before
-    public void setUp() {
-        options = new Options().withTimeout(500L, MILLISECONDS);
-        waiter = new Waiter(options);
-
-        properties = new PropertyManager();
-    }
-
-    @After
-    public void tearDown() {
-        properties.restoreProperties();
-    }
+    @Rule
+    public final PropertyRule properties = new PropertyRule();
 
     @Test
     public void Can_reset_values_back_to_defaults() throws Throwable {
 
-        final Until until = mock(Until.class);
+        final Callable until = mock(Callable.class);
 
         final Object expected = new Object();
 
@@ -62,17 +47,16 @@ public class ITWaiterDefaultValues {
         properties.setProperty("smt.waiting.interval.unit", "SECONDS");
         properties.setProperty("smt.waiting.waitForTrue", "true");
         properties.setProperty("smt.waiting.waitForNotNull", "true");
-        properties.setProperty("smt.waiting.waitFor", NoResult.class.getName());
+        properties.setProperty("smt.waiting.waitFor", FailResult.class.getName());
         properties.setProperty("smt.waiting.include", IllegalArgumentException.class.getName());
         properties.setProperty("smt.waiting.exclude", IllegalStateException.class.getName());
-        options.withDefaults(true);
-        given(until.success()).willThrow(new IllegalStateException()).willReturn(expected);
+        given(until.call()).willThrow(new IllegalStateException()).willReturn(expected);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = withDefaults(true).defaultsMethod(until);
 
         // Then
         assertThat(actual, is(expected));
-        verify(until, times(2)).success();
+        verify(until, times(2)).call();
     }
 }
