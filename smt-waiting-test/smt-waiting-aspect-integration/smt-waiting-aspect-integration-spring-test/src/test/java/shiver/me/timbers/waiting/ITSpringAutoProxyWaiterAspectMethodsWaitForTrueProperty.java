@@ -16,10 +16,15 @@
 
 package shiver.me.timbers.waiting;
 
-public class ITSpringLoadTimeWaiterAspectClassWaitForNotNull extends ITSpringWaiterAspectWaitForProperty {
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class ITSpringAutoProxyWaiterAspectMethodsWaitForTrueProperty extends ITSpringWaiterAspectWaitForTrueProperty {
+
+    @Autowired
+    private WaitingComponent component;
 
     @Override
     protected WaitingDefaultsComponent component() {
-        return new WaitingDefaultsClassComponent();
+        return component;
     }
 }

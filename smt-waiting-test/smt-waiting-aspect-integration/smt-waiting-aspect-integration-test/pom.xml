@@ -36,6 +36,11 @@
             <artifactId>smt-waiting-aspect</artifactId>
             <version>4.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.shiver-me-timbers</groupId>
+            <artifactId>smt-waiting-integration-test</artifactId>
+            <version>4.0-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

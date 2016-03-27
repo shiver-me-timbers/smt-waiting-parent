@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-package shiver.me.timbers.waiting;
+package shiver.me.timbers;
 
-public class ITSpringLoadTimeWaiterAspectClassWaitForNotNull extends ITSpringWaiterAspectWaitForProperty {
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 
-    @Override
-    protected WaitingDefaultsComponent component() {
-        return new WaitingDefaultsClassComponent();
-    }
+@Configuration
+@ComponentScan("shiver.me.timbers.waiting.configuration")
+@EnableSpringConfigured
+@PropertySource("classpath:timeout.properties")
+public class WaiterTimeoutConfiguration {
 }

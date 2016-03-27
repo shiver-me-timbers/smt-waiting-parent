@@ -59,7 +59,7 @@ public class ITWaiterTimeoutProperty {
         final long start = System.currentTimeMillis();
 
         // Given
-        properties.setProperty("smt.waiting.timeout.duration", "200");
+        properties.setProperty("smt.waiting.timeout.duration", "500");
         properties.setProperty("smt.waiting.timeout.unit", "MILLISECONDS");
         given(until.success()).willThrow(new Exception());
 
@@ -71,7 +71,7 @@ public class ITWaiterTimeoutProperty {
         }
 
         // Then
-        assertThat(System.currentTimeMillis() - start, allOf(greaterThanOrEqualTo(200L), lessThan(400L)));
+        assertThat(System.currentTimeMillis() - start, allOf(greaterThanOrEqualTo(500L), lessThan(1000L)));
     }
 
     @Test

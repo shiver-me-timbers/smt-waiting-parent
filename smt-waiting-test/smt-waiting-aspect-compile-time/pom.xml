@@ -30,6 +30,10 @@
 
     <name>${project.artifactId}</name>
 
+    <properties>
+        <ajc.java.version>1.7</ajc.java.version>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -37,10 +41,10 @@
                 <artifactId>aspectj-maven-plugin</artifactId>
                 <version>1.7</version>
                 <configuration>
-                    <source>${java.vm.specification.version}</source>
-                    <target>${java.vm.specification.version}</target>
+                    <source>${ajc.java.version}</source>
+                    <target>${ajc.java.version}</target>
                     <Xlint>ignore</Xlint>
-                    <complianceLevel>${java.vm.specification.version}</complianceLevel>
+                    <complianceLevel>${ajc.java.version}</complianceLevel>
                     <aspectLibraries>
                         <aspectLibrary>
                             <groupId>com.github.shiver-me-timbers</groupId>
@@ -75,6 +79,11 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.shiver-me-timbers</groupId>
+            <artifactId>smt-waiting-aspect</artifactId>
+            <version>4.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

@@ -16,7 +16,7 @@
 
 package shiver.me.timbers.waiting;
 
-public class ITSpringLoadTimeWaiterAspectClassWaitForNotNull extends ITSpringWaiterAspectWaitForProperty {
+public class ITCompileTimeWaiterAspectClassWaitForNotNullProperty extends ITWaiterAspectWaitForNotNullProperty {
 
     @Override
     protected WaitingDefaultsComponent component() {
