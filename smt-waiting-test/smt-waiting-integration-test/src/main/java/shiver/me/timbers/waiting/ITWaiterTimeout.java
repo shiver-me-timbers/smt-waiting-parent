@@ -16,11 +16,15 @@
 
 package shiver.me.timbers.waiting;
 
+import org.junit.rules.ExpectedException;
+
 import java.util.concurrent.TimeUnit;
 
 public interface ITWaiterTimeout {
 
     WaitingTimeout timeout(long duration, TimeUnit unit);
+
+    ExpectedException expectedException();
 
     void Can_change_the_timeout() throws Throwable;
 

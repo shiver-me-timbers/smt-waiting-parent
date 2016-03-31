@@ -17,7 +17,6 @@
 package shiver.me.timbers.waiting;
 
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.util.concurrent.Callable;
 
@@ -35,8 +34,6 @@ import static org.mockito.Mockito.verify;
 import static shiver.me.timbers.waiting.WasDurationMatcher.durationWas;
 
 public abstract class AbstractITWaiterTimeout implements ITWaiterTimeout {
-
-    protected abstract ExpectedException expectedException();
 
     @Test
     @Override
