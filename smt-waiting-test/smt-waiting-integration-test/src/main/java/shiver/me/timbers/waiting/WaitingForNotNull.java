@@ -4,5 +4,5 @@ import java.util.concurrent.Callable;
 
 public interface WaitingForNotNull {
 
-    <T> T waitForNotNull(Callable<T> callable) throws Exception;
+    <T> T waitForNotNullMethod(Callable<T> callable) throws Exception;
 }

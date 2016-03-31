@@ -44,7 +44,7 @@ public abstract class AbstractITWaiterWaitForNotNull implements ITWaiterWaitForN
         given(callable.call()).willReturn(null, null, expected);
 
         // When
-        final Object actual = waitForNotNull(500L, MILLISECONDS, true).waitForNotNull(callable);
+        final Object actual = waitForNotNull(500L, MILLISECONDS, true).waitForNotNullMethod(callable);
 
         // Then
         assertThat(actual, is(expected));
@@ -61,7 +61,7 @@ public abstract class AbstractITWaiterWaitForNotNull implements ITWaiterWaitForN
         given(callable.call()).willReturn(null);
 
         // When
-        final Object actual = waitForNotNull(200L, MILLISECONDS, true).waitForNotNull(callable);
+        final Object actual = waitForNotNull(200L, MILLISECONDS, true).waitForNotNullMethod(callable);
 
         // Then
         assertThat(actual, nullValue());

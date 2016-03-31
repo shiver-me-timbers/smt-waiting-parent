@@ -16,7 +16,7 @@ class ManualWaitingForNotNull implements WaitingForNotNull {
     }
 
     @Override
-    public <T> T waitForNotNull(final Callable<T> callable) {
+    public <T> T waitForNotNullMethod(final Callable<T> callable) {
         return new Waiter(new Options().withTimeout(duration, unit).willWaitForNotNull(notNull)).wait(new Until<T>() {
             @Override
             public T success() throws Throwable {

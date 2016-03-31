@@ -38,7 +38,7 @@ public abstract class AbstractITWaiterWaitForNotNullProperty extends AbstractITW
     public WaitingForNotNull waitForNotNull(long duration, TimeUnit unit, boolean isNotNull) {
         return new WaitingForNotNull() {
             @Override
-            public <T> T waitForNotNull(Callable<T> callable) throws Exception {
+            public <T> T waitForNotNullMethod(Callable<T> callable) throws Exception {
                 return defaults().defaultsMethod(callable);
             }
         };
@@ -72,7 +72,7 @@ public abstract class AbstractITWaiterWaitForNotNullProperty extends AbstractITW
         given(callable.call()).willReturn(null);
 
         // When
-        final Object actual = overrideWaitForNotNull(500L, MILLISECONDS, false).waitForNotNull(callable);
+        final Object actual = overrideWaitForNotNull(500L, MILLISECONDS, false).waitForNotNullMethod(callable);
 
         // Then
         assertThat(actual, nullValue());
