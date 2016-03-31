@@ -53,6 +53,13 @@ public abstract class AbstractITWaiter implements ITWaiter {
         }
     };
 
+    private final AbstractITWaiterWaitForNotNull waitForNotNull = new AbstractITWaiterWaitForNotNull() {
+        @Override
+        public WaitingForNotNull waitForNotNull(long duration, TimeUnit unit, boolean isNotNull) {
+            return AbstractITWaiter.this.waitForNotNull(duration, unit, isNotNull);
+        }
+    };
+
     @Test
     public void Can_change_the_interval() throws Throwable {
         interval.Can_change_the_interval();
@@ -96,5 +103,15 @@ public abstract class AbstractITWaiter implements ITWaiter {
     @Test
     public void Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned_and_an_exception_was_thrown() throws Throwable {
         waitFor.Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned_and_an_exception_was_thrown();
+    }
+
+    @Test
+    public void Can_wait_for_a_non_null_value() throws Throwable {
+        waitForNotNull.Can_wait_for_a_non_null_value();
+    }
+
+    @Test
+    public void Can_wait_until_time_out_for_non_null_when_null_always_returned() throws Throwable {
+        waitForNotNull.Can_wait_until_time_out_for_non_null_when_null_always_returned();
     }
 }

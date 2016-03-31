@@ -16,5 +16,5 @@
 
 package shiver.me.timbers.waiting;
 
-public interface ITWaiter extends ITWaiterInterval, ITWaiterTimeout, ITWaiterWaitFor {
+public interface ITWaiter extends ITWaiterInterval, ITWaiterTimeout, ITWaiterWaitFor, ITWaiterWaitForNotNull {
 }

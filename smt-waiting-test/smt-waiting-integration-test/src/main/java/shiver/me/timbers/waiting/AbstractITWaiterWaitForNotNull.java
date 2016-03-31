@@ -16,71 +16,53 @@
 
 package shiver.me.timbers.waiting;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+
+import java.util.concurrent.Callable;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class ITWaiterWaitForNotNullProperty {
-
-    private PropertyManager properties;
-
-    private Options options;
-
-    @Before
-    public void setUp() {
-        options = new Options().withTimeout(500L, MILLISECONDS);
-
-        properties = new PropertyManager();
-    }
-
-    @After
-    public void tearDown() {
-        properties.restoreProperties();
-    }
+public abstract class AbstractITWaiterWaitForNotNull implements ITWaiterWaitForNotNull {
 
     @Test
-    public void Can_set_wait_for_not_null_with_a_system_property() throws Throwable {
+    public void Can_wait_for_a_non_null_value() throws Throwable {
 
-        final Until until = mock(Until.class);
+        final Callable callable = mock(Callable.class);
 
         final Object expected = new Object();
 
         // Given
-        properties.setProperty("smt.waiting.waitForNotNull", "true");
-        given(until.success()).willReturn(null, null, expected);
+        given(callable.call()).willReturn(null, null, expected);
 
         // When
-        final Object actual = new Waiter(options).wait(until);
+        final Object actual = waitForNotNull(500L, MILLISECONDS, true).waitForNotNull(callable);
 
         // Then
         assertThat(actual, is(expected));
-        verify(until, times(3)).success();
+        verify(callable, times(3)).call();
     }
 
     @Test
-    public void Can_override_the_wait_for_not_null_system_property() throws Throwable {
+    public void Can_wait_until_time_out_for_non_null_when_null_always_returned() throws Throwable {
 
-        final Until until = mock(Until.class);
+        final Callable callable = mock(Callable.class);
 
         // Given
-        properties.setProperty("smt.waiting.waitForNotNull", "true");
-        options.willWaitForNotNull(false);
-        given(until.success()).willReturn(null);
+        given(callable.call()).willReturn(null);
 
         // When
-        final Object actual = new Waiter(options).wait(until);
+        final Object actual = waitForNotNull(200L, MILLISECONDS, true).waitForNotNull(callable);
 
         // Then
         assertThat(actual, nullValue());
-        verify(until).success();
+        verify(callable, atLeast(2)).call();
     }
 }
