@@ -19,4 +19,6 @@ package shiver.me.timbers.waiting;
 public interface ITWaiterWithDefaults {
 
     WaitingDefaults withDefaults(boolean defaults);
+
+    void Can_reset_values_back_to_defaults() throws Throwable;
 }

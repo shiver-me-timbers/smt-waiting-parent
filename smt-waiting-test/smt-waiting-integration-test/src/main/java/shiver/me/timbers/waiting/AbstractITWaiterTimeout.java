@@ -39,6 +39,7 @@ public abstract class AbstractITWaiterTimeout implements ITWaiterTimeout {
     protected abstract ExpectedException expectedException();
 
     @Test
+    @Override
     public void Can_change_the_timeout() throws Throwable {
 
         final Callable callable = mock(Callable.class);
@@ -61,6 +62,7 @@ public abstract class AbstractITWaiterTimeout implements ITWaiterTimeout {
     }
 
     @Test
+    @Override
     public void Can_wait_until_no_exception_is_thrown() throws Throwable {
 
         final Callable callable = mock(Callable.class);
@@ -79,6 +81,7 @@ public abstract class AbstractITWaiterTimeout implements ITWaiterTimeout {
     }
 
     @Test
+    @Override
     public void Can_wait_until_time_out_if_exception_always_thrown() throws Throwable {
 
         final Callable callable = mock(Callable.class);
@@ -97,6 +100,7 @@ public abstract class AbstractITWaiterTimeout implements ITWaiterTimeout {
     }
 
     @Test
+    @Override
     public void Can_directly_throw_a_runtime_exception() throws Throwable {
 
         final Callable callable = mock(Callable.class);
@@ -113,6 +117,7 @@ public abstract class AbstractITWaiterTimeout implements ITWaiterTimeout {
     }
 
     @Test
+    @Override
     public void Can_directly_throw_an_error() throws Throwable {
 
         final Callable callable = mock(Callable.class);

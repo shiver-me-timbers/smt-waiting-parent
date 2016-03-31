@@ -34,6 +34,7 @@ public abstract class AbstractITWaiterWithDefaults implements ITWaiterWithDefaul
     public final PropertyRule properties = new PropertyRule();
 
     @Test
+    @Override
     public void Can_reset_values_back_to_defaults() throws Throwable {
 
         final Callable until = mock(Callable.class);

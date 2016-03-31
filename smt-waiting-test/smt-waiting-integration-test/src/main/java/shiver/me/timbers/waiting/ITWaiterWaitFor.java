@@ -21,4 +21,10 @@ import java.util.concurrent.TimeUnit;
 public interface ITWaiterWaitFor {
 
     WaitingFor waitFor(long duration, TimeUnit unit, ResultValidator validator);
+
+    void Can_wait_until_valid_result_is_returned() throws Throwable;
+
+    void Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned() throws Throwable;
+
+    void Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned_and_an_exception_was_thrown() throws Throwable;
 }

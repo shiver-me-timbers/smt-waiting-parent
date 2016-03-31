@@ -21,4 +21,6 @@ import java.util.concurrent.TimeUnit;
 public interface ITWaiterInterval {
 
     WaitingInterval interval(long duration, TimeUnit unit);
+
+    void Can_change_the_interval() throws Throwable;
 }

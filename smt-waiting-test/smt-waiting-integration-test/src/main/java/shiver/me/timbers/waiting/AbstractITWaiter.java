@@ -61,56 +61,67 @@ public abstract class AbstractITWaiter implements ITWaiter {
     };
 
     @Test
+    @Override
     public void Can_change_the_interval() throws Throwable {
         interval.Can_change_the_interval();
     }
 
     @Test
+    @Override
     public void Can_change_the_timeout() throws Throwable {
         timeout.Can_change_the_timeout();
     }
 
     @Test
+    @Override
     public void Can_wait_until_no_exception_is_thrown() throws Throwable {
         timeout.Can_wait_until_no_exception_is_thrown();
     }
 
     @Test
+    @Override
     public void Can_wait_until_time_out_if_exception_always_thrown() throws Throwable {
         timeout.Can_wait_until_time_out_if_exception_always_thrown();
     }
 
     @Test
+    @Override
     public void Can_directly_throw_a_runtime_exception() throws Throwable {
         timeout.Can_directly_throw_a_runtime_exception();
     }
 
     @Test
+    @Override
     public void Can_directly_throw_an_error() throws Throwable {
         timeout.Can_directly_throw_an_error();
     }
 
     @Test
+    @Override
     public void Can_wait_until_valid_result_is_returned() throws Throwable {
         waitFor.Can_wait_until_valid_result_is_returned();
     }
 
     @Test
+    @Override
     public void Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned() throws Throwable {
         waitFor.Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned();
     }
 
     @Test
+    @Override
     public void Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned_and_an_exception_was_thrown() throws Throwable {
         waitFor.Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned_and_an_exception_was_thrown();
     }
 
     @Test
+    @Override
     public void Can_wait_for_a_non_null_value() throws Throwable {
         waitForNotNull.Can_wait_for_a_non_null_value();
     }
 
     @Test
+    @Override
     public void Can_wait_until_time_out_for_non_null_when_null_always_returned() throws Throwable {
         waitForNotNull.Can_wait_until_time_out_for_non_null_when_null_always_returned();
     }

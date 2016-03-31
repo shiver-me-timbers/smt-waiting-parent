@@ -33,6 +33,7 @@ import static org.mockito.Mockito.verify;
 public abstract class AbstractITWaiterInterval implements ITWaiterInterval {
 
     @Test
+    @Override
     public void Can_change_the_interval() throws Throwable {
 
         final Callable callable = mock(Callable.class);

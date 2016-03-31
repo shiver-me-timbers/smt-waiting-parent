@@ -33,6 +33,7 @@ import static org.mockito.Mockito.verify;
 public abstract class AbstractITWaiterWaitForNotNull implements ITWaiterWaitForNotNull {
 
     @Test
+    @Override
     public void Can_wait_for_a_non_null_value() throws Throwable {
 
         final Callable callable = mock(Callable.class);
@@ -51,6 +52,7 @@ public abstract class AbstractITWaiterWaitForNotNull implements ITWaiterWaitForN
     }
 
     @Test
+    @Override
     public void Can_wait_until_time_out_for_non_null_when_null_always_returned() throws Throwable {
 
         final Callable callable = mock(Callable.class);
