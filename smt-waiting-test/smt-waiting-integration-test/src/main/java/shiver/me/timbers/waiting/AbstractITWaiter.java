@@ -60,6 +60,13 @@ public abstract class AbstractITWaiter implements ITWaiter {
         }
     };
 
+    private final AbstractITWaiterWaitForTrue waitForTrue = new AbstractITWaiterWaitForTrue() {
+        @Override
+        public WaitingForTrue waitForTrue(long duration, TimeUnit unit, boolean isTrue) {
+            return AbstractITWaiter.this.waitForTrue(duration, unit, isTrue);
+        }
+    };
+
     @Test
     @Override
     public void Can_change_the_interval() throws Throwable {
@@ -124,5 +131,23 @@ public abstract class AbstractITWaiter implements ITWaiter {
     @Override
     public void Can_wait_until_time_out_for_non_null_when_null_always_returned() throws Throwable {
         waitForNotNull.Can_wait_until_time_out_for_non_null_when_null_always_returned();
+    }
+
+    @Test
+    @Override
+    public void Can_wait_until_true_is_returned() throws Throwable {
+        waitForTrue.Can_wait_until_true_is_returned();
+    }
+
+    @Test
+    @Override
+    public void Can_wait_until_time_out_for_true_when_false_always_returned() throws Throwable {
+        waitForTrue.Can_wait_until_time_out_for_true_when_false_always_returned();
+    }
+
+    @Test
+    @Override
+    public void Can_wait_until_time_out_for_true_when_null_always_returned() throws Throwable {
+        waitForTrue.Can_wait_until_time_out_for_true_when_null_always_returned();
     }
 }

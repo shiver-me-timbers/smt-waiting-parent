@@ -23,4 +23,10 @@ public class ITManualWaiter extends AbstractITWaiter {
     public WaitingForNotNull waitForNotNull(final long duration, final TimeUnit unit, final boolean isNotNull) {
         return new ManualWaitingForNotNull(duration, unit, isNotNull);
     }
+
+    @Override
+    public WaitingForTrue waitForTrue(final long duration, final TimeUnit unit, final boolean isTrue) {
+        return new ManualWaitingForTrue(duration, unit, isTrue);
+    }
+
 }

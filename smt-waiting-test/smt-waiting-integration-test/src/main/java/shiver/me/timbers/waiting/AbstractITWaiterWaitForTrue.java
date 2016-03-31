@@ -16,8 +16,9 @@
 
 package shiver.me.timbers.waiting;
 
-import org.junit.Before;
 import org.junit.Test;
+
+import java.util.concurrent.Callable;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.is;
@@ -29,63 +30,56 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class ITWaiterWaitForTrue {
-
-    private Options options;
-
-    @Before
-    public void setUp() {
-        options = new Options().withTimeout(500L, MILLISECONDS);
-    }
+public abstract class AbstractITWaiterWaitForTrue implements ITWaiterWaitForTrue {
 
     @Test
+    @Override
     public void Can_wait_until_true_is_returned() throws Throwable {
 
-        final Until until = mock(Until.class);
+        final Callable callable = mock(Callable.class);
 
         // Given
-        options.willWaitForTrue(true);
-        given(until.success()).willReturn(false, false, true);
+        given(callable.call()).willReturn(false, false, true);
 
         // When
-        final Object actual = new Waiter(options).wait(until);
+        final Object actual = waitForTrue(500L, MILLISECONDS, true).waitForTrueMethod(callable);
 
         // Then
         assertThat(actual, is((Object) true));
-        verify(until, times(3)).success();
+        verify(callable, times(3)).call();
     }
 
     @Test
+    @Override
     public void Can_wait_until_time_out_for_true_when_false_always_returned() throws Throwable {
 
-        final Until until = mock(Until.class);
+        final Callable callable = mock(Callable.class);
 
         // Given
-        options.willWaitForTrue(true);
-        given(until.success()).willReturn(false);
+        given(callable.call()).willReturn(false);
 
         // When
-        final Object actual = new Waiter(options).wait(until);
+        final Object actual = waitForTrue(200L, MILLISECONDS, true).waitForTrueMethod(callable);
 
         // Then
         assertThat(actual, is((Object) false));
-        verify(until, atLeast(2)).success();
+        verify(callable, atLeast(2)).call();
     }
 
     @Test
+    @Override
     public void Can_wait_until_time_out_for_true_when_null_always_returned() throws Throwable {
 
-        final Until until = mock(Until.class);
+        final Callable callable = mock(Callable.class);
 
         // Given
-        options.willWaitForTrue(true);
-        given(until.success()).willReturn(null);
+        given(callable.call()).willReturn(null);
 
         // When
-        final Object actual = new Waiter(options).wait(until);
+        final Object actual = waitForTrue(200L, MILLISECONDS, true).waitForTrueMethod(callable);
 
         // Then
         assertThat(actual, nullValue());
-        verify(until, atLeast(2)).success();
+        verify(callable, atLeast(2)).call();
     }
 }
