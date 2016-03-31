@@ -63,7 +63,7 @@ public abstract class AbstractITWaiterWaitFor implements ITWaiterWaitFor {
         given(callable.call()).willReturn(expected);
 
         // When
-        final Object actual = waitFor(500L, MILLISECONDS, validator).waitForMethod(callable);
+        final Object actual = waitFor(200L, MILLISECONDS, validator).waitForMethod(callable);
 
         // Then
         assertThat(actual, is(expected));
@@ -81,7 +81,7 @@ public abstract class AbstractITWaiterWaitFor implements ITWaiterWaitFor {
         given(callable.call()).willThrow(new Exception()).willReturn(expected);
 
         // When
-        final Object actual = waitFor(500L, MILLISECONDS, validator).waitForMethod(callable);
+        final Object actual = waitFor(200L, MILLISECONDS, validator).waitForMethod(callable);
 
         // Then
         assertThat(actual, is(expected));
