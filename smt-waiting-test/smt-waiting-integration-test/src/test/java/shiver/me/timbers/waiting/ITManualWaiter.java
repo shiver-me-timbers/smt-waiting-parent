@@ -13,4 +13,8 @@ public class ITManualWaiter extends AbstractITWaiter {
         return new ManualWaiterTimeout(duration, unit);
     }
 
+    @Override
+    public WaitingFor waitFor(final long duration, final TimeUnit unit, final ResultValidator validator) {
+        return new ManualWaitingFor(duration, unit, validator);
+    }
 }

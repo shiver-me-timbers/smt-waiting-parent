@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Karl Bennett
+ * Copyright 2016 Karl Bennett
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,5 +16,9 @@
 
 package shiver.me.timbers.waiting;
 
-public interface ITWaiter extends ITWaiterInterval, ITWaiterTimeout, ITWaiterWaitFor {
+import java.util.concurrent.TimeUnit;
+
+public interface ITWaiterWaitFor {
+
+    WaitingFor waitFor(long duration, TimeUnit unit, ResultValidator validator);
 }

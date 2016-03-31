@@ -46,6 +46,13 @@ public abstract class AbstractITWaiter implements ITWaiter {
         }
     };
 
+    private final AbstractITWaiterWaitFor waitFor = new AbstractITWaiterWaitFor() {
+        @Override
+        public WaitingFor waitFor(long duration, TimeUnit unit, ResultValidator validator) {
+            return AbstractITWaiter.this.waitFor(duration, unit, validator);
+        }
+    };
+
     @Test
     public void Can_change_the_interval() throws Throwable {
         interval.Can_change_the_interval();
@@ -74,5 +81,20 @@ public abstract class AbstractITWaiter implements ITWaiter {
     @Test
     public void Can_directly_throw_an_error() throws Throwable {
         timeout.Can_directly_throw_an_error();
+    }
+
+    @Test
+    public void Can_wait_until_valid_result_is_returned() throws Throwable {
+        waitFor.Can_wait_until_valid_result_is_returned();
+    }
+
+    @Test
+    public void Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned() throws Throwable {
+        waitFor.Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned();
+    }
+
+    @Test
+    public void Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned_and_an_exception_was_thrown() throws Throwable {
+        waitFor.Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned_and_an_exception_was_thrown();
     }
 }

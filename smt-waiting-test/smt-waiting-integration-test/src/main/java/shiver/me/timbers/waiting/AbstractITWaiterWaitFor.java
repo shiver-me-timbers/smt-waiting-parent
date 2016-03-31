@@ -16,8 +16,9 @@
 
 package shiver.me.timbers.waiting;
 
-import org.junit.Before;
 import org.junit.Test;
+
+import java.util.concurrent.Callable;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.is;
@@ -29,69 +30,61 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
 
-public class ITWaiterWaitFor {
+public abstract class AbstractITWaiterWaitFor implements ITWaiterWaitFor {
 
-    private Options options;
-
-    @Before
-    public void setUp() {
-        options = new Options().withTimeout(500L, MILLISECONDS);
-    }
+    private final ValidResult validator = new ValidResult();
 
     @Test
     public void Can_wait_until_valid_result_is_returned() throws Throwable {
 
-        final Until until = mock(Until.class);
+        final Callable callable = mock(Callable.class);
 
         final Object expected = "valid";
 
         // Given
-        options.waitFor(new ValidResult());
-        given(until.success()).willReturn(someString(), someString(), expected);
+        given(callable.call()).willReturn(someString(), someString(), expected);
 
         // When
-        final Object actual = new Waiter(options).wait(until);
+        final Object actual = waitFor(500L, MILLISECONDS, validator).waitForMethod(callable);
 
         // Then
         assertThat(actual, is(expected));
-        verify(until, times(3)).success();
+        verify(callable, times(3)).call();
     }
 
     @Test
     public void Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned() throws Throwable {
 
-        final Until until = mock(Until.class);
+        final Callable callable = mock(Callable.class);
 
         final Object expected = someString();
 
         // Given
-        options.waitFor(new ValidResult());
-        given(until.success()).willReturn(expected);
+        given(callable.call()).willReturn(expected);
 
         // When
-        final Object actual = new Waiter(options).wait(until);
+        final Object actual = waitFor(500L, MILLISECONDS, validator).waitForMethod(callable);
 
         // Then
         assertThat(actual, is(expected));
-        verify(until, atLeast(2)).success();
+        verify(callable, atLeast(2)).call();
     }
 
     @Test
-    public void Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned_an_an_exception_was_thrown() throws Throwable {
+    public void Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned_and_an_exception_was_thrown() throws Throwable {
 
-        final Until until = mock(Until.class);
+        final Callable callable = mock(Callable.class);
 
         final Object expected = someString();
 
         // Given
-        options.waitFor(new ValidResult());
-        given(until.success()).willThrow(new Exception()).willReturn(expected);
+        given(callable.call()).willThrow(new Exception()).willReturn(expected);
 
         // When
-        final Object actual = new Waiter(options).wait(until);
+        final Object actual = waitFor(500L, MILLISECONDS, validator).waitForMethod(callable);
 
         // Then
         assertThat(actual, is(expected));
-        verify(until, atLeast(2)).success();
+        verify(callable, atLeast(2)).call();
     }
 }
