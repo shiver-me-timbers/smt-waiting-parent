@@ -128,7 +128,7 @@ public abstract class AbstractITWaiterTimeout implements ITWaiterTimeout {
         shortTimeout().timeoutMethod(callable);
     }
 
-    private WaiterTimeout shortTimeout() {
+    private WaitingTimeout shortTimeout() {
         return timeout(10L, MILLISECONDS);
     }
 }

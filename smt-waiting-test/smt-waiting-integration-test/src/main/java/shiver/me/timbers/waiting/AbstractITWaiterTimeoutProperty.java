@@ -43,8 +43,8 @@ public abstract class AbstractITWaiterTimeoutProperty extends AbstractITWaiterTi
     public final ExpectedException expectedException = ExpectedException.none();
 
     @Override
-    public WaiterTimeout timeout(long duration, TimeUnit unit) {
-        return new WaiterTimeout() {
+    public WaitingTimeout timeout(long duration, TimeUnit unit) {
+        return new WaitingTimeout() {
             @Override
             public <T> T timeoutMethod(Callable<T> callable) throws Exception {
                 return defaults().defaultsMethod(callable);
@@ -52,7 +52,7 @@ public abstract class AbstractITWaiterTimeoutProperty extends AbstractITWaiterTi
         };
     }
 
-    protected abstract WaiterTimeout overrideTimeout(long duration, TimeUnit unit);
+    protected abstract WaitingTimeout overrideTimeout(long duration, TimeUnit unit);
 
     @Override
     protected ExpectedException expectedException() {

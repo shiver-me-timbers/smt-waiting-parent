@@ -20,5 +20,5 @@ import java.util.concurrent.TimeUnit;
 
 public interface ITWaiterTimeout {
 
-    WaiterTimeout timeout(long duration, TimeUnit unit);
+    WaitingTimeout timeout(long duration, TimeUnit unit);
 }

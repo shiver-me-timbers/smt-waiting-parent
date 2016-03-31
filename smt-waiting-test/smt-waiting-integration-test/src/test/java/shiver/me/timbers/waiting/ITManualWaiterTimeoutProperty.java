@@ -10,7 +10,7 @@ public class ITManualWaiterTimeoutProperty extends AbstractITWaiterTimeoutProper
     }
 
     @Override
-    protected WaiterTimeout overrideTimeout(long duration, TimeUnit unit) {
-        return new ManualWaiterTimeout(duration, unit);
+    protected WaitingTimeout overrideTimeout(long duration, TimeUnit unit) {
+        return new ManualWaitingTimeout(duration, unit);
     }
 }

@@ -9,8 +9,8 @@ public class ITManualWaiter extends AbstractITWaiter {
     }
 
     @Override
-    public WaiterTimeout timeout(final long duration, final TimeUnit unit) {
-        return new ManualWaiterTimeout(duration, unit);
+    public WaitingTimeout timeout(final long duration, final TimeUnit unit) {
+        return new ManualWaitingTimeout(duration, unit);
     }
 
     @Override

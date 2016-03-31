@@ -3,12 +3,12 @@ package shiver.me.timbers.waiting;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-class ManualWaiterTimeout implements WaiterTimeout {
+class ManualWaitingTimeout implements WaitingTimeout {
 
     private final long duration;
     private final TimeUnit unit;
 
-    public ManualWaiterTimeout(long duration, TimeUnit unit) {
+    public ManualWaitingTimeout(long duration, TimeUnit unit) {
         this.duration = duration;
         this.unit = unit;
     }

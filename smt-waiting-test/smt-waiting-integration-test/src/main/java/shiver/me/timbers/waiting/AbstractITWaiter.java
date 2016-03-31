@@ -41,7 +41,7 @@ public abstract class AbstractITWaiter implements ITWaiter {
         }
 
         @Override
-        public WaiterTimeout timeout(long duration, TimeUnit unit) {
+        public WaitingTimeout timeout(long duration, TimeUnit unit) {
             return AbstractITWaiter.this.timeout(duration, unit);
         }
     };
