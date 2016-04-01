@@ -35,10 +35,13 @@ public abstract class AbstractITWaiterWaitForNotNullProperty extends AbstractITW
     public final PropertyRule properties = new PropertyRule();
 
     @Override
-    public WaitingForNotNull waitForNotNull(long duration, TimeUnit unit, boolean isNotNull) {
+    public WaitingForNotNull waitForNotNull(final long duration, final TimeUnit unit, final boolean isNotNull) {
         return new WaitingForNotNull() {
             @Override
             public <T> T waitForNotNullMethod(Callable<T> callable) throws Exception {
+                properties.setProperty("smt.waiting.timeout.duration", String.valueOf(duration));
+                properties.setProperty("smt.waiting.timeout.unit", unit.name());
+                properties.setProperty("smt.waiting.waitForNotNull", String.valueOf(isNotNull));
                 return defaults().defaultsMethod(callable);
             }
         };
@@ -46,17 +49,11 @@ public abstract class AbstractITWaiterWaitForNotNullProperty extends AbstractITW
 
     @Override
     public void Can_wait_for_a_non_null_value() throws Throwable {
-        properties.setProperty("smt.waiting.timeout.duration", "500");
-        properties.setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
-        properties.setProperty("smt.waiting.waitForNotNull", "true");
         super.Can_wait_for_a_non_null_value();
     }
 
     @Override
     public void Can_wait_until_time_out_for_non_null_when_null_always_returned() throws Throwable {
-        properties.setProperty("smt.waiting.timeout.duration", "200");
-        properties.setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
-        properties.setProperty("smt.waiting.waitForNotNull", "true");
         super.Can_wait_until_time_out_for_non_null_when_null_always_returned();
     }
 

@@ -43,10 +43,12 @@ public abstract class AbstractITWaiterTimeoutProperty extends AbstractITWaiterTi
     public final ExpectedException expectedException = ExpectedException.none();
 
     @Override
-    public WaitingTimeout timeout(long duration, TimeUnit unit) {
+    public WaitingTimeout timeout(final long duration, final TimeUnit unit) {
         return new WaitingTimeout() {
             @Override
             public <T> T timeoutMethod(Callable<T> callable) throws Exception {
+                properties.setProperty("smt.waiting.timeout.duration", String.valueOf(duration));
+                properties.setProperty("smt.waiting.timeout.unit", unit.name());
                 return defaults().defaultsMethod(callable);
             }
         };
@@ -61,15 +63,11 @@ public abstract class AbstractITWaiterTimeoutProperty extends AbstractITWaiterTi
 
     @Override
     public void Can_change_the_timeout() throws Throwable {
-        properties.setProperty("smt.waiting.timeout.duration", "200");
-        properties.setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
         super.Can_change_the_timeout();
     }
 
     @Override
     public void Can_wait_until_no_exception_is_thrown() throws Throwable {
-        properties.setProperty("smt.waiting.timeout.duration", "500");
-        properties.setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
         super.Can_wait_until_no_exception_is_thrown();
     }
 

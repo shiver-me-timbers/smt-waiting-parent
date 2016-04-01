@@ -35,10 +35,13 @@ public abstract class AbstractITWaiterWaitForTrueProperty extends AbstractITWait
     public final PropertyRule properties = new PropertyRule();
 
     @Override
-    public WaitingForTrue waitForTrue(long duration, TimeUnit unit, boolean isTrue) {
+    public WaitingForTrue waitForTrue(final long duration, final TimeUnit unit, boolean isTrue) {
         return new WaitingForTrue() {
             @Override
             public <T> T waitForTrueMethod(Callable<T> callable) throws Exception {
+                properties.setProperty("smt.waiting.timeout.duration", String.valueOf(duration));
+                properties.setProperty("smt.waiting.timeout.unit", unit.name());
+                properties.setProperty("smt.waiting.waitForTrue", "true");
                 return defaults().defaultsMethod(callable);
             }
         };
@@ -46,28 +49,17 @@ public abstract class AbstractITWaiterWaitForTrueProperty extends AbstractITWait
 
     @Override
     public void Can_wait_until_true_is_returned() throws Throwable {
-        properties.setProperty("smt.waiting.timeout.duration", "500");
-        properties.setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
-        properties.setProperty("smt.waiting.waitForTrue", "true");
         super.Can_wait_until_true_is_returned();
     }
 
     @Override
     public void Can_wait_until_time_out_for_true_when_false_always_returned() throws Throwable {
-        setShortTimeoutWithWaitForTrue();
         super.Can_wait_until_time_out_for_true_when_false_always_returned();
     }
 
     @Override
     public void Can_wait_until_time_out_for_true_when_null_always_returned() throws Throwable {
-        setShortTimeoutWithWaitForTrue();
         super.Can_wait_until_time_out_for_true_when_null_always_returned();
-    }
-
-    private void setShortTimeoutWithWaitForTrue() {
-        properties.setProperty("smt.waiting.timeout.duration", "200");
-        properties.setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
-        properties.setProperty("smt.waiting.waitForTrue", "true");
     }
 
     protected abstract WaitingForTrue overrideWaitForTrue(long duration, TimeUnit unit, boolean isTrue);

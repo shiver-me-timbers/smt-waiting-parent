@@ -42,10 +42,12 @@ public abstract class AbstractITWaiterIntervalProperty extends AbstractITWaiterI
     public final ExpectedException expectedException = ExpectedException.none();
 
     @Override
-    public WaitingInterval interval(long duration, TimeUnit unit) {
+    public WaitingInterval interval(final long duration, final TimeUnit unit) {
         return new WaitingInterval() {
             @Override
             public <T> T intervalMethod(Callable<T> callable) throws Exception {
+                properties.setProperty("smt.waiting.interval.duration", String.valueOf(duration));
+                properties.setProperty("smt.waiting.interval.unit", unit.name());
                 return defaults().defaultsMethod(callable);
             }
         };
@@ -55,8 +57,6 @@ public abstract class AbstractITWaiterIntervalProperty extends AbstractITWaiterI
 
     @Override
     public void Can_change_the_interval() throws Throwable {
-        properties.setProperty("smt.waiting.interval.duration", "200");
-        properties.setProperty("smt.waiting.interval.unit", MILLISECONDS.name());
         super.Can_change_the_interval();
     }
 

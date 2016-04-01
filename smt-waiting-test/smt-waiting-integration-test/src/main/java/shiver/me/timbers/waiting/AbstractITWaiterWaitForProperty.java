@@ -41,10 +41,13 @@ public abstract class AbstractITWaiterWaitForProperty extends AbstractITWaiterWa
     public final ExpectedException expectedException = ExpectedException.none();
 
     @Override
-    public WaitingFor waitFor(long duration, TimeUnit unit, ResultValidator validator) {
+    public WaitingFor waitFor(final long duration, final TimeUnit unit, final ResultValidator validator) {
         return new WaitingFor() {
             @Override
             public <T> T waitForMethod(Callable<T> callable) throws Exception {
+                properties.setProperty("smt.waiting.timeout.duration", String.valueOf(duration));
+                properties.setProperty("smt.waiting.timeout.unit", unit.name());
+                properties.setProperty("smt.waiting.waitFor", validator.getClass().getName());
                 return defaults().defaultsMethod(callable);
             }
         };
@@ -52,28 +55,17 @@ public abstract class AbstractITWaiterWaitForProperty extends AbstractITWaiterWa
 
     @Override
     public void Can_wait_until_valid_result_is_returned() throws Throwable {
-        properties.setProperty("smt.waiting.timeout.duration", "500");
-        properties.setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
-        properties.setProperty("smt.waiting.waitFor", ValidResult.class.getName());
         super.Can_wait_until_valid_result_is_returned();
     }
 
     @Override
     public void Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned() throws Throwable {
-        shortTimeoutWithValidator();
         super.Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned();
     }
 
     @Override
     public void Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned_and_an_exception_was_thrown() throws Throwable {
-        shortTimeoutWithValidator();
         super.Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned_and_an_exception_was_thrown();
-    }
-
-    private void shortTimeoutWithValidator() {
-        properties.setProperty("smt.waiting.timeout.duration", "200");
-        properties.setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
-        properties.setProperty("smt.waiting.waitFor", ValidResult.class.getName());
     }
 
     protected abstract WaitingFor addWaitFor(long duration, TimeUnit unit, SuccessResult successResult);
