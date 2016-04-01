@@ -55,7 +55,7 @@ public abstract class AbstractITWaiterTimeoutProperty extends AbstractITWaiterTi
     protected abstract WaitingTimeout overrideTimeout(long duration, TimeUnit unit);
 
     @Override
-    protected ExpectedException expectedException() {
+    public ExpectedException expectedException() {
         return expectedException;
     }
 
