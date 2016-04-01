@@ -20,12 +20,18 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractITWaiter implements ITWaiter {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+
+    @Override
+    public ExpectedException expectedException() {
+        return expectedException;
+    }
 
     private final AbstractITWaiterInterval interval = new AbstractITWaiterInterval() {
         @Override
@@ -36,8 +42,8 @@ public abstract class AbstractITWaiter implements ITWaiter {
 
     private final AbstractITWaiterTimeout timeout = new AbstractITWaiterTimeout() {
         @Override
-        protected ExpectedException expectedException() {
-            return expectedException;
+        public ExpectedException expectedException() {
+            return AbstractITWaiter.this.expectedException();
         }
 
         @Override
@@ -64,6 +70,29 @@ public abstract class AbstractITWaiter implements ITWaiter {
         @Override
         public WaitingForTrue waitForTrue(long duration, TimeUnit unit, boolean isTrue) {
             return AbstractITWaiter.this.waitForTrue(duration, unit, isTrue);
+        }
+    };
+
+    private final AbstractITWaiterInclude include = new AbstractITWaiterInclude() {
+        @Override
+        public ExpectedException expectedException() {
+            return AbstractITWaiter.this.expectedException();
+        }
+
+        @Override
+        public WaitingInclude include(long duration, TimeUnit unit, Throwable... includes) {
+            return AbstractITWaiter.this.include(duration, unit, includes);
+        }
+
+        @Override
+        public WaitingInclude includeWithExclude(
+            long duration,
+            TimeUnit unit,
+            List<Throwable> includes,
+            List<Throwable> excludes
+        ) {
+            return AbstractITWaiter.this.includeWithExclude(duration, unit, includes, excludes);
+
         }
     };
 
@@ -149,5 +178,29 @@ public abstract class AbstractITWaiter implements ITWaiter {
     @Override
     public void Can_wait_until_time_out_for_true_when_null_always_returned() throws Throwable {
         waitForTrue.Can_wait_until_time_out_for_true_when_null_always_returned();
+    }
+
+    @Test
+    @Override
+    public void Can_ignore_exceptions_contained_in_the_include_list() throws Throwable {
+        include.Can_ignore_exceptions_contained_in_the_include_list();
+    }
+
+    @Test
+    @Override
+    public void Cannot_ignore_exceptions_that_are_not_contained_in_the_include_list() throws Throwable {
+        include.Cannot_ignore_exceptions_that_are_not_contained_in_the_include_list();
+    }
+
+    @Test
+    @Override
+    public void Can_ignore_all_exceptions_if_no_includes_set() throws Throwable {
+        include.Can_ignore_all_exceptions_if_no_includes_set();
+    }
+
+    @Test
+    @Override
+    public void Can_ignore_exceptions_contained_in_the_include_list_and_not_in_the_exclude_list() throws Throwable {
+        include.Can_ignore_exceptions_contained_in_the_include_list_and_not_in_the_exclude_list();
     }
 }

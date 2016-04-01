@@ -16,10 +16,10 @@
 
 package shiver.me.timbers.waiting;
 
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.is;
@@ -31,24 +31,13 @@ import static org.mockito.Mockito.verify;
 import static shiver.me.timbers.waiting.RandomExceptions.someOtherThrowable;
 import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
 
-public class ITWaiterInclude {
-
-    @Rule
-    public final ExpectedException expectedException = ExpectedException.none();
-
-    private Options options;
-    private Waiter waiter;
-
-    @Before
-    public void setUp() {
-        options = new Options().withTimeout(500L, MILLISECONDS);
-        waiter = new Waiter(options);
-    }
+public abstract class AbstractITWaiterInclude implements ITWaiterInclude {
 
     @Test
+    @Override
     public void Can_ignore_exceptions_contained_in_the_include_list() throws Throwable {
 
-        final Until until = mock(Until.class);
+        final Callable callable = mock(Callable.class);
 
         final Throwable include1 = someThrowable();
         final Throwable include2 = someThrowable();
@@ -57,76 +46,78 @@ public class ITWaiterInclude {
         final Object expected = new Object();
 
         // Given
-        options.include(include1.getClass()).include(include2.getClass()).include(include3.getClass());
-        given(until.success()).willThrow(include1, include2, include3).willReturn(expected);
+        given(callable.call()).willThrow(include1, include2, include3).willReturn(expected);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = include(500L, MILLISECONDS, include1, include2, include3).includeMethod(callable);
 
         // Then
         assertThat(actual, is(expected));
-        verify(until, times(4)).success();
+        verify(callable, times(4)).call();
     }
 
     @Test
+    @Override
     public void Cannot_ignore_exceptions_that_are_not_contained_in_the_include_list() throws Throwable {
 
-        final Until until = mock(Until.class);
+        final Callable callable = mock(Callable.class);
 
         final Throwable expected = someOtherThrowable();
 
         // Given
-        options.include(someThrowable().getClass())
-            .include(someThrowable().getClass())
-            .include(someThrowable().getClass());
-        given(until.success()).willThrow(expected);
-        expectedException.expect(is(expected));
+        given(callable.call()).willThrow(expected);
+        expectedException().expect(is(expected));
 
         // When
-        waiter.wait(until);
+        include(500L, MILLISECONDS, someThrowable(), someThrowable(), someThrowable()).includeMethod(callable);
     }
 
     @Test
+    @Override
     public void Can_ignore_all_exceptions_if_no_includes_set() throws Throwable {
 
-        final Until until = mock(Until.class);
+        final Callable callable = mock(Callable.class);
 
         final Object expected = new Object();
 
         // Given
-        given(until.success()).willThrow(someThrowable(), someThrowable(), someThrowable()).willReturn(expected);
+        given(callable.call()).willThrow(someThrowable(), someThrowable(), someThrowable()).willReturn(expected);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = include(500L, MILLISECONDS).includeMethod(callable);
 
         // Then
         assertThat(actual, is(expected));
-        verify(until, times(4)).success();
+        verify(callable, times(4)).call();
     }
 
     @Test
+    @Override
     public void Can_ignore_exceptions_contained_in_the_include_list_and_not_in_the_exclude_list() throws Throwable {
 
-        final Until until = mock(Until.class);
+        final Callable callable = mock(Callable.class);
 
-        final Throwable include1 = someThrowable();
-        final Throwable include2 = someThrowable();
-        final Throwable include3 = someThrowable();
+        final ArrayList<Throwable> includes = new ArrayList<Throwable>() {{
+            add(someThrowable());
+            add(someThrowable());
+            add(someThrowable());
+        }};
+        final ArrayList<Throwable> excludes = new ArrayList<Throwable>() {{
+            add(someOtherThrowable());
+            add(someOtherThrowable());
+            add(someOtherThrowable());
+        }};
 
         final Object expected = new Object();
 
         // Given
-        options.include(include1.getClass()).include(include2.getClass()).include(include3.getClass());
-        options.exclude(someOtherThrowable().getClass())
-            .exclude(someOtherThrowable().getClass())
-            .exclude(someOtherThrowable().getClass());
-        given(until.success()).willThrow(include1, include2, include3).willReturn(expected);
+        given(callable.call()).willThrow(includes.toArray(new Throwable[3])).willReturn(expected);
 
         // When
-        final Object actual = waiter.wait(until);
+        final Object actual = includeWithExclude(500L, MILLISECONDS, includes, excludes).includeMethod(callable);
 
         // Then
         assertThat(actual, is(expected));
-        verify(until, times(4)).success();
+        verify(callable, times(4)).call();
     }
 }
