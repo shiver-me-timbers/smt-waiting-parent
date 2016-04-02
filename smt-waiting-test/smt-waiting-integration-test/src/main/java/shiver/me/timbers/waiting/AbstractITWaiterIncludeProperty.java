@@ -37,6 +37,7 @@ import static org.mockito.Mockito.verify;
 import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
 import static shiver.me.timbers.waiting.Strings.classNames;
 import static shiver.me.timbers.waiting.Strings.concat;
+import static shiver.me.timbers.waiting.WaitingProperties.addTimeout;
 
 public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterInclude implements ITWaiterDefaults {
 
@@ -66,8 +67,7 @@ public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterIn
         return new WaitingInclude() {
             @Override
             public <T> T includeMethod(Callable<T> callable) throws Exception {
-                properties.setProperty("smt.waiting.timeout.duration", String.valueOf(duration));
-                properties.setProperty("smt.waiting.timeout.unit", unit.name());
+                addTimeout(properties, duration, unit);
                 if (!includes.isEmpty()) {
                     properties.setProperty("smt.waiting.include", concat(classNames(includes), ","));
                 }

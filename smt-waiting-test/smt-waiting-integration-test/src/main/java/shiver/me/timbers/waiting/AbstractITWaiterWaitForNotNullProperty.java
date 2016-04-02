@@ -28,6 +28,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static shiver.me.timbers.waiting.WaitingProperties.addTimeout;
 
 public abstract class AbstractITWaiterWaitForNotNullProperty extends AbstractITWaiterWaitForNotNull implements ITWaiterDefaults {
 
@@ -39,8 +40,7 @@ public abstract class AbstractITWaiterWaitForNotNullProperty extends AbstractITW
         return new WaitingForNotNull() {
             @Override
             public <T> T waitForNotNullMethod(Callable<T> callable) throws Exception {
-                properties.setProperty("smt.waiting.timeout.duration", String.valueOf(duration));
-                properties.setProperty("smt.waiting.timeout.unit", unit.name());
+                addTimeout(properties, duration, unit);
                 properties.setProperty("smt.waiting.waitForNotNull", String.valueOf(isNotNull));
                 return defaults().defaultsMethod(callable);
             }
