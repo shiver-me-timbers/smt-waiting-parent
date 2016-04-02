@@ -19,8 +19,10 @@ package shiver.me.timbers.waiting;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 
+import static java.util.Collections.singletonList;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -31,34 +33,11 @@ import static org.mockito.Mockito.verify;
 import static shiver.me.timbers.waiting.RandomExceptions.someOtherThrowable;
 import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
 
-public abstract class AbstractITWaiterInclude implements ITWaiterInclude {
+public abstract class AbstractITWaiterExclude implements ITWaiterExclude {
 
     @Test
     @Override
-    public void Can_ignore_exceptions_contained_in_the_include_list() throws Throwable {
-
-        final Callable callable = mock(Callable.class);
-
-        final Throwable include1 = someThrowable();
-        final Throwable include2 = someThrowable();
-        final Throwable include3 = someThrowable();
-
-        final Object expected = new Object();
-
-        // Given
-        given(callable.call()).willThrow(include1, include2, include3).willReturn(expected);
-
-        // When
-        final Object actual = includes(500L, MILLISECONDS, include1, include2, include3).includeMethod(callable);
-
-        // Then
-        assertThat(actual, is(expected));
-        verify(callable, times(4)).call();
-    }
-
-    @Test
-    @Override
-    public void Cannot_ignore_exceptions_that_are_not_contained_in_the_include_list() throws Throwable {
+    public void Cannot_ignore_exceptions_that_are_contained_in_the_exclude_list() throws Throwable {
 
         final Callable callable = mock(Callable.class);
 
@@ -69,14 +48,18 @@ public abstract class AbstractITWaiterInclude implements ITWaiterInclude {
         expectedException().expect(is(expected));
 
         // When
-        includes(500L, MILLISECONDS, someThrowable(), someThrowable(), someThrowable()).includeMethod(callable);
+        excludes(500L, MILLISECONDS, someThrowable(), expected, someThrowable()).excludeMethod(callable);
     }
 
     @Test
     @Override
-    public void Can_ignore_all_exceptions_if_no_includes_set() throws Throwable {
+    public void Can_ignore_exceptions_that_are_not_contained_in_the_exclude_list() throws Throwable {
 
         final Callable callable = mock(Callable.class);
+
+        final Throwable exclude1 = someOtherThrowable();
+        final Throwable exclude2 = someOtherThrowable();
+        final Throwable exclude3 = someOtherThrowable();
 
         final Object expected = new Object();
 
@@ -84,7 +67,7 @@ public abstract class AbstractITWaiterInclude implements ITWaiterInclude {
         given(callable.call()).willThrow(someThrowable(), someThrowable(), someThrowable()).willReturn(expected);
 
         // When
-        final Object actual = includes(500L, MILLISECONDS).includeMethod(callable);
+        final Object actual = excludes(500L, MILLISECONDS, exclude1, exclude2, exclude3).excludeMethod(callable);
 
         // Then
         assertThat(actual, is(expected));
@@ -93,7 +76,7 @@ public abstract class AbstractITWaiterInclude implements ITWaiterInclude {
 
     @Test
     @Override
-    public void Can_ignore_exceptions_contained_in_the_include_list_and_not_in_the_exclude_list() throws Throwable {
+    public void Cannot_ignore_exceptions_contained_in_the_exclude_list_and_not_in_the_include_list() throws Throwable {
 
         final Callable callable = mock(Callable.class);
 
@@ -102,22 +85,35 @@ public abstract class AbstractITWaiterInclude implements ITWaiterInclude {
             add(someThrowable());
             add(someThrowable());
         }};
+        final Throwable exclude = someOtherThrowable();
         final ArrayList<Throwable> excludes = new ArrayList<Throwable>() {{
             add(someOtherThrowable());
-            add(someOtherThrowable());
+            add(exclude);
             add(someOtherThrowable());
         }};
 
-        final Object expected = new Object();
-
         // Given
-        given(callable.call()).willThrow(includes.toArray(new Throwable[3])).willReturn(expected);
+        given(callable.call()).willThrow(exclude);
+        expectedException().expect(is(exclude));
 
         // When
-        final Object actual = includesWithExcludes(500L, MILLISECONDS, includes, excludes).includeMethod(callable);
+        excludesWithIncludes(500L, MILLISECONDS, excludes, includes).excludeMethod(callable);
+    }
 
-        // Then
-        assertThat(actual, is(expected));
-        verify(callable, times(4)).call();
+    @Test
+    @Override
+    public void Excludes_take_precedence_over_includes() throws Throwable {
+
+        final Callable callable = mock(Callable.class);
+
+        final Throwable expected = someThrowable();
+        final List<Throwable> expectation = singletonList(expected);
+
+        // Given
+        given(callable.call()).willThrow(expected);
+        expectedException().expect(is(expected));
+
+        // When
+        excludesWithIncludes(500L, MILLISECONDS, expectation, expectation).excludeMethod(callable);
     }
 }

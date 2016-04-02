@@ -61,34 +61,6 @@ public abstract class AbstractITWaiterTimeoutProperty extends AbstractITWaiterTi
         return expectedException;
     }
 
-    @Override
-    public void Can_change_the_timeout() throws Throwable {
-        super.Can_change_the_timeout();
-    }
-
-    @Override
-    public void Can_wait_until_no_exception_is_thrown() throws Throwable {
-        super.Can_wait_until_no_exception_is_thrown();
-    }
-
-    @Override
-    public void Can_wait_until_time_out_if_exception_always_thrown() throws Throwable {
-        shortTimeout();
-        super.Can_wait_until_time_out_if_exception_always_thrown();
-    }
-
-    @Override
-    public void Can_directly_throw_a_runtime_exception() throws Throwable {
-        shortTimeout();
-        super.Can_directly_throw_a_runtime_exception();
-    }
-
-    @Override
-    public void Can_directly_throw_an_error() throws Throwable {
-        shortTimeout();
-        super.Can_directly_throw_an_error();
-    }
-
     @Test
     public void Can_override_the_timeout_system_properties() throws Throwable {
 
@@ -128,10 +100,5 @@ public abstract class AbstractITWaiterTimeoutProperty extends AbstractITWaiterTi
 
         // When
         defaults().defaultsMethod(callable);
-    }
-
-    private void shortTimeout() {
-        properties.setProperty("smt.waiting.timeout.duration", "10");
-        properties.setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
     }
 }

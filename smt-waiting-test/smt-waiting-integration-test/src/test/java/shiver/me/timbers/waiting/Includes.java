@@ -6,13 +6,15 @@ import static java.util.Arrays.asList;
 
 class Includes {
 
-    public static void addIncludes(Options options, Throwable... includes) {
-        addIncludes(options, asList(includes));
+    public static Options addIncludes(Options options, Throwable... includes) {
+        return addIncludes(options, asList(includes));
     }
 
-    public static void addIncludes(Options options, List<Throwable> includes) {
+    public static Options addIncludes(Options options, List<Throwable> includes) {
         for (Throwable include : includes) {
             options.include(include.getClass());
         }
+
+        return options;
     }
 }

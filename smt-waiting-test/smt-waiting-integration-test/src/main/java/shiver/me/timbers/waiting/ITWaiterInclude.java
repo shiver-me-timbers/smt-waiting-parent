@@ -10,9 +10,9 @@ public interface ITWaiterInclude {
 
     ExpectedException expectedException();
 
-    WaitingInclude include(long duration, TimeUnit unit, Throwable... includes);
+    WaitingInclude includes(long duration, TimeUnit unit, Throwable... includes);
 
-    WaitingInclude includeWithExclude(long duration, TimeUnit unit, List<Throwable> includes, List<Throwable> excludes);
+    WaitingInclude includesWithExcludes(long duration, TimeUnit unit, List<Throwable> includes, List<Throwable> excludes);
 
     @Test
     void Can_ignore_exceptions_contained_in_the_include_list() throws Throwable;

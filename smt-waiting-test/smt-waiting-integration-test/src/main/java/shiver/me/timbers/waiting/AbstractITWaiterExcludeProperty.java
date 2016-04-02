@@ -29,17 +29,15 @@ import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static shiver.me.timbers.waiting.RandomExceptions.someOtherThrowable;
 import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
 import static shiver.me.timbers.waiting.WaitingProperties.addExcludesIfPresent;
 import static shiver.me.timbers.waiting.WaitingProperties.addIncludesIfPresent;
 import static shiver.me.timbers.waiting.WaitingProperties.addTimeout;
 
-public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterInclude implements ITWaiterDefaults {
+public abstract class AbstractITWaiterExcludeProperty extends AbstractITWaiterExclude implements ITWaiterDefaults {
 
     @Rule
     public final PropertyRule properties = new PropertyRule();
@@ -53,20 +51,20 @@ public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterIn
     }
 
     @Override
-    public WaitingInclude includes(final long duration, final TimeUnit unit, final Throwable... includes) {
-        return includesWithExcludes(duration, unit, asList(includes), Collections.<Throwable>emptyList());
+    public WaitingExclude excludes(long duration, TimeUnit unit, Throwable... excludes) {
+        return excludesWithIncludes(duration, unit, asList(excludes), Collections.<Throwable>emptyList());
     }
 
     @Override
-    public WaitingInclude includesWithExcludes(
+    public WaitingExclude excludesWithIncludes(
         final long duration,
         final TimeUnit unit,
-        final List<Throwable> includes,
-        final List<Throwable> excludes
+        final List<Throwable> excludes,
+        final List<Throwable> includes
     ) {
-        return new WaitingInclude() {
+        return new WaitingExclude() {
             @Override
-            public <T> T includeMethod(Callable<T> callable) throws Exception {
+            public <T> T excludeMethod(Callable<T> callable) throws Exception {
                 addTimeout(properties, duration, unit);
                 addIncludesIfPresent(properties, includes);
                 addExcludesIfPresent(properties, excludes);
@@ -75,54 +73,42 @@ public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterIn
         };
     }
 
-    protected abstract WaitingInclude addInclude(long duration, TimeUnit unit, Throwable include);
+    protected abstract WaitingExclude addExclude(long duration, TimeUnit unit, Throwable exclude);
 
     @Test
-    public void Can_set_multiple_includes_with_a_system_property() throws Throwable {
+    public void Can_set_multiple_excludes_with_a_system_property() throws Throwable {
 
         final Callable callable = mock(Callable.class);
 
-        final Throwable exception1 = someThrowable();
-        final Throwable exception2 = someThrowable();
-
-        final Object expected = new Object();
+        final Throwable expected = someOtherThrowable();
 
         // Given
         properties.setProperty("smt.waiting.timeout.duration", "500");
         properties.setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
-        properties.setProperty("smt.waiting.include", format("%s,%s",
-            exception1.getClass().getName(),
-            exception2.getClass().getName()
+        properties.setProperty("smt.waiting.exclude", format("%s,%s",
+            someThrowable().getClass().getName(),
+            expected.getClass().getName()
         ));
-        given(callable.call()).willThrow(exception1).willThrow(exception2).willReturn(expected);
+        given(callable.call()).willThrow(expected);
+        expectedException.expect(is(expected));
 
         // When
-        final Object actual = defaults().defaultsMethod(callable);
-
-        // Then
-        assertThat(actual, is(expected));
-        verify(callable, times(3)).call();
+        defaults().defaultsMethod(callable);
     }
 
     @Test
-    public void Can_add_an_extra_include_to_those_set_with_the_system_property() throws Throwable {
+    public void Can_add_an_extra_exclude_to_those_set_with_the_system_property() throws Throwable {
 
         final Callable callable = mock(Callable.class);
 
-        final Throwable exception1 = someThrowable();
-        final Throwable exception2 = someThrowable();
-
-        final Object expected = new Object();
+        final Throwable expected = someOtherThrowable();
 
         // Given
-        properties.setProperty("smt.waiting.include", exception1.getClass().getName());
-        given(callable.call()).willThrow(exception1).willThrow(exception2).willReturn(expected);
+        properties.setProperty("smt.waiting.exclude", someThrowable().getClass().getName());
+        given(callable.call()).willThrow(expected);
+        expectedException.expect(is(expected));
 
         // When
-        final Object actual = addInclude(500L, MILLISECONDS, exception2).includeMethod(callable);
-
-        // Then
-        assertThat(actual, is(expected));
-        verify(callable, times(3)).call();
+        addExclude(500L, MILLISECONDS, expected).excludeMethod(callable);
     }
 }

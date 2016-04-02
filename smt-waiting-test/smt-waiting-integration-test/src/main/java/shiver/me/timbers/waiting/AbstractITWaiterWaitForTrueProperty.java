@@ -47,21 +47,6 @@ public abstract class AbstractITWaiterWaitForTrueProperty extends AbstractITWait
         };
     }
 
-    @Override
-    public void Can_wait_until_true_is_returned() throws Throwable {
-        super.Can_wait_until_true_is_returned();
-    }
-
-    @Override
-    public void Can_wait_until_time_out_for_true_when_false_always_returned() throws Throwable {
-        super.Can_wait_until_time_out_for_true_when_false_always_returned();
-    }
-
-    @Override
-    public void Can_wait_until_time_out_for_true_when_null_always_returned() throws Throwable {
-        super.Can_wait_until_time_out_for_true_when_null_always_returned();
-    }
-
     protected abstract WaitingForTrue overrideWaitForTrue(long duration, TimeUnit unit, boolean isTrue);
 
     @Test

@@ -19,9 +19,7 @@ class ManualWaitingInclude implements WaitingInclude {
 
     @Override
     public <T> T includeMethod(final Callable<T> callable) {
-        final Options options = new Options().withTimeout(duration, unit);
-        addIncludes(options, includes);
-        return new Waiter(options).wait(new Until<T>() {
+        return new Waiter(addIncludes(new Options(), includes).withTimeout(duration, unit)).wait(new Until<T>() {
             @Override
             public T success() throws Throwable {
                 return callable.call();

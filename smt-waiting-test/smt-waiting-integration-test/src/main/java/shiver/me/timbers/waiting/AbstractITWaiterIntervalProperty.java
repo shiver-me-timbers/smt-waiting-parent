@@ -55,11 +55,6 @@ public abstract class AbstractITWaiterIntervalProperty extends AbstractITWaiterI
 
     protected abstract WaitingInterval overrideInterval(long duration, TimeUnit unit);
 
-    @Override
-    public void Can_change_the_interval() throws Throwable {
-        super.Can_change_the_interval();
-    }
-
     @Test
     public void Can_override_the_interval_system_properties() throws Throwable {
 

@@ -27,14 +27,12 @@ class ManualWaitingIncludeAndExclude {
     }
 
     public <T> T includeAndExcludeMethod(final Callable<T> callable) {
-        final Options options = new Options().withTimeout(duration, unit);
-        addIncludes(options, includes);
-        addExcludes(options, excludes);
-        return new Waiter(options).wait(new Until<T>() {
-            @Override
-            public T success() throws Throwable {
-                return callable.call();
-            }
-        });
+        return new Waiter(addExcludes(addIncludes(new Options(), includes), excludes).withTimeout(duration, unit))
+            .wait(new Until<T>() {
+                @Override
+                public T success() throws Throwable {
+                    return callable.call();
+                }
+            });
     }
 }

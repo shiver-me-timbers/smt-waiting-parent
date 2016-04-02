@@ -47,16 +47,6 @@ public abstract class AbstractITWaiterWaitForNotNullProperty extends AbstractITW
         };
     }
 
-    @Override
-    public void Can_wait_for_a_non_null_value() throws Throwable {
-        super.Can_wait_for_a_non_null_value();
-    }
-
-    @Override
-    public void Can_wait_until_time_out_for_non_null_when_null_always_returned() throws Throwable {
-        super.Can_wait_until_time_out_for_non_null_when_null_always_returned();
-    }
-
     protected abstract WaitingForNotNull overrideWaitForNotNull(long duration, TimeUnit unit, boolean isNotNull);
 
     @Test

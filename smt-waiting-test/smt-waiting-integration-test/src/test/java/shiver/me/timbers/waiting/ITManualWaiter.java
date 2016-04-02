@@ -31,18 +31,28 @@ public class ITManualWaiter extends AbstractITWaiter {
     }
 
     @Override
-    public WaitingInclude include(final long duration, final TimeUnit unit, final Throwable... includes) {
+    public WaitingInclude includes(final long duration, final TimeUnit unit, final Throwable... includes) {
         return new ManualWaitingInclude(duration, unit, includes);
     }
 
     @Override
-    public WaitingInclude includeWithExclude(
+    public WaitingInclude includesWithExcludes(
         final long duration,
         final TimeUnit unit,
         final List<Throwable> includes,
         final List<Throwable> excludes
     ) {
         return new ManualWaitingIncludeWithExclude(duration, unit, includes, excludes);
+    }
+
+    @Override
+    public WaitingExclude excludes(final long duration, final TimeUnit unit, final Throwable... excludes) {
+        return new ManualWaitingExclude(duration, unit, excludes);
+    }
+
+    @Override
+    public WaitingExclude excludesWithIncludes(long duration, TimeUnit unit, List<Throwable> excludes, List<Throwable> includes) {
+        return new ManualWaitingExcludeWithInclude(duration, unit, excludes, includes);
     }
 
 }

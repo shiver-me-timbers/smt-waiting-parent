@@ -80,19 +80,41 @@ public abstract class AbstractITWaiter implements ITWaiter {
         }
 
         @Override
-        public WaitingInclude include(long duration, TimeUnit unit, Throwable... includes) {
-            return AbstractITWaiter.this.include(duration, unit, includes);
+        public WaitingInclude includes(long duration, TimeUnit unit, Throwable... includes) {
+            return AbstractITWaiter.this.includes(duration, unit, includes);
         }
 
         @Override
-        public WaitingInclude includeWithExclude(
+        public WaitingInclude includesWithExcludes(
             long duration,
             TimeUnit unit,
             List<Throwable> includes,
             List<Throwable> excludes
         ) {
-            return AbstractITWaiter.this.includeWithExclude(duration, unit, includes, excludes);
+            return AbstractITWaiter.this.includesWithExcludes(duration, unit, includes, excludes);
 
+        }
+    };
+
+    private final AbstractITWaiterExclude exclude = new AbstractITWaiterExclude() {
+        @Override
+        public ExpectedException expectedException() {
+            return AbstractITWaiter.this.expectedException();
+        }
+
+        @Override
+        public WaitingExclude excludes(long duration, TimeUnit unit, Throwable... excludes) {
+            return AbstractITWaiter.this.excludes(duration, unit, excludes);
+        }
+
+        @Override
+        public WaitingExclude excludesWithIncludes(
+            long duration,
+            TimeUnit unit,
+            List<Throwable> excludes,
+            List<Throwable> includes
+        ) {
+            return AbstractITWaiter.this.excludesWithIncludes(duration, unit, excludes, includes);
         }
     };
 
@@ -202,5 +224,29 @@ public abstract class AbstractITWaiter implements ITWaiter {
     @Override
     public void Can_ignore_exceptions_contained_in_the_include_list_and_not_in_the_exclude_list() throws Throwable {
         include.Can_ignore_exceptions_contained_in_the_include_list_and_not_in_the_exclude_list();
+    }
+
+    @Test
+    @Override
+    public void Cannot_ignore_exceptions_that_are_contained_in_the_exclude_list() throws Throwable {
+        exclude.Cannot_ignore_exceptions_that_are_contained_in_the_exclude_list();
+    }
+
+    @Test
+    @Override
+    public void Can_ignore_exceptions_that_are_not_contained_in_the_exclude_list() throws Throwable {
+        exclude.Can_ignore_exceptions_that_are_not_contained_in_the_exclude_list();
+    }
+
+    @Test
+    @Override
+    public void Cannot_ignore_exceptions_contained_in_the_exclude_list_and_not_in_the_include_list() throws Throwable {
+        exclude.Cannot_ignore_exceptions_contained_in_the_exclude_list_and_not_in_the_include_list();
+    }
+
+    @Test
+    @Override
+    public void Excludes_take_precedence_over_includes() throws Throwable {
+        exclude.Excludes_take_precedence_over_includes();
     }
 }
