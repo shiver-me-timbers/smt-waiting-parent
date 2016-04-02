@@ -16,7 +16,6 @@
 
 package shiver.me.timbers.waiting;
 
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.concurrent.Callable;
@@ -29,18 +28,16 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public abstract class AbstractITWaiterWaitForTrueProperty extends AbstractITWaiterWaitForTrue implements ITWaiterDefaults {
-
-    @Rule
-    public final WaitingPropertyRule properties = new WaitingPropertyRule();
+public abstract class AbstractITWaiterWaitForTrueProperty extends AbstractITWaiterWaitForTrue
+    implements ITWaiterDefaults, WaitingPropertyRuleAware {
 
     @Override
     public WaitingForTrue waitForTrue(final long duration, final TimeUnit unit, boolean isTrue) {
         return new WaitingForTrue() {
             @Override
             public <T> T waitForTrueMethod(Callable<T> callable) throws Exception {
-                properties.addTimeout(duration, unit);
-                properties.setProperty("smt.waiting.waitForTrue", "true");
+                properties().addTimeout(duration, unit);
+                properties().setProperty("smt.waiting.waitForTrue", "true");
                 return defaults().defaultsMethod(callable);
             }
         };
@@ -54,7 +51,7 @@ public abstract class AbstractITWaiterWaitForTrueProperty extends AbstractITWait
         final Callable callable = mock(Callable.class);
 
         // Given
-        properties.setProperty("smt.waiting.waitForTrue", "true");
+        properties().setProperty("smt.waiting.waitForTrue", "true");
         given(callable.call()).willReturn(false);
 
         // When

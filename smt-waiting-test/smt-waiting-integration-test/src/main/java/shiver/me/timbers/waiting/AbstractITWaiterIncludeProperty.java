@@ -36,10 +36,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
 
-public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterInclude implements ITWaiterDefaults {
-
-    @Rule
-    public final WaitingPropertyRule properties = new WaitingPropertyRule();
+public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterInclude
+    implements ITWaiterDefaults, WaitingPropertyRuleAware {
 
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
@@ -61,7 +59,7 @@ public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterIn
         final List<Throwable> includes,
         final List<Throwable> excludes
     ) {
-        return new PropertyWaitingIncludeAndExclude(properties, duration, unit, includes, excludes) {
+        return new PropertyWaitingIncludeAndExclude(properties(), duration, unit, includes, excludes) {
             @Override
             protected <T> T method(Callable<T> callable) throws Exception {
                 return defaults().defaultsMethod(callable);
@@ -82,9 +80,9 @@ public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterIn
         final Object expected = new Object();
 
         // Given
-        properties.setProperty("smt.waiting.timeout.duration", "500");
-        properties.setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
-        properties.setProperty("smt.waiting.include", format("%s,%s",
+        properties().setProperty("smt.waiting.timeout.duration", "500");
+        properties().setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
+        properties().setProperty("smt.waiting.include", format("%s,%s",
             exception1.getClass().getName(),
             exception2.getClass().getName()
         ));
@@ -109,7 +107,7 @@ public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterIn
         final Object expected = new Object();
 
         // Given
-        properties.setProperty("smt.waiting.include", exception1.getClass().getName());
+        properties().setProperty("smt.waiting.include", exception1.getClass().getName());
         given(callable.call()).willThrow(exception1).willThrow(exception2).willReturn(expected);
 
         // When

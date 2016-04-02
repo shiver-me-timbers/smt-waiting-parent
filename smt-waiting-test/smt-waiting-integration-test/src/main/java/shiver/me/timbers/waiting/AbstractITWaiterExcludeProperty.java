@@ -34,10 +34,8 @@ import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.waiting.RandomExceptions.someOtherThrowable;
 import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
 
-public abstract class AbstractITWaiterExcludeProperty extends AbstractITWaiterExclude implements ITWaiterDefaults {
-
-    @Rule
-    public final WaitingPropertyRule properties = new WaitingPropertyRule();
+public abstract class AbstractITWaiterExcludeProperty extends AbstractITWaiterExclude
+    implements ITWaiterDefaults, WaitingPropertyRuleAware {
 
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
@@ -59,7 +57,7 @@ public abstract class AbstractITWaiterExcludeProperty extends AbstractITWaiterEx
         final List<Throwable> excludes,
         final List<Throwable> includes
     ) {
-        return new PropertyWaitingIncludeAndExclude(properties, duration, unit, includes, excludes) {
+        return new PropertyWaitingIncludeAndExclude(properties(), duration, unit, includes, excludes) {
             @Override
             protected <T> T method(Callable<T> callable) throws Exception {
                 return defaults().defaultsMethod(callable);
@@ -77,9 +75,9 @@ public abstract class AbstractITWaiterExcludeProperty extends AbstractITWaiterEx
         final Throwable expected = someOtherThrowable();
 
         // Given
-        properties.setProperty("smt.waiting.timeout.duration", "500");
-        properties.setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
-        properties.setProperty("smt.waiting.exclude", format("%s,%s",
+        properties().setProperty("smt.waiting.timeout.duration", "500");
+        properties().setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
+        properties().setProperty("smt.waiting.exclude", format("%s,%s",
             someThrowable().getClass().getName(),
             expected.getClass().getName()
         ));
@@ -98,7 +96,7 @@ public abstract class AbstractITWaiterExcludeProperty extends AbstractITWaiterEx
         final Throwable expected = someOtherThrowable();
 
         // Given
-        properties.setProperty("smt.waiting.exclude", someThrowable().getClass().getName());
+        properties().setProperty("smt.waiting.exclude", someThrowable().getClass().getName());
         given(callable.call()).willThrow(expected);
         expectedException.expect(is(expected));
 

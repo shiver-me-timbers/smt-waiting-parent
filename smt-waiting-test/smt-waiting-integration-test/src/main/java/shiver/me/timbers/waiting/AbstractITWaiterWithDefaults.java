@@ -16,7 +16,6 @@
 
 package shiver.me.timbers.waiting;
 
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.concurrent.Callable;
@@ -28,10 +27,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public abstract class AbstractITWaiterWithDefaults implements ITWaiterWithDefaults {
-
-    @Rule
-    public final PropertyRule properties = new PropertyRule();
+public abstract class AbstractITWaiterWithDefaults
+    implements ITWaiterWithDefaults, WaitingPropertyRuleAware {
 
     @Test
     @Override
@@ -42,15 +39,15 @@ public abstract class AbstractITWaiterWithDefaults implements ITWaiterWithDefaul
         final Object expected = new Object();
 
         // Given
-        properties.setProperty("smt.waiting.timeout.duration", "30");
-        properties.setProperty("smt.waiting.timeout.unit", "SECONDS");
-        properties.setProperty("smt.waiting.interval.duration", "10");
-        properties.setProperty("smt.waiting.interval.unit", "SECONDS");
-        properties.setProperty("smt.waiting.waitForTrue", "true");
-        properties.setProperty("smt.waiting.waitForNotNull", "true");
-        properties.setProperty("smt.waiting.waitFor", FailResult.class.getName());
-        properties.setProperty("smt.waiting.include", IllegalArgumentException.class.getName());
-        properties.setProperty("smt.waiting.exclude", IllegalStateException.class.getName());
+        properties().setProperty("smt.waiting.timeout.duration", "30");
+        properties().setProperty("smt.waiting.timeout.unit", "SECONDS");
+        properties().setProperty("smt.waiting.interval.duration", "10");
+        properties().setProperty("smt.waiting.interval.unit", "SECONDS");
+        properties().setProperty("smt.waiting.waitForTrue", "true");
+        properties().setProperty("smt.waiting.waitForNotNull", "true");
+        properties().setProperty("smt.waiting.waitFor", FailResult.class.getName());
+        properties().setProperty("smt.waiting.include", IllegalArgumentException.class.getName());
+        properties().setProperty("smt.waiting.exclude", IllegalStateException.class.getName());
         given(until.call()).willThrow(new IllegalStateException()).willReturn(expected);
 
         // When

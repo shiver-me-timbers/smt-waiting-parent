@@ -33,10 +33,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
 
-public abstract class AbstractITWaiterIntervalProperty extends AbstractITWaiterInterval implements ITWaiterDefaults {
-
-    @Rule
-    public final WaitingPropertyRule properties = new WaitingPropertyRule();
+public abstract class AbstractITWaiterIntervalProperty extends AbstractITWaiterInterval
+    implements ITWaiterDefaults, WaitingPropertyRuleAware {
 
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
@@ -46,8 +44,8 @@ public abstract class AbstractITWaiterIntervalProperty extends AbstractITWaiterI
         return new WaitingInterval() {
             @Override
             public <T> T intervalMethod(Callable<T> callable) throws Exception {
-                properties.setProperty("smt.waiting.interval.duration", String.valueOf(duration));
-                properties.setProperty("smt.waiting.interval.unit", unit.name());
+                properties().setProperty("smt.waiting.interval.duration", String.valueOf(duration));
+                properties().setProperty("smt.waiting.interval.unit", unit.name());
                 return defaults().defaultsMethod(callable);
             }
         };
@@ -62,8 +60,8 @@ public abstract class AbstractITWaiterIntervalProperty extends AbstractITWaiterI
         final long start = System.currentTimeMillis();
 
         // Given
-        properties.setProperty("smt.waiting.interval.duration", "1");
-        properties.setProperty("smt.waiting.interval.unit", "SECONDS");
+        properties().setProperty("smt.waiting.interval.duration", "1");
+        properties().setProperty("smt.waiting.interval.unit", "SECONDS");
         given(callable.call()).willThrow(new Exception()).willReturn(new Object());
 
         // When
@@ -81,8 +79,8 @@ public abstract class AbstractITWaiterIntervalProperty extends AbstractITWaiterI
         final String invalidTimeUnit = someString();
 
         // Given
-        properties.setProperty("smt.waiting.interval.duration", "1");
-        properties.setProperty("smt.waiting.interval.unit", invalidTimeUnit);
+        properties().setProperty("smt.waiting.interval.duration", "1");
+        properties().setProperty("smt.waiting.interval.unit", invalidTimeUnit);
         expectedException.expect(IllegalStateException.class);
         expectedException.expectMessage(containsString(invalidTimeUnit));
 

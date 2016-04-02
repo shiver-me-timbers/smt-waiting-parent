@@ -16,7 +16,6 @@
 
 package shiver.me.timbers.waiting;
 
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.concurrent.Callable;
@@ -29,18 +28,16 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public abstract class AbstractITWaiterWaitForNotNullProperty extends AbstractITWaiterWaitForNotNull implements ITWaiterDefaults {
-
-    @Rule
-    public final WaitingPropertyRule properties = new WaitingPropertyRule();
+public abstract class AbstractITWaiterWaitForNotNullProperty extends AbstractITWaiterWaitForNotNull
+    implements ITWaiterDefaults, WaitingPropertyRuleAware {
 
     @Override
     public WaitingForNotNull waitForNotNull(final long duration, final TimeUnit unit, final boolean isNotNull) {
         return new WaitingForNotNull() {
             @Override
             public <T> T waitForNotNullMethod(Callable<T> callable) throws Exception {
-                properties.addTimeout(duration, unit);
-                properties.setProperty("smt.waiting.waitForNotNull", String.valueOf(isNotNull));
+                properties().addTimeout(duration, unit);
+                properties().setProperty("smt.waiting.waitForNotNull", String.valueOf(isNotNull));
                 return defaults().defaultsMethod(callable);
             }
         };
@@ -54,7 +51,7 @@ public abstract class AbstractITWaiterWaitForNotNullProperty extends AbstractITW
         final Callable callable = mock(Callable.class);
 
         // Given
-        properties.setProperty("smt.waiting.waitForNotNull", "true");
+        properties().setProperty("smt.waiting.waitForNotNull", "true");
         given(callable.call()).willReturn(null);
 
         // When

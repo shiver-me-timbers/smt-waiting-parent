@@ -32,10 +32,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public abstract class AbstractITWaiterWaitForProperty extends AbstractITWaiterWaitFor implements ITWaiterDefaults {
-
-    @Rule
-    public final WaitingPropertyRule properties = new WaitingPropertyRule();
+public abstract class AbstractITWaiterWaitForProperty extends AbstractITWaiterWaitFor
+    implements ITWaiterDefaults, WaitingPropertyRuleAware {
 
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
@@ -45,8 +43,8 @@ public abstract class AbstractITWaiterWaitForProperty extends AbstractITWaiterWa
         return new WaitingFor() {
             @Override
             public <T> T waitForMethod(Callable<T> callable) throws Exception {
-                properties.addTimeout(duration, unit);
-                properties.setProperty("smt.waiting.waitFor", validator.getClass().getName());
+                properties().addTimeout(duration, unit);
+                properties().setProperty("smt.waiting.waitFor", validator.getClass().getName());
                 return defaults().defaultsMethod(callable);
             }
         };
@@ -62,9 +60,9 @@ public abstract class AbstractITWaiterWaitForProperty extends AbstractITWaiterWa
         final Object expected = "valid success";
 
         // Given
-        properties.setProperty("smt.waiting.timeout.duration", "500");
-        properties.setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
-        properties.setProperty("smt.waiting.waitFor", format("%s,%s",
+        properties().setProperty("smt.waiting.timeout.duration", "500");
+        properties().setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
+        properties().setProperty("smt.waiting.waitFor", format("%s,%s",
             ValidResult.class.getName(),
             SuccessResult.class.getName()
         ));
@@ -86,7 +84,7 @@ public abstract class AbstractITWaiterWaitForProperty extends AbstractITWaiterWa
         final Object expected = "valid success";
 
         // Given
-        properties.setProperty("smt.waiting.waitFor", ValidResult.class.getName());
+        properties().setProperty("smt.waiting.waitFor", ValidResult.class.getName());
         given(callable.call()).willReturn("valid", "success", expected);
 
         // When

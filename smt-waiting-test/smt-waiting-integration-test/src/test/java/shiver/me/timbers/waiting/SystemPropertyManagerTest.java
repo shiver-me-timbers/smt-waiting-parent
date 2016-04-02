@@ -8,13 +8,13 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static shiver.me.timbers.data.random.RandomStrings.someAlphaNumericString;
 
-public class PropertyManagerTest {
+public class SystemPropertyManagerTest {
 
     private PropertyManager propertyManager;
 
     @Before
     public void setUp() {
-        propertyManager = new PropertyManager();
+        propertyManager = new SystemPropertyManager();
     }
 
     @After

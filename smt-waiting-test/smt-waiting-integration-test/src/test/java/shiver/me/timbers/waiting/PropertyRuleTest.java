@@ -12,7 +12,6 @@ import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
 
 public class PropertyRuleTest {
@@ -76,35 +75,5 @@ public class PropertyRuleTest {
 
         // Then
         verify(propertyManager).setProperty(key, value);
-    }
-
-    @Test
-    public void Can_disable_setting_properties() {
-
-        // Given
-        final String key = someString();
-        final String value = someString();
-
-        // When
-        rule.disabled(true);
-        rule.setProperty(key, value);
-
-        // Then
-        verifyZeroInteractions(propertyManager);
-    }
-
-    @Test
-    public void Can_disable_restoring_properties() throws Throwable {
-
-        // Given
-        final Statement statement = mock(Statement.class);
-
-        // When
-        rule.disabled(true);
-        rule.apply(statement, mock(Description.class)).evaluate();
-
-        // Then
-        verify(statement).evaluate();
-        verifyZeroInteractions(propertyManager);
     }
 }

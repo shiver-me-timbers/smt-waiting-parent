@@ -8,10 +8,6 @@ import static shiver.me.timbers.waiting.Strings.concat;
 
 public class WaitingPropertyRule extends PropertyRule {
 
-    public WaitingPropertyRule() {
-        super(new PropertyManager());
-    }
-
     public WaitingPropertyRule(PropertyManager propertyManager) {
         super(propertyManager);
     }
