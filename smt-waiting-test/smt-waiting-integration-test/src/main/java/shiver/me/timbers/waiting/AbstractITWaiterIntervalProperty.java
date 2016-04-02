@@ -36,7 +36,7 @@ import static shiver.me.timbers.data.random.RandomStrings.someString;
 public abstract class AbstractITWaiterIntervalProperty extends AbstractITWaiterInterval implements ITWaiterDefaults {
 
     @Rule
-    public final PropertyRule properties = new PropertyRule();
+    public final WaitingPropertyRule properties = new WaitingPropertyRule();
 
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();

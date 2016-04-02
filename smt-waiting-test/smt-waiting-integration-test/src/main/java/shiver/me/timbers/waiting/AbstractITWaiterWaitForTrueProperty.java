@@ -28,19 +28,18 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static shiver.me.timbers.waiting.WaitingProperties.addTimeout;
 
 public abstract class AbstractITWaiterWaitForTrueProperty extends AbstractITWaiterWaitForTrue implements ITWaiterDefaults {
 
     @Rule
-    public final PropertyRule properties = new PropertyRule();
+    public final WaitingPropertyRule properties = new WaitingPropertyRule();
 
     @Override
     public WaitingForTrue waitForTrue(final long duration, final TimeUnit unit, boolean isTrue) {
         return new WaitingForTrue() {
             @Override
             public <T> T waitForTrueMethod(Callable<T> callable) throws Exception {
-                addTimeout(properties, duration, unit);
+                properties.addTimeout(duration, unit);
                 properties.setProperty("smt.waiting.waitForTrue", "true");
                 return defaults().defaultsMethod(callable);
             }

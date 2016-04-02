@@ -28,19 +28,18 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static shiver.me.timbers.waiting.WaitingProperties.addTimeout;
 
 public abstract class AbstractITWaiterWaitForNotNullProperty extends AbstractITWaiterWaitForNotNull implements ITWaiterDefaults {
 
     @Rule
-    public final PropertyRule properties = new PropertyRule();
+    public final WaitingPropertyRule properties = new WaitingPropertyRule();
 
     @Override
     public WaitingForNotNull waitForNotNull(final long duration, final TimeUnit unit, final boolean isNotNull) {
         return new WaitingForNotNull() {
             @Override
             public <T> T waitForNotNullMethod(Callable<T> callable) throws Exception {
-                addTimeout(properties, duration, unit);
+                properties.addTimeout(duration, unit);
                 properties.setProperty("smt.waiting.waitForNotNull", String.valueOf(isNotNull));
                 return defaults().defaultsMethod(callable);
             }

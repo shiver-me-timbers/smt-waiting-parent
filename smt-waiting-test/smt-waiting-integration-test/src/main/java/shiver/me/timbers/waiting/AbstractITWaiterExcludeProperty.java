@@ -33,14 +33,11 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.waiting.RandomExceptions.someOtherThrowable;
 import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
-import static shiver.me.timbers.waiting.WaitingProperties.addExcludesIfPresent;
-import static shiver.me.timbers.waiting.WaitingProperties.addIncludesIfPresent;
-import static shiver.me.timbers.waiting.WaitingProperties.addTimeout;
 
 public abstract class AbstractITWaiterExcludeProperty extends AbstractITWaiterExclude implements ITWaiterDefaults {
 
     @Rule
-    public final PropertyRule properties = new PropertyRule();
+    public final WaitingPropertyRule properties = new WaitingPropertyRule();
 
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
@@ -62,12 +59,9 @@ public abstract class AbstractITWaiterExcludeProperty extends AbstractITWaiterEx
         final List<Throwable> excludes,
         final List<Throwable> includes
     ) {
-        return new WaitingExclude() {
+        return new PropertyWaitingIncludeAndExclude(properties, duration, unit, includes, excludes) {
             @Override
-            public <T> T excludeMethod(Callable<T> callable) throws Exception {
-                addTimeout(properties, duration, unit);
-                addIncludesIfPresent(properties, includes);
-                addExcludesIfPresent(properties, excludes);
+            protected <T> T method(Callable<T> callable) throws Exception {
                 return defaults().defaultsMethod(callable);
             }
         };

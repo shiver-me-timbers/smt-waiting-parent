@@ -31,12 +31,11 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static shiver.me.timbers.waiting.WaitingProperties.addTimeout;
 
 public abstract class AbstractITWaiterWaitForProperty extends AbstractITWaiterWaitFor implements ITWaiterDefaults {
 
     @Rule
-    public final PropertyRule properties = new PropertyRule();
+    public final WaitingPropertyRule properties = new WaitingPropertyRule();
 
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
@@ -46,7 +45,7 @@ public abstract class AbstractITWaiterWaitForProperty extends AbstractITWaiterWa
         return new WaitingFor() {
             @Override
             public <T> T waitForMethod(Callable<T> callable) throws Exception {
-                addTimeout(properties, duration, unit);
+                properties.addTimeout(duration, unit);
                 properties.setProperty("smt.waiting.waitFor", validator.getClass().getName());
                 return defaults().defaultsMethod(callable);
             }
