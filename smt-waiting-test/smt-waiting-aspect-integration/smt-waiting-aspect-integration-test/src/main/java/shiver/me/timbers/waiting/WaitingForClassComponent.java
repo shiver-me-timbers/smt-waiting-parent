@@ -25,11 +25,11 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 @Component
 @Primary
-@Wait(value = @Timeout(duration = 500, unit = MILLISECONDS), waitFor = ContainsValidResult.class)
-public class WaitingForClassComponent implements WaitingForComponent {
+@Wait(value = @Timeout(duration = 500, unit = MILLISECONDS), waitFor = ValidResult.class)
+public class WaitingForClassComponent implements WaitingFor {
 
     @Override
-    public <T> T waitingForMethod(Callable<T> callable) throws Exception {
+    public <T> T waitForMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
 }

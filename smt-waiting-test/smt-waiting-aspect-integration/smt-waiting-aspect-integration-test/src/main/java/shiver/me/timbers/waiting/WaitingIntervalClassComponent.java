@@ -26,7 +26,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 @Component
 @Primary
 @Wait(value = @Timeout(duration = 500, unit = MILLISECONDS), interval = @Interval(duration = 200, unit = MILLISECONDS))
-public class WaitingIntervalClassComponent implements WaitingIntervalComponent {
+public class WaitingIntervalClassComponent implements WaitingInterval {
 
     @Override
     public <T> T intervalMethod(Callable<T> callable) throws Exception {

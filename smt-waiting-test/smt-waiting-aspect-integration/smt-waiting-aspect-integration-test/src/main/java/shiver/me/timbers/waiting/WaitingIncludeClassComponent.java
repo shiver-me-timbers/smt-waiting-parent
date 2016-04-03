@@ -23,8 +23,8 @@ import java.util.concurrent.Callable;
 
 @Component
 @Primary
-@Wait(include = TestIncludeRuntimeException.class)
-public class WaitingIncludeClassComponent implements WaitingIncludeComponent {
+@Wait(include = IllegalArgumentException.class)
+public class WaitingIncludeClassComponent implements WaitingInclude {
 
     @Override
     public <T> T includeMethod(Callable<T> callable) throws Exception {

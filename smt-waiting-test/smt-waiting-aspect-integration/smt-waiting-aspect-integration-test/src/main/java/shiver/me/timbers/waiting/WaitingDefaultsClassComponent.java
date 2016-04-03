@@ -24,7 +24,7 @@ import java.util.concurrent.Callable;
 @Component
 @Primary
 @Wait
-public class WaitingDefaultsClassComponent implements WaitingDefaultsComponent {
+public class WaitingDefaultsClassComponent implements WaitingDefaults {
 
     @Override
     public <T> T defaultsMethod(Callable<T> callable) throws Exception {

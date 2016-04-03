@@ -33,8 +33,7 @@ public class WaitingMethodsComponent implements WaitingComponent {
     }
 
     @Wait(@Timeout(duration = 500, unit = MILLISECONDS))
-    @Override
-    public <T> T durationSetMethod(Callable<T> callable) throws Exception {
+    public <T> T timeoutMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
 
@@ -50,9 +49,9 @@ public class WaitingMethodsComponent implements WaitingComponent {
         return callable.call();
     }
 
-    @Wait(value = @Timeout(duration = 500, unit = MILLISECONDS), waitFor = ContainsValidResult.class)
+    @Wait(value = @Timeout(duration = 500, unit = MILLISECONDS), waitFor = ValidResult.class)
     @Override
-    public <T> T waitingForMethod(Callable<T> callable) throws Exception {
+    public <T> T waitForMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
 
@@ -65,13 +64,13 @@ public class WaitingMethodsComponent implements WaitingComponent {
         return callable.call();
     }
 
-    @Wait(include = TestIncludeRuntimeException.class)
+    @Wait(include = IllegalArgumentException.class)
     @Override
     public <T> T includeMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
 
-    @Wait(exclude = TestExcludeRuntimeException.class)
+    @Wait(exclude = IllegalArgumentException.class)
     @Override
     public <T> T excludeMethod(Callable<T> callable) throws Exception {
         return callable.call();
