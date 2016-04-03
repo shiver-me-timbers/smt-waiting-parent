@@ -18,9 +18,9 @@ package shiver.me.timbers.waiting;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
+import static java.util.Arrays.asList;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -28,8 +28,9 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static shiver.me.timbers.waiting.RandomExceptions.SOME_OTHER_THROWABLES;
+import static shiver.me.timbers.waiting.RandomExceptions.SOME_THROWABLES;
 import static shiver.me.timbers.waiting.RandomExceptions.someOtherThrowable;
-import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
 
 public abstract class AbstractITWaiterInclude implements ITWaiterInclude {
 
@@ -39,17 +40,13 @@ public abstract class AbstractITWaiterInclude implements ITWaiterInclude {
 
         final Callable callable = mock(Callable.class);
 
-        final Throwable include1 = someThrowable();
-        final Throwable include2 = someThrowable();
-        final Throwable include3 = someThrowable();
-
         final Object expected = new Object();
 
         // Given
-        given(callable.call()).willThrow(include1, include2, include3).willReturn(expected);
+        given(callable.call()).willThrow(SOME_THROWABLES).willReturn(expected);
 
         // When
-        final Object actual = includes(500L, MILLISECONDS, include1, include2, include3).includeMethod(callable);
+        final Object actual = includes(500L, MILLISECONDS, SOME_THROWABLES).includeMethod(callable);
 
         // Then
         assertThat(actual, is(expected));
@@ -69,7 +66,7 @@ public abstract class AbstractITWaiterInclude implements ITWaiterInclude {
         expectedException().expect(is(expected));
 
         // When
-        includes(500L, MILLISECONDS, someThrowable(), someThrowable(), someThrowable()).includeMethod(callable);
+        includes(500L, MILLISECONDS, SOME_THROWABLES).includeMethod(callable);
     }
 
     @Test
@@ -81,7 +78,7 @@ public abstract class AbstractITWaiterInclude implements ITWaiterInclude {
         final Object expected = new Object();
 
         // Given
-        given(callable.call()).willThrow(someThrowable(), someThrowable(), someThrowable()).willReturn(expected);
+        given(callable.call()).willThrow(SOME_THROWABLES).willReturn(expected);
 
         // When
         final Object actual = includes(500L, MILLISECONDS).includeMethod(callable);
@@ -97,24 +94,15 @@ public abstract class AbstractITWaiterInclude implements ITWaiterInclude {
 
         final Callable callable = mock(Callable.class);
 
-        final ArrayList<Throwable> includes = new ArrayList<Throwable>() {{
-            add(someThrowable());
-            add(someThrowable());
-            add(someThrowable());
-        }};
-        final ArrayList<Throwable> excludes = new ArrayList<Throwable>() {{
-            add(someOtherThrowable());
-            add(someOtherThrowable());
-            add(someOtherThrowable());
-        }};
-
         final Object expected = new Object();
 
         // Given
-        given(callable.call()).willThrow(includes.toArray(new Throwable[3])).willReturn(expected);
+        given(callable.call()).willThrow(SOME_THROWABLES).willReturn(expected);
 
         // When
-        final Object actual = includesWithExcludes(500L, MILLISECONDS, includes, excludes).includeMethod(callable);
+        final Object actual = includesWithExcludes(
+            500L, MILLISECONDS, asList(SOME_THROWABLES), asList(SOME_OTHER_THROWABLES)
+        ).includeMethod(callable);
 
         // Then
         assertThat(actual, is(expected));

@@ -18,10 +18,10 @@ package shiver.me.timbers.waiting;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.is;
@@ -30,7 +30,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static shiver.me.timbers.waiting.RandomExceptions.someOtherThrowable;
+import static shiver.me.timbers.waiting.RandomExceptions.SOME_OTHER_THROWABLES;
+import static shiver.me.timbers.waiting.RandomExceptions.SOME_THROWABLES;
 import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
 
 public abstract class AbstractITWaiterExclude implements ITWaiterExclude {
@@ -41,14 +42,14 @@ public abstract class AbstractITWaiterExclude implements ITWaiterExclude {
 
         final Callable callable = mock(Callable.class);
 
-        final Throwable expected = someOtherThrowable();
+        final Throwable expected = SOME_OTHER_THROWABLES[0];
 
         // Given
         given(callable.call()).willThrow(expected);
         expectedException().expect(is(expected));
 
         // When
-        excludes(500L, MILLISECONDS, someThrowable(), expected, someThrowable()).excludeMethod(callable);
+        excludes(500L, MILLISECONDS, SOME_THROWABLES[0], expected, SOME_THROWABLES[1]).excludeMethod(callable);
     }
 
     @Test
@@ -57,17 +58,13 @@ public abstract class AbstractITWaiterExclude implements ITWaiterExclude {
 
         final Callable callable = mock(Callable.class);
 
-        final Throwable exclude1 = someOtherThrowable();
-        final Throwable exclude2 = someOtherThrowable();
-        final Throwable exclude3 = someOtherThrowable();
-
         final Object expected = new Object();
 
         // Given
-        given(callable.call()).willThrow(someThrowable(), someThrowable(), someThrowable()).willReturn(expected);
+        given(callable.call()).willThrow(SOME_THROWABLES).willReturn(expected);
 
         // When
-        final Object actual = excludes(500L, MILLISECONDS, exclude1, exclude2, exclude3).excludeMethod(callable);
+        final Object actual = excludes(500L, MILLISECONDS, SOME_OTHER_THROWABLES).excludeMethod(callable);
 
         // Then
         assertThat(actual, is(expected));
@@ -80,24 +77,14 @@ public abstract class AbstractITWaiterExclude implements ITWaiterExclude {
 
         final Callable callable = mock(Callable.class);
 
-        final ArrayList<Throwable> includes = new ArrayList<Throwable>() {{
-            add(someThrowable());
-            add(someThrowable());
-            add(someThrowable());
-        }};
-        final Throwable exclude = someOtherThrowable();
-        final ArrayList<Throwable> excludes = new ArrayList<Throwable>() {{
-            add(someOtherThrowable());
-            add(exclude);
-            add(someOtherThrowable());
-        }};
+        final Throwable exclude = someThrowable();
 
         // Given
         given(callable.call()).willThrow(exclude);
         expectedException().expect(is(exclude));
 
         // When
-        excludesWithIncludes(500L, MILLISECONDS, excludes, includes).excludeMethod(callable);
+        excludesWithIncludes(500L, MILLISECONDS, asList(SOME_THROWABLES), asList(SOME_OTHER_THROWABLES)).excludeMethod(callable);
     }
 
     @Test
@@ -106,7 +93,7 @@ public abstract class AbstractITWaiterExclude implements ITWaiterExclude {
 
         final Callable callable = mock(Callable.class);
 
-        final Throwable expected = someThrowable();
+        final Throwable expected = SOME_THROWABLES[0];
         final List<Throwable> expectation = singletonList(expected);
 
         // Given

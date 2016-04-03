@@ -20,11 +20,17 @@ import static shiver.me.timbers.data.random.RandomThings.someThing;
 
 public class RandomExceptions {
 
+    public static Throwable[] SOME_THROWABLES = {new RuntimeException(), new IllegalArgumentException(), new Error()};
+
+    public static Throwable[] SOME_OTHER_THROWABLES = {
+        new IllegalStateException(), new ClassCastException(), new IllegalAccessError()
+    };
+
     public static Throwable someThrowable() {
-        return someThing(new RuntimeException(), new IllegalArgumentException(), new Error());
+        return someThing(SOME_THROWABLES);
     }
 
     public static Throwable someOtherThrowable() {
-        return someThing(new IllegalStateException(), new ClassCastException(), new IllegalAccessError());
+        return someThing(SOME_OTHER_THROWABLES);
     }
 }
