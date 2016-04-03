@@ -31,7 +31,7 @@ import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static shiver.me.timbers.data.random.RandomStrings.someString;
+import static shiver.me.timbers.data.random.RandomStrings.someAlphaNumericString;
 
 public abstract class AbstractITWaiterIntervalProperty extends AbstractITWaiterInterval
     implements ITWaiterDefaults, WaitingPropertyRuleAware {
@@ -76,7 +76,7 @@ public abstract class AbstractITWaiterIntervalProperty extends AbstractITWaiterI
 
         final Callable callable = mock(Callable.class);
 
-        final String invalidTimeUnit = someString();
+        final String invalidTimeUnit = someAlphaNumericString();
 
         // Given
         properties().setProperty("smt.waiting.interval.duration", "1");

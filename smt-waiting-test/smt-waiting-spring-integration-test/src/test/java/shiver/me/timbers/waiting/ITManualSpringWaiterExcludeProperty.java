@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Karl Bennett
+ * Copyright 2016 Karl Bennett
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,17 @@
 
 package shiver.me.timbers.waiting;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
+import java.util.concurrent.TimeUnit;
 
-@Configuration
-@EnableAutoConfiguration
-@EnableSpringConfigured
-public class SpringWaiterConfiguration {
+public class ITManualSpringWaiterExcludeProperty extends AbstractITSpringWaiterExcludeProperty {
+
+    @Override
+    public WaitingDefaults defaults() {
+        return new SpringManualWaitingDefaults();
+    }
+
+    @Override
+    protected WaitingExclude addExclude(long duration, TimeUnit unit, Throwable exclude) {
+        return new SpringManualWaitingExclude(duration, unit, exclude);
+    }
 }
