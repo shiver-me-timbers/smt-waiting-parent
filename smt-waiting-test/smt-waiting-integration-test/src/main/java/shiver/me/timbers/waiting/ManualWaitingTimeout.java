@@ -3,7 +3,7 @@ package shiver.me.timbers.waiting;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-public class ManualWaitingTimeout<O extends Options, W extends Waiter> extends WaiterCreater<O, W>
+public class ManualWaitingTimeout<O extends Options, W extends Waiter> extends WaiterCreator<O, W>
     implements WaitingTimeout {
 
     private final long duration;

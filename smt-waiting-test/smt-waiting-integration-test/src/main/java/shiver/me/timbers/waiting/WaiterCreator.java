@@ -1,6 +1,6 @@
 package shiver.me.timbers.waiting;
 
-public class WaiterCreater<O extends Options, W extends Waiter> {
+public class WaiterCreator<O extends Options, W extends Waiter> {
 
     @SuppressWarnings("unchecked")
     public O options() {

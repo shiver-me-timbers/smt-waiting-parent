@@ -3,7 +3,7 @@ package shiver.me.timbers.waiting;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-public class ManualWaitingFor<O extends Options, W extends Waiter> extends WaiterCreater<O, W> implements WaitingFor {
+public class ManualWaitingFor<O extends Options, W extends Waiter> extends WaiterCreator<O, W> implements WaitingFor {
 
     private final long duration;
     private final TimeUnit unit;

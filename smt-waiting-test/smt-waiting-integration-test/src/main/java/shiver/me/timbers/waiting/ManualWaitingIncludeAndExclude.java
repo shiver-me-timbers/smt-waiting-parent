@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 import static shiver.me.timbers.waiting.Excludes.addExcludes;
 import static shiver.me.timbers.waiting.Includes.addIncludes;
 
-public class ManualWaitingIncludeAndExclude<O extends Options, W extends Waiter> extends WaiterCreater<O, W> {
+public class ManualWaitingIncludeAndExclude<O extends Options, W extends Waiter> extends WaiterCreator<O, W> {
 
     private final long duration;
     private final TimeUnit unit;
