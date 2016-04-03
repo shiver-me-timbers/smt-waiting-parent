@@ -34,7 +34,7 @@ public abstract class ITWaiterAspectTimeoutProperty extends ITWaiterAspectTimeou
 
     @Before
     public void setUp() {
-        properties = new PropertyManager();
+        properties = new SystemPropertyManager();
         setProperties(properties);
     }
 

@@ -47,10 +47,10 @@
                 <artifactId>aspectj-maven-plugin</artifactId>
                 <version>1.7</version>
                 <configuration>
-                    <source>${java.vm.specification.version}</source>
-                    <target>${java.vm.specification.version}</target>
+                    <source>${java.source.version}</source>
+                    <target>${java.source.version}</target>
                     <Xlint>ignore</Xlint>
-                    <complianceLevel>${java.vm.specification.version}</complianceLevel>
+                    <complianceLevel>${java.source.version}</complianceLevel>
                     <aspectLibraries>
                         <aspectLibrary>
                             <groupId>org.springframework</groupId>

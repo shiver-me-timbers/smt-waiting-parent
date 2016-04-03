@@ -29,7 +29,7 @@ public abstract class ITWaiterAspectWaitForNotNullProperty extends ITWaiterAspec
 
     @Before
     public void setUp() {
-        properties = new PropertyManager();
+        properties = new SystemPropertyManager();
         setProperties(properties);
     }
 

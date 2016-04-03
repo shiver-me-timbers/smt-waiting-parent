@@ -30,10 +30,6 @@
 
     <name>${project.artifactId}</name>
 
-    <properties>
-        <ajc.java.version>1.7</ajc.java.version>
-    </properties>
-
     <build>
         <plugins>
             <plugin>
@@ -41,10 +37,10 @@
                 <artifactId>aspectj-maven-plugin</artifactId>
                 <version>1.7</version>
                 <configuration>
-                    <source>${ajc.java.version}</source>
-                    <target>${ajc.java.version}</target>
+                    <source>${java.source.version}</source>
+                    <target>${java.source.version}</target>
                     <Xlint>ignore</Xlint>
-                    <complianceLevel>${ajc.java.version}</complianceLevel>
+                    <complianceLevel>${java.source.version}</complianceLevel>
                     <aspectLibraries>
                         <aspectLibrary>
                             <groupId>com.github.shiver-me-timbers</groupId>

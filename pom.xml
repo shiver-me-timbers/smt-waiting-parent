@@ -35,6 +35,10 @@
 
     <url>http://shiver-me-timbers.github.io/smt-waiting-parent/</url>
 
+    <properties>
+        <java.source.version>1.7</java.source.version>
+    </properties>
+
     <profiles>
         <profile>
             <id>test</id>

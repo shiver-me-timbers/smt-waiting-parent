@@ -29,7 +29,7 @@ public abstract class ITWaiterAspectWaitForProperty extends ITWaiterAspectWaitFo
 
     @Before
     public void setUp() {
-        properties = new PropertyManager();
+        properties = new SystemPropertyManager();
         setProperties(properties);
     }
 
