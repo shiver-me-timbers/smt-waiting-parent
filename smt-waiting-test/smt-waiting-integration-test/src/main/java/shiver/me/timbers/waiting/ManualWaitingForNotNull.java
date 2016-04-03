@@ -3,7 +3,8 @@ package shiver.me.timbers.waiting;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-class ManualWaitingForNotNull implements WaitingForNotNull {
+public class ManualWaitingForNotNull<O extends Options, W extends Waiter> extends WaiterCreater<O, W>
+    implements WaitingForNotNull {
 
     private final long duration;
     private final TimeUnit unit;
@@ -15,9 +16,10 @@ class ManualWaitingForNotNull implements WaitingForNotNull {
         this.notNull = notNull;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T waitForNotNullMethod(final Callable<T> callable) {
-        return new Waiter(new Options().withTimeout(duration, unit).willWaitForNotNull(notNull)).wait(new Until<T>() {
+        return waiter((O) options().withTimeout(duration, unit).willWaitForNotNull(notNull)).wait(new Until<T>() {
             @Override
             public T success() throws Throwable {
                 return callable.call();

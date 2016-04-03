@@ -6,7 +6,7 @@ import org.junit.runners.model.Statement;
 
 public class PropertyRule implements TestRule {
 
-    private final PropertyManager propertyManager;
+    private PropertyManager propertyManager;
 
     public PropertyRule(PropertyManager propertyManager) {
         this.propertyManager = propertyManager;
@@ -28,5 +28,9 @@ public class PropertyRule implements TestRule {
 
     public void setProperty(String key, String value) {
         propertyManager.setProperty(key, value);
+    }
+
+    public void setPropertyManager(PropertyManager propertyManager) {
+        this.propertyManager = propertyManager;
     }
 }

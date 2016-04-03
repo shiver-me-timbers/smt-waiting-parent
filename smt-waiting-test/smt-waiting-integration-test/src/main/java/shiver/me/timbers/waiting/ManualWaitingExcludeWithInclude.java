@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-class ManualWaitingExcludeWithInclude extends ManualWaitingIncludeAndExclude implements WaitingExclude {
+public class ManualWaitingExcludeWithInclude<O extends Options, W extends Waiter>
+    extends ManualWaitingIncludeAndExclude<O, W> implements WaitingExclude {
 
     public ManualWaitingExcludeWithInclude(
         long duration,

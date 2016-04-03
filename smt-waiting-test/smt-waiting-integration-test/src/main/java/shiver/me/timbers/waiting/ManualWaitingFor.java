@@ -3,7 +3,7 @@ package shiver.me.timbers.waiting;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-class ManualWaitingFor implements WaitingFor {
+public class ManualWaitingFor<O extends Options, W extends Waiter> extends WaiterCreater<O, W> implements WaitingFor {
 
     private final long duration;
     private final TimeUnit unit;
@@ -15,9 +15,10 @@ class ManualWaitingFor implements WaitingFor {
         this.validator = validator;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T waitForMethod(final Callable<T> callable) {
-        return new Waiter(new Options().withTimeout(duration, unit).waitFor(validator)).wait(new Until<T>() {
+        return waiter((O) options().withTimeout(duration, unit).waitFor(validator)).wait(new Until<T>() {
             @Override
             public T success() throws Throwable {
                 return callable.call();

@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 import static shiver.me.timbers.waiting.Excludes.addExcludes;
 import static shiver.me.timbers.waiting.Includes.addIncludes;
 
-class ManualWaitingIncludeAndExclude {
+public class ManualWaitingIncludeAndExclude<O extends Options, W extends Waiter> extends WaiterCreater<O, W> {
 
     private final long duration;
     private final TimeUnit unit;
@@ -26,8 +26,9 @@ class ManualWaitingIncludeAndExclude {
         this.excludes = excludes;
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T includeAndExcludeMethod(final Callable<T> callable) {
-        return new Waiter(addExcludes(addIncludes(new Options(), includes), excludes).withTimeout(duration, unit))
+        return waiter((O) addExcludes(addIncludes(options(), includes), excludes).withTimeout(duration, unit))
             .wait(new Until<T>() {
                 @Override
                 public T success() throws Throwable {

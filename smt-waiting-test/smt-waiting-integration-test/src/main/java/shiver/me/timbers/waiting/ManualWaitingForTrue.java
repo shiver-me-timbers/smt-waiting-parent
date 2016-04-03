@@ -3,7 +3,8 @@ package shiver.me.timbers.waiting;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-class ManualWaitingForTrue implements WaitingForTrue {
+public class ManualWaitingForTrue<O extends Options, W extends Waiter> extends WaiterCreater<O, W>
+    implements WaitingForTrue {
 
     private final long duration;
     private final TimeUnit unit;
@@ -15,9 +16,10 @@ class ManualWaitingForTrue implements WaitingForTrue {
         this.isTrue = isTrue;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T waitForTrueMethod(final Callable<T> callable) {
-        return new Waiter(new Options().withTimeout(duration, unit).willWaitForTrue(isTrue)).wait(new Until<T>() {
+        return waiter((O) options().withTimeout(duration, unit).willWaitForTrue(isTrue)).wait(new Until<T>() {
             @Override
             public T success() throws Throwable {
                 return callable.call();

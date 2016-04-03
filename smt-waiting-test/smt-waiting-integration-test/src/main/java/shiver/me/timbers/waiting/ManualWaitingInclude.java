@@ -5,7 +5,8 @@ import java.util.concurrent.TimeUnit;
 
 import static shiver.me.timbers.waiting.Includes.addIncludes;
 
-class ManualWaitingInclude implements WaitingInclude {
+public class ManualWaitingInclude<O extends Options, W extends Waiter> extends WaiterCreater<O, W>
+    implements WaitingInclude {
 
     private final long duration;
     private final TimeUnit unit;
@@ -17,9 +18,10 @@ class ManualWaitingInclude implements WaitingInclude {
         this.includes = includes;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T includeMethod(final Callable<T> callable) {
-        return new Waiter(addIncludes(new Options(), includes).withTimeout(duration, unit)).wait(new Until<T>() {
+        return waiter((O) addIncludes(options(), includes).withTimeout(duration, unit)).wait(new Until<T>() {
             @Override
             public T success() throws Throwable {
                 return callable.call();
