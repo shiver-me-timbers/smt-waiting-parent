@@ -21,7 +21,7 @@ import java.util.concurrent.Callable;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 @Wait(@Timeout(duration = 500, unit = MILLISECONDS))
-public class WaitingTimeoutClass implements WaitingTimeout {
+public class CanWaitUntilExceptionWaitingTimeoutClass implements WaitingTimeout {
 
     @Override
     public <T> T timeoutMethod(Callable<T> callable) throws Exception {
