@@ -9,7 +9,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class AutoProxyWaitingIntervalFactory extends WaitingIntervalFactory {
 
     @Autowired
-    public AutoProxyWaitingIntervalFactory(CanChangeWaitingIntervalClassComponent canChangeWaitingIntervalClassComponent) {
-        add(canChangeWaitingIntervalClassComponent, 200L, MILLISECONDS);
+    public AutoProxyWaitingIntervalFactory(CanChangeWaitingIntervalClass canChangeWaitingIntervalClass) {
+        add(canChangeWaitingIntervalClass, 200L, MILLISECONDS);
     }
 }

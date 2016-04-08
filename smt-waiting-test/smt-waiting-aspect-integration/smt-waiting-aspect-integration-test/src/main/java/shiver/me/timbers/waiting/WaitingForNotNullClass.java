@@ -16,7 +16,16 @@
 
 package shiver.me.timbers.waiting;
 
-public interface WaitingComponent extends
-    WaitingDefaults, WaitingTimeout, WaitingFor, WaitingForTrue,
-    WaitingForNotNull, WaitingInterval, WaitingInclude, WaitingExclude {
+import java.util.concurrent.Callable;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static shiver.me.timbers.waiting.Decision.YES;
+
+@Wait(value = @Timeout(duration = 500, unit = MILLISECONDS), waitForNotNull = YES)
+public class WaitingForNotNullClass implements WaitingForNotNull {
+
+    @Override
+    public <T> T waitForNotNullMethod(Callable<T> callable) throws Exception {
+        return callable.call();
+    }
 }

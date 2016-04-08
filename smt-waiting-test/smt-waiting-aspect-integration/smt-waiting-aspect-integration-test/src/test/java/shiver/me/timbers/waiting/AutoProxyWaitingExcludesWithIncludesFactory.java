@@ -14,15 +14,15 @@ public class AutoProxyWaitingExcludesWithIncludesFactory extends WaitingExcludes
 
     @Autowired
     public AutoProxyWaitingExcludesWithIncludesFactory(
-        CannotIgnoreExcludeIncludeWaitingExcludeClassComponent cannotIgnoreExcludeIncludeWaitingExcludeClassComponent,
-        ExcludePrecedenceWaitingExcludeClassComponent excludePrecedenceWaitingExcludeClassComponent
+        CannotIgnoreExcludeIncludeWaitingExcludeClass cannotIgnoreExcludeIncludeWaitingExcludeClass,
+        ExcludePrecedenceWaitingExcludeClass excludePrecedenceWaitingExcludeClass
     ) {
         add(
-            cannotIgnoreExcludeIncludeWaitingExcludeClassComponent,
+            cannotIgnoreExcludeIncludeWaitingExcludeClass,
             500L, MILLISECONDS, asList(SOME_THROWABLES), asList(SOME_OTHER_THROWABLES)
         );
         add(
-            excludePrecedenceWaitingExcludeClassComponent,
+            excludePrecedenceWaitingExcludeClass,
             500L, MILLISECONDS, singletonList(SOME_THROWABLES[0]), singletonList(SOME_THROWABLES[0])
         );
     }

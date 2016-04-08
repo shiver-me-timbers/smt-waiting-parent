@@ -16,18 +16,13 @@
 
 package shiver.me.timbers.waiting;
 
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
-
 import java.util.concurrent.Callable;
 
-@Component
-@Primary
-@Wait(include = IllegalArgumentException.class)
-public class WaitingIncludeClassComponent implements WaitingInclude {
+@Wait(exclude = {RuntimeException.class, IllegalStateException.class, IllegalArgumentException.class})
+public class CannotIgnoreWaitingExcludeClass implements WaitingExclude {
 
     @Override
-    public <T> T includeMethod(Callable<T> callable) throws Exception {
+    public <T> T excludeMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
 }

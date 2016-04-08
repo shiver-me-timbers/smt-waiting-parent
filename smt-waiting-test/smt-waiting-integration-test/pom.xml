@@ -44,6 +44,5 @@
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-random</artifactId>
         </dependency>
-
     </dependencies>
 </project>

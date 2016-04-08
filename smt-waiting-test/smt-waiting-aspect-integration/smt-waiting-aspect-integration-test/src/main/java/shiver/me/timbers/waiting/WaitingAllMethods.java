@@ -16,15 +16,12 @@
 
 package shiver.me.timbers.waiting;
 
-import org.springframework.stereotype.Component;
-
 import java.util.concurrent.Callable;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static shiver.me.timbers.waiting.Decision.YES;
 
-@Component
-public class WaitingMethodsComponent implements WaitingComponent {
+public class WaitingAllMethods implements WaitingAll {
 
     @Wait
     @Override

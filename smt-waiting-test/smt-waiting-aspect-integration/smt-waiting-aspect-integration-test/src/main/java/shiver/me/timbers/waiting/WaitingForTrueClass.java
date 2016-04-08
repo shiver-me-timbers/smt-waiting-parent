@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Karl Bennett
+ * Copyright 2015 Karl Bennett
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,16 @@
 
 package shiver.me.timbers.waiting;
 
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
-
 import java.util.concurrent.Callable;
 
-@Component
-@Primary
-@Wait(include = RuntimeException.class, exclude = RuntimeException.class)
-public class ExcludePrecedenceWaitingExcludeClassComponent implements WaitingExclude {
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static shiver.me.timbers.waiting.Decision.YES;
+
+@Wait(value = @Timeout(duration = 500, unit = MILLISECONDS), waitForTrue = YES)
+public class WaitingForTrueClass implements WaitingForTrue {
 
     @Override
-    public <T> T excludeMethod(Callable<T> callable) throws Exception {
+    public <T> T waitForTrueMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Karl Bennett
+ * Copyright 2015 Karl Bennett
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,15 @@
 
 package shiver.me.timbers.waiting;
 
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
-
 import java.util.concurrent.Callable;
 
-@Component
-@Primary
-@Wait(
-    include = {IllegalStateException.class, ClassCastException.class, IllegalAccessError.class},
-    exclude = {RuntimeException.class, IllegalArgumentException.class, Error.class}
-)
-public class CannotIgnoreExcludeIncludeWaitingExcludeClassComponent implements WaitingExclude {
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
+@Wait(interval = @Interval(duration = 200, unit = MILLISECONDS))
+public class CanChangeWaitingIntervalClass implements WaitingInterval {
 
     @Override
-    public <T> T excludeMethod(Callable<T> callable) throws Exception {
+    public <T> T intervalMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
 }

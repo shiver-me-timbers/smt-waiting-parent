@@ -16,21 +16,13 @@
 
 package shiver.me.timbers.waiting;
 
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
-
 import java.util.concurrent.Callable;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static shiver.me.timbers.waiting.Decision.YES;
-
-@Component
-@Primary
-@Wait(value = @Timeout(duration = 500, unit = MILLISECONDS), waitForNotNull = YES)
-public class WaitingForNotNullClassComponent implements WaitingForNotNull {
+@Wait
+public class WaitingDefaultsClass implements WaitingDefaults {
 
     @Override
-    public <T> T waitForNotNullMethod(Callable<T> callable) throws Exception {
+    public <T> T defaultsMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
 }

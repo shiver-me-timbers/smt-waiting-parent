@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Karl Bennett
+ * Copyright 2016 Karl Bennett
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,13 @@
 
 package shiver.me.timbers.waiting;
 
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
-
 import java.util.concurrent.Callable;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-
-@Component
-@Primary
-@Wait(interval = @Interval(duration = 200, unit = MILLISECONDS))
-public class CanChangeWaitingIntervalClassComponent implements WaitingInterval {
+@Wait(include = RuntimeException.class, exclude = RuntimeException.class)
+public class ExcludePrecedenceWaitingExcludeClass implements WaitingExclude {
 
     @Override
-    public <T> T intervalMethod(Callable<T> callable) throws Exception {
+    public <T> T excludeMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
 }
