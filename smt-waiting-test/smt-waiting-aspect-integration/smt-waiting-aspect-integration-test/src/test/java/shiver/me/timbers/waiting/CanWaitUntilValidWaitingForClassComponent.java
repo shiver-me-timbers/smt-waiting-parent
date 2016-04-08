@@ -5,5 +5,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Primary
-public class WaitingForClassComponent extends WaitingForClass {
+public class CanWaitUntilValidWaitingForClassComponent extends CanWaitUntilValidWaitingForClass {
 }

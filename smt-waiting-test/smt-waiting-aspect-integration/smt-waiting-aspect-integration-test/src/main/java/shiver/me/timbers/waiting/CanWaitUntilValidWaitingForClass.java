@@ -21,7 +21,7 @@ import java.util.concurrent.Callable;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 @Wait(value = @Timeout(duration = 500, unit = MILLISECONDS), waitFor = ValidResult.class)
-public class WaitingForClass implements WaitingFor {
+public class CanWaitUntilValidWaitingForClass implements WaitingFor {
 
     @Override
     public <T> T waitForMethod(Callable<T> callable) throws Exception {
