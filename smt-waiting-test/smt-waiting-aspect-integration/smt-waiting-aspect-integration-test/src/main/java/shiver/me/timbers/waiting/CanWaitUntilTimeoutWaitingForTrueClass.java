@@ -21,8 +21,8 @@ import java.util.concurrent.Callable;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static shiver.me.timbers.waiting.Decision.YES;
 
-@Wait(value = @Timeout(duration = 500, unit = MILLISECONDS), waitForTrue = YES)
-public class WaitingForTrueClass implements WaitingForTrue {
+@Wait(value = @Timeout(duration = 200, unit = MILLISECONDS), waitForTrue = YES)
+public class CanWaitUntilTimeoutWaitingForTrueClass implements WaitingForTrue {
 
     @Override
     public <T> T waitForTrueMethod(Callable<T> callable) throws Exception {

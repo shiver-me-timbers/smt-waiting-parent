@@ -22,7 +22,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static shiver.me.timbers.waiting.Decision.YES;
 
 @Wait(value = @Timeout(duration = 500, unit = MILLISECONDS), waitForNotNull = YES)
-public class CanWaitForWaitingForNotNullClass implements WaitingForNotNull {
+public class CanWaitUntilWaitingForNotNullClass implements WaitingForNotNull {
 
     @Override
     public <T> T waitForNotNullMethod(Callable<T> callable) throws Exception {

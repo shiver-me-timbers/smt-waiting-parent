@@ -10,10 +10,10 @@ public class AutoProxyWaitingForNotNullFactory extends WaitingForNotNullFactory 
 
     @Autowired
     public AutoProxyWaitingForNotNullFactory(
-        CanWaitForWaitingForNotNullClass canWaitForWaitingForNotNullClass,
+        CanWaitUntilWaitingForNotNullClass canWaitUntilWaitingForNotNullClass,
         CanWaitUntilTimeoutWaitingForNotNullClass canWaitUntilTimeoutWaitingForNotNullClass
     ) {
-        add(canWaitForWaitingForNotNullClass, 500L, MILLISECONDS, true);
+        add(canWaitUntilWaitingForNotNullClass, 500L, MILLISECONDS, true);
         add(canWaitUntilTimeoutWaitingForNotNullClass, 200L, MILLISECONDS, true);
     }
 }
