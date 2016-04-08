@@ -17,13 +17,6 @@ public class AutoProxyWaitingExcludesWithIncludesFactory extends WaitingExcludes
         CannotIgnoreExcludeIncludeWaitingExcludeClass cannotIgnoreExcludeIncludeWaitingExcludeClass,
         ExcludePrecedenceWaitingExcludeClass excludePrecedenceWaitingExcludeClass
     ) {
-        add(
-            cannotIgnoreExcludeIncludeWaitingExcludeClass,
-            500L, MILLISECONDS, asList(SOME_THROWABLES), asList(SOME_OTHER_THROWABLES)
-        );
-        add(
-            excludePrecedenceWaitingExcludeClass,
-            500L, MILLISECONDS, singletonList(SOME_THROWABLES[0]), singletonList(SOME_THROWABLES[0])
-        );
+        super(cannotIgnoreExcludeIncludeWaitingExcludeClass, excludePrecedenceWaitingExcludeClass);
     }
 }

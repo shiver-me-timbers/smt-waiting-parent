@@ -10,6 +10,6 @@ public class AutoProxyWaitingIntervalFactory extends WaitingIntervalFactory {
 
     @Autowired
     public AutoProxyWaitingIntervalFactory(CanChangeWaitingIntervalClass canChangeWaitingIntervalClass) {
-        add(canChangeWaitingIntervalClass, 200L, MILLISECONDS);
+        super(canChangeWaitingIntervalClass);
     }
 }

@@ -14,8 +14,6 @@ public class AutoProxyWaitingTimeoutFactory extends WaitingTimeoutFactory {
         CanWaitUntilExceptionWaitingTimeoutClass canWaitUntilExceptionWaitingTimeoutClass,
         ShortWaitingTimeoutClass shortWaitingTimeoutClass
     ) {
-        add(canChangeWaitingTimeoutClass, 200L, MILLISECONDS);
-        add(canWaitUntilExceptionWaitingTimeoutClass, 500L, MILLISECONDS);
-        add(shortWaitingTimeoutClass, 10L, MILLISECONDS);
+        super(canChangeWaitingTimeoutClass, canWaitUntilExceptionWaitingTimeoutClass, shortWaitingTimeoutClass);
     }
 }

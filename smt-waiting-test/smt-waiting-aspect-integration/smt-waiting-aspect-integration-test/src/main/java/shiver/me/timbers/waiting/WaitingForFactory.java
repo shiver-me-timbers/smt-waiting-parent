@@ -2,12 +2,24 @@ package shiver.me.timbers.waiting;
 
 import java.util.concurrent.TimeUnit;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 public class WaitingForFactory {
 
     private final LookupFactory<WaitingFor> lookupFactory;
 
     public WaitingForFactory() {
+        this(new CanWaitUntilValidWaitingForClass(), new CanWaitUntilTimeoutWaitingForClass());
+    }
+
+    public WaitingForFactory(
+        CanWaitUntilValidWaitingForClass canWaitUntilValidWaitingForClass,
+        CanWaitUntilTimeoutWaitingForClass canWaitUntilTimeoutWaitingForClass
+    ) {
         this(new MapLookupFactory<WaitingFor>());
+        final ValidResult validator = new ValidResult();
+        add(canWaitUntilValidWaitingForClass, 500L, MILLISECONDS, validator);
+        add(canWaitUntilTimeoutWaitingForClass, 200L, MILLISECONDS, validator);
     }
 
     public WaitingForFactory(LookupFactory<WaitingFor> lookupFactory) {

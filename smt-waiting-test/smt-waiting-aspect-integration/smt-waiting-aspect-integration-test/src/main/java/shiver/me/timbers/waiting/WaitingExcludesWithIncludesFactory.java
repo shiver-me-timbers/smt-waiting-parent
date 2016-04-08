@@ -3,14 +3,34 @@ package shiver.me.timbers.waiting;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static shiver.me.timbers.waiting.Classes.toClasses;
+import static shiver.me.timbers.waiting.RandomExceptions.SOME_OTHER_THROWABLES;
+import static shiver.me.timbers.waiting.RandomExceptions.SOME_THROWABLES;
 
 public class WaitingExcludesWithIncludesFactory {
 
     private final LookupFactory<WaitingExclude> lookupFactory;
 
     public WaitingExcludesWithIncludesFactory() {
+        this(new CannotIgnoreExcludeIncludeWaitingExcludeClass(), new ExcludePrecedenceWaitingExcludeClass());
+    }
+
+    public WaitingExcludesWithIncludesFactory(
+        CannotIgnoreExcludeIncludeWaitingExcludeClass cannotIgnoreExcludeIncludeWaitingExcludeClass,
+        ExcludePrecedenceWaitingExcludeClass excludePrecedenceWaitingExcludeClass
+    ) {
         this(new MapLookupFactory<WaitingExclude>());
+        add(
+            cannotIgnoreExcludeIncludeWaitingExcludeClass,
+            500L, MILLISECONDS, asList(SOME_THROWABLES), asList(SOME_OTHER_THROWABLES)
+        );
+        add(
+            excludePrecedenceWaitingExcludeClass,
+            500L, MILLISECONDS, singletonList(SOME_THROWABLES[0]), singletonList(SOME_THROWABLES[0])
+        );
     }
 
     public WaitingExcludesWithIncludesFactory(LookupFactory<WaitingExclude> lookupFactory) {

@@ -2,12 +2,23 @@ package shiver.me.timbers.waiting;
 
 import java.util.concurrent.TimeUnit;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 public class WaitingForNotNullFactory {
 
     private final LookupFactory<WaitingForNotNull> lookupFactory;
 
     public WaitingForNotNullFactory() {
+        this(new CanWaitUntilWaitingForNotNullClass(), new CanWaitUntilTimeoutWaitingForNotNullClass());
+    }
+
+    public WaitingForNotNullFactory(
+        CanWaitUntilWaitingForNotNullClass canWaitUntilWaitingForNotNullClass,
+        CanWaitUntilTimeoutWaitingForNotNullClass canWaitUntilTimeoutWaitingForNotNullClass
+    ) {
         this(new MapLookupFactory<WaitingForNotNull>());
+        add(canWaitUntilWaitingForNotNullClass, 500L, MILLISECONDS, true);
+        add(canWaitUntilTimeoutWaitingForNotNullClass, 200L, MILLISECONDS, true);
     }
 
     public WaitingForNotNullFactory(LookupFactory<WaitingForNotNull> lookupFactory) {

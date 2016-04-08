@@ -2,12 +2,19 @@ package shiver.me.timbers.waiting;
 
 import java.util.concurrent.TimeUnit;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 public class WaitingIntervalFactory {
 
     private final LookupFactory<WaitingInterval> lookupFactory;
 
     public WaitingIntervalFactory() {
+        this(new CanChangeWaitingIntervalClass());
+    }
+
+    public WaitingIntervalFactory(CanChangeWaitingIntervalClass canChangeWaitingIntervalClass) {
         this(new MapLookupFactory<WaitingInterval>());
+        add(canChangeWaitingIntervalClass, 200L, MILLISECONDS);
     }
 
     public WaitingIntervalFactory(LookupFactory<WaitingInterval> lookupFactory) {
