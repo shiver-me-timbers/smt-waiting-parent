@@ -5,5 +5,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Primary
-public class WaitingIncludeClassComponent extends WaitingIncludeClass {
+public class CanIgnoreWaitingIncludeClassComponent extends CanIgnoreWaitingIncludeClass {
 }

@@ -18,8 +18,8 @@ package shiver.me.timbers.waiting;
 
 import java.util.concurrent.Callable;
 
-@Wait(include = IllegalArgumentException.class)
-public class WaitingIncludeClass implements WaitingInclude {
+@Wait(include = {RuntimeException.class, IllegalArgumentException.class, Error.class})
+public class CanIgnoreWaitingIncludeClass implements WaitingInclude {
 
     @Override
     public <T> T includeMethod(Callable<T> callable) throws Exception {
