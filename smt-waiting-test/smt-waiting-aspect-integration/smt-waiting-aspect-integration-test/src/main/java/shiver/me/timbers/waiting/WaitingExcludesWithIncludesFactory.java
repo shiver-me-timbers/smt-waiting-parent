@@ -14,13 +14,9 @@ public class WaitingExcludesWithIncludesFactory {
 
     private final LookupFactory<WaitingExclude> lookupFactory;
 
-    public WaitingExcludesWithIncludesFactory() {
-        this(new CannotIgnoreExcludeIncludeWaitingExcludeClass(), new ExcludePrecedenceWaitingExcludeClass());
-    }
-
     public WaitingExcludesWithIncludesFactory(
-        CannotIgnoreExcludeIncludeWaitingExcludeClass cannotIgnoreExcludeIncludeWaitingExcludeClass,
-        ExcludePrecedenceWaitingExcludeClass excludePrecedenceWaitingExcludeClass
+        WaitingExclude cannotIgnoreExcludeIncludeWaitingExcludeClass,
+        WaitingExclude excludePrecedenceWaitingExcludeClass
     ) {
         this(new MapLookupFactory<WaitingExclude>());
         add(

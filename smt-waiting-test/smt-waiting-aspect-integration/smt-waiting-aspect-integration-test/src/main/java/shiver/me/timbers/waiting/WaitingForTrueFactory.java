@@ -8,13 +8,9 @@ public class WaitingForTrueFactory {
 
     private final LookupFactory<WaitingForTrue> lookupFactory;
 
-    public WaitingForTrueFactory() {
-        this(new CanWaitUntilWaitingForTrueClass(), new CanWaitUntilTimeoutWaitingForTrueClass());
-    }
-
     public WaitingForTrueFactory(
-        CanWaitUntilWaitingForTrueClass canWaitUntilWaitingForTrueClass,
-        CanWaitUntilTimeoutWaitingForTrueClass canWaitUntilTimeoutWaitingForTrueClass
+        WaitingForTrue canWaitUntilWaitingForTrueClass,
+        WaitingForTrue canWaitUntilTimeoutWaitingForTrueClass
     ) {
         this(new MapLookupFactory<WaitingForTrue>());
         add(canWaitUntilWaitingForTrueClass, 500L, MILLISECONDS, true);

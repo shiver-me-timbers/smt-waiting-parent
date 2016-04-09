@@ -16,7 +16,10 @@
 
 package shiver.me.timbers.waiting;
 
+import java.util.List;
+
 import static shiver.me.timbers.data.random.RandomThings.someThing;
+import static shiver.me.timbers.data.random.RandomThings.someThings;
 
 public class RandomExceptions {
 
@@ -30,7 +33,15 @@ public class RandomExceptions {
         return someThing(SOME_THROWABLES);
     }
 
+    public static List<Throwable> someThrowables() {
+        return someThings(SOME_THROWABLES);
+    }
+
     public static Throwable someOtherThrowable() {
         return someThing(SOME_OTHER_THROWABLES);
+    }
+
+    public static List<Throwable> someOtherThrowables() {
+        return someThings(SOME_OTHER_THROWABLES);
     }
 }

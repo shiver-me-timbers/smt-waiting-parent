@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AutoProxyWaitingForTrueFactory extends WaitingForTrueFactory {
+public class AutoProxyWaitingForTrueClassFactory extends WaitingForTrueClassFactory {
 
     @Autowired
-    public AutoProxyWaitingForTrueFactory(
+    public AutoProxyWaitingForTrueClassFactory(
         CanWaitUntilWaitingForTrueClass canWaitUntilWaitingForTrueClass,
         CanWaitUntilTimeoutWaitingForTrueClass canWaitUntilTimeoutWaitingForTrueClass
     ) {

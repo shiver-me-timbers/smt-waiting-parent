@@ -12,13 +12,9 @@ public class WaitingExcludeFactory {
 
     private final LookupFactory<WaitingExclude> lookupFactory;
 
-    public WaitingExcludeFactory() {
-        this(new CannotIgnoreWaitingExcludeClass(), new CanIgnoreWaitingExcludeClass());
-    }
-
     public WaitingExcludeFactory(
-        CannotIgnoreWaitingExcludeClass cannotIgnoreWaitingExcludeClass,
-        CanIgnoreWaitingExcludeClass canIgnoreWaitingExcludeClass
+        WaitingExclude cannotIgnoreWaitingExcludeClass,
+        WaitingExclude canIgnoreWaitingExcludeClass
     ) {
         this(new MapLookupFactory<WaitingExclude>());
         add(

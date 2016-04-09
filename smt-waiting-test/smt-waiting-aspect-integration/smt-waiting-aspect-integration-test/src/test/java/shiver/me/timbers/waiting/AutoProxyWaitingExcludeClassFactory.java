@@ -3,15 +3,11 @@ package shiver.me.timbers.waiting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static shiver.me.timbers.waiting.RandomExceptions.SOME_OTHER_THROWABLES;
-import static shiver.me.timbers.waiting.RandomExceptions.SOME_THROWABLES;
-
 @Component
-public class AutoProxyWaitingExcludeFactory extends WaitingExcludeFactory {
+public class AutoProxyWaitingExcludeClassFactory extends WaitingExcludeClassFactory {
 
     @Autowired
-    public AutoProxyWaitingExcludeFactory(
+    public AutoProxyWaitingExcludeClassFactory(
         CannotIgnoreWaitingExcludeClass cannotIgnoreWaitingExcludeClass,
         CanIgnoreWaitingExcludeClass canIgnoreWaitingExcludeClass
     ) {

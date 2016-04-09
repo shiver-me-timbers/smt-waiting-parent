@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AutoProxyWaitingIncludesWithExcludesFactory extends WaitingIncludesWithExcludesFactory {
+public class AutoProxyWaitingIncludesWithExcludesClassFactory extends WaitingIncludesWithExcludesClassFactory {
 
     @Autowired
-    public AutoProxyWaitingIncludesWithExcludesFactory(
+    public AutoProxyWaitingIncludesWithExcludesClassFactory(
         CanIgnoreIncludeExcludeWaitingIncludeClass canIgnoreIncludeExcludeWaitingIncludeClass
     ) {
         super(canIgnoreIncludeExcludeWaitingIncludeClass);

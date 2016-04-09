@@ -8,13 +8,9 @@ public class WaitingForFactory {
 
     private final LookupFactory<WaitingFor> lookupFactory;
 
-    public WaitingForFactory() {
-        this(new CanWaitUntilValidWaitingForClass(), new CanWaitUntilTimeoutWaitingForClass());
-    }
-
     public WaitingForFactory(
-        CanWaitUntilValidWaitingForClass canWaitUntilValidWaitingForClass,
-        CanWaitUntilTimeoutWaitingForClass canWaitUntilTimeoutWaitingForClass
+        WaitingFor canWaitUntilValidWaitingForClass,
+        WaitingFor canWaitUntilTimeoutWaitingForClass
     ) {
         this(new MapLookupFactory<WaitingFor>());
         final ValidResult validator = new ValidResult();

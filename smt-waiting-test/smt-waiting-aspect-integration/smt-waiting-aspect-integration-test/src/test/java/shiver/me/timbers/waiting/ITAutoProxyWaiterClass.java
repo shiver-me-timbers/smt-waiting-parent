@@ -10,74 +10,74 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class ITAutoProxyWaiterClass extends AbstractITAspectWaiter {
 
     @Autowired
-    private AutoProxyWaitingIntervalFactory intervalFactory;
+    private AutoProxyWaitingIntervalClassFactory intervalFactory;
 
     @Autowired
-    private AutoProxyWaitingTimeoutFactory timeoutFactory;
+    private AutoProxyWaitingTimeoutClassFactory timeoutFactory;
 
     @Autowired
-    private AutoProxyWaitingForFactory waitForFactory;
+    private AutoProxyWaitingForClassFactory waitForFactory;
 
     @Autowired
-    private AutoProxyWaitingForNotNullFactory waitForNotNullFactory;
+    private AutoProxyWaitingForNotNullClassFactory waitForNotNullFactory;
 
     @Autowired
-    private AutoProxyWaitingForTrueFactory waitForTrueFactory;
+    private AutoProxyWaitingForTrueClassFactory waitForTrueFactory;
 
     @Autowired
-    private AutoProxyWaitingIncludeFactory includesFactory;
+    private AutoProxyWaitingIncludeClassFactory includesFactory;
 
     @Autowired
-    private AutoProxyWaitingIncludesWithExcludesFactory includesWithExcludesFactory;
+    private AutoProxyWaitingIncludesWithExcludesClassFactory includesWithExcludesFactory;
 
     @Autowired
-    private AutoProxyWaitingExcludeFactory excludesFactory;
+    private AutoProxyWaitingExcludeClassFactory excludesFactory;
 
     @Autowired
-    private AutoProxyWaitingExcludesWithIncludesFactory excludesWithIncludesFactory;
+    private AutoProxyWaitingExcludesWithIncludesClassFactory excludesWithIncludesFactory;
 
     @Override
-    protected AutoProxyWaitingIntervalFactory intervalFactory() {
+    protected AutoProxyWaitingIntervalClassFactory intervalFactory() {
         return intervalFactory;
     }
 
     @Override
-    protected AutoProxyWaitingTimeoutFactory timeoutFactory() {
+    protected AutoProxyWaitingTimeoutClassFactory timeoutFactory() {
         return timeoutFactory;
     }
 
     @Override
-    protected AutoProxyWaitingForFactory waitForFactory() {
+    protected AutoProxyWaitingForClassFactory waitForFactory() {
         return waitForFactory;
     }
 
     @Override
-    protected AutoProxyWaitingForNotNullFactory waitForNotNullFactory() {
+    protected AutoProxyWaitingForNotNullClassFactory waitForNotNullFactory() {
         return waitForNotNullFactory;
     }
 
     @Override
-    protected AutoProxyWaitingForTrueFactory waitForTrueFactory() {
+    protected AutoProxyWaitingForTrueClassFactory waitForTrueFactory() {
         return waitForTrueFactory;
     }
 
     @Override
-    protected AutoProxyWaitingIncludeFactory includesFactory() {
+    protected AutoProxyWaitingIncludeClassFactory includesFactory() {
         return includesFactory;
     }
 
     @Override
-    protected AutoProxyWaitingIncludesWithExcludesFactory includesWithExcludesFactory() {
+    protected AutoProxyWaitingIncludesWithExcludesClassFactory includesWithExcludesFactory() {
         return includesWithExcludesFactory;
     }
 
     @Override
-    protected AutoProxyWaitingExcludeFactory excludesFactory() {
+    protected AutoProxyWaitingExcludeClassFactory excludesFactory() {
         return excludesFactory;
     }
 
     @Override
-    protected AutoProxyWaitingExcludesWithIncludesFactory excludesWithIncludesFactory() {
+    protected AutoProxyWaitingExcludesWithIncludesClassFactory excludesWithIncludesFactory() {
         return excludesWithIncludesFactory;
     }
 }

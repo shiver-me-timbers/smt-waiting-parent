@@ -8,13 +8,9 @@ public class WaitingForNotNullFactory {
 
     private final LookupFactory<WaitingForNotNull> lookupFactory;
 
-    public WaitingForNotNullFactory() {
-        this(new CanWaitUntilWaitingForNotNullClass(), new CanWaitUntilTimeoutWaitingForNotNullClass());
-    }
-
     public WaitingForNotNullFactory(
-        CanWaitUntilWaitingForNotNullClass canWaitUntilWaitingForNotNullClass,
-        CanWaitUntilTimeoutWaitingForNotNullClass canWaitUntilTimeoutWaitingForNotNullClass
+        WaitingForNotNull canWaitUntilWaitingForNotNullClass,
+        WaitingForNotNull canWaitUntilTimeoutWaitingForNotNullClass
     ) {
         this(new MapLookupFactory<WaitingForNotNull>());
         add(canWaitUntilWaitingForNotNullClass, 500L, MILLISECONDS, true);

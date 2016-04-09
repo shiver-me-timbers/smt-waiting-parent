@@ -1,13 +1,12 @@
 package shiver.me.timbers.waiting;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+public class WaitingIncludeClassFactory extends WaitingIncludeFactory {
 
-@Component
-public class AutoProxyWaitingIncludeFactory extends WaitingIncludeFactory {
+    public WaitingIncludeClassFactory() {
+        this(new CanIgnoreWaitingIncludeClass(), new CanIgnoreAllWaitingIncludeClass());
+    }
 
-    @Autowired
-    public AutoProxyWaitingIncludeFactory(
+    public WaitingIncludeClassFactory(
         CanIgnoreWaitingIncludeClass canIgnoreWaitingIncludeClass,
         CanIgnoreAllWaitingIncludeClass canIgnoreAllWaitingIncludeClass
     ) {
