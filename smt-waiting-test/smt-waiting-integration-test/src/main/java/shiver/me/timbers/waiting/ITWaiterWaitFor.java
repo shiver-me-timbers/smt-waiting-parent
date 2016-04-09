@@ -16,6 +16,8 @@
 
 package shiver.me.timbers.waiting;
 
+import shiver.me.timbers.waiting.execution.WaitingFor;
+
 import java.util.concurrent.TimeUnit;
 
 public interface ITWaiterWaitFor {

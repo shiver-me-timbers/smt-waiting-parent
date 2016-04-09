@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 import org.springframework.core.env.ConfigurableEnvironment;
+import shiver.me.timbers.waiting.property.DynamicPropertySource;
 
 @Configuration
 @EnableAutoConfiguration

@@ -1,6 +1,12 @@
 package shiver.me.timbers.waiting;
 
 import org.junit.Rule;
+import shiver.me.timbers.waiting.execution.ManualWaitingDefaults;
+import shiver.me.timbers.waiting.execution.ManualWaitingInclude;
+import shiver.me.timbers.waiting.execution.WaitingDefaults;
+import shiver.me.timbers.waiting.execution.WaitingInclude;
+import shiver.me.timbers.waiting.property.SystemPropertyManager;
+import shiver.me.timbers.waiting.test.WaitingPropertyRule;
 
 import java.util.concurrent.TimeUnit;
 

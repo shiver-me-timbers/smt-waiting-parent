@@ -19,6 +19,10 @@ package shiver.me.timbers.waiting;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import shiver.me.timbers.waiting.execution.WaitingFor;
+import shiver.me.timbers.waiting.test.WaitingPropertyRuleAware;
+import shiver.me.timbers.waiting.validation.SuccessResult;
+import shiver.me.timbers.waiting.validation.ValidResult;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;

@@ -1,5 +1,22 @@
 package shiver.me.timbers.waiting;
 
+import shiver.me.timbers.waiting.execution.ManualWaitingExclude;
+import shiver.me.timbers.waiting.execution.ManualWaitingExcludeWithInclude;
+import shiver.me.timbers.waiting.execution.ManualWaitingFor;
+import shiver.me.timbers.waiting.execution.ManualWaitingForNotNull;
+import shiver.me.timbers.waiting.execution.ManualWaitingForTrue;
+import shiver.me.timbers.waiting.execution.ManualWaitingInclude;
+import shiver.me.timbers.waiting.execution.ManualWaitingIncludeWithExclude;
+import shiver.me.timbers.waiting.execution.ManualWaitingInterval;
+import shiver.me.timbers.waiting.execution.ManualWaitingTimeout;
+import shiver.me.timbers.waiting.execution.WaitingExclude;
+import shiver.me.timbers.waiting.execution.WaitingFor;
+import shiver.me.timbers.waiting.execution.WaitingForNotNull;
+import shiver.me.timbers.waiting.execution.WaitingForTrue;
+import shiver.me.timbers.waiting.execution.WaitingInclude;
+import shiver.me.timbers.waiting.execution.WaitingInterval;
+import shiver.me.timbers.waiting.execution.WaitingTimeout;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 

@@ -28,9 +28,9 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static shiver.me.timbers.waiting.RandomExceptions.SOME_OTHER_THROWABLES;
-import static shiver.me.timbers.waiting.RandomExceptions.SOME_THROWABLES;
-import static shiver.me.timbers.waiting.RandomExceptions.someOtherThrowable;
+import static shiver.me.timbers.waiting.random.RandomExceptions.SOME_OTHER_THROWABLES;
+import static shiver.me.timbers.waiting.random.RandomExceptions.SOME_THROWABLES;
+import static shiver.me.timbers.waiting.random.RandomExceptions.someOtherThrowable;
 
 public abstract class AbstractITWaiterInclude implements ITWaiterInclude {
 

@@ -16,6 +16,8 @@
 
 package shiver.me.timbers.waiting;
 
+import shiver.me.timbers.waiting.execution.WaitingDefaults;
+
 public interface ITWaiterDefaults {
 
     WaitingDefaults defaults();

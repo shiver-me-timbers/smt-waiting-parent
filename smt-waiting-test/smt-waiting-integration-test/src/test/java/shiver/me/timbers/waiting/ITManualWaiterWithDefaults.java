@@ -1,6 +1,10 @@
 package shiver.me.timbers.waiting;
 
 import org.junit.Rule;
+import shiver.me.timbers.waiting.execution.ManualWaitingWithDefaults;
+import shiver.me.timbers.waiting.execution.WaitingDefaults;
+import shiver.me.timbers.waiting.property.SystemPropertyManager;
+import shiver.me.timbers.waiting.test.WaitingPropertyRule;
 
 public class ITManualWaiterWithDefaults extends AbstractITWaiterWithDefaults {
 

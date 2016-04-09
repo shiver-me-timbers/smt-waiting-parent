@@ -1,5 +1,10 @@
 package shiver.me.timbers.waiting;
 
+import shiver.me.timbers.waiting.execution.SpringManualWaitingDefaults;
+import shiver.me.timbers.waiting.execution.SpringManualWaitingTimeout;
+import shiver.me.timbers.waiting.execution.WaitingDefaults;
+import shiver.me.timbers.waiting.execution.WaitingTimeout;
+
 import java.util.concurrent.TimeUnit;
 
 public class ITManualSpringWaiterTimeoutProperty extends AbstractITSpringWaiterTimeoutProperty {

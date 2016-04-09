@@ -17,6 +17,7 @@
 package shiver.me.timbers.waiting;
 
 import org.junit.Test;
+import shiver.me.timbers.waiting.execution.WaitingTimeout;
 
 import java.util.concurrent.Callable;
 
@@ -31,7 +32,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static shiver.me.timbers.waiting.WasDurationMatcher.durationWas;
+import static shiver.me.timbers.waiting.test.WasDurationMatcher.durationWas;
 
 public abstract class AbstractITWaiterTimeout implements ITWaiterTimeout {
 

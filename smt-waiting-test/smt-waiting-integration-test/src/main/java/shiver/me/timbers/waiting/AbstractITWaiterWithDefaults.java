@@ -17,6 +17,8 @@
 package shiver.me.timbers.waiting;
 
 import org.junit.Test;
+import shiver.me.timbers.waiting.test.WaitingPropertyRuleAware;
+import shiver.me.timbers.waiting.validation.FailResult;
 
 import java.util.concurrent.Callable;
 

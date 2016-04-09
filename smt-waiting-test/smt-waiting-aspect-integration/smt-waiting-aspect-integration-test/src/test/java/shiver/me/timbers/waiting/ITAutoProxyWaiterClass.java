@@ -4,6 +4,15 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import shiver.me.timbers.waiting.factory.AutoProxyWaitingExcludeClassFactory;
+import shiver.me.timbers.waiting.factory.AutoProxyWaitingExcludesWithIncludesClassFactory;
+import shiver.me.timbers.waiting.factory.AutoProxyWaitingForClassFactory;
+import shiver.me.timbers.waiting.factory.AutoProxyWaitingForNotNullClassFactory;
+import shiver.me.timbers.waiting.factory.AutoProxyWaitingForTrueClassFactory;
+import shiver.me.timbers.waiting.factory.AutoProxyWaitingIncludeClassFactory;
+import shiver.me.timbers.waiting.factory.AutoProxyWaitingIncludesWithExcludesClassFactory;
+import shiver.me.timbers.waiting.factory.AutoProxyWaitingIntervalClassFactory;
+import shiver.me.timbers.waiting.factory.AutoProxyWaitingTimeoutClassFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = WaiterConfiguration.class)

@@ -19,6 +19,9 @@ package shiver.me.timbers.waiting;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import shiver.me.timbers.waiting.execution.PropertyWaitingIncludeAndExclude;
+import shiver.me.timbers.waiting.execution.WaitingInclude;
+import shiver.me.timbers.waiting.test.WaitingPropertyRuleAware;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +37,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
+import static shiver.me.timbers.waiting.random.RandomExceptions.someThrowable;
 
 public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterInclude
     implements ITWaiterDefaults, WaitingPropertyRuleAware {

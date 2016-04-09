@@ -2,6 +2,7 @@ package shiver.me.timbers.waiting;
 
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import shiver.me.timbers.waiting.execution.WaitingInclude;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;

@@ -46,7 +46,8 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
-            <!-- We need this for the @EnableSpringConfigured annotation. -->
+            <!-- We need this for the @EnableSpringConfigured annotation which is required for the smt-waiting-spring -->
+            <!-- library to work. -->
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
             <version>${spring.version}</version>

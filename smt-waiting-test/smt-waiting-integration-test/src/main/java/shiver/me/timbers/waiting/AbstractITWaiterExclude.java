@@ -30,9 +30,9 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static shiver.me.timbers.waiting.RandomExceptions.SOME_OTHER_THROWABLES;
-import static shiver.me.timbers.waiting.RandomExceptions.SOME_THROWABLES;
-import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
+import static shiver.me.timbers.waiting.random.RandomExceptions.SOME_OTHER_THROWABLES;
+import static shiver.me.timbers.waiting.random.RandomExceptions.SOME_THROWABLES;
+import static shiver.me.timbers.waiting.random.RandomExceptions.someThrowable;
 
 public abstract class AbstractITWaiterExclude implements ITWaiterExclude {
 

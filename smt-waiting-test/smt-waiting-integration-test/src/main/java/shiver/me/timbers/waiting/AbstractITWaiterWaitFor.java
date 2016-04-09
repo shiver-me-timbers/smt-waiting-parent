@@ -17,6 +17,7 @@
 package shiver.me.timbers.waiting;
 
 import org.junit.Test;
+import shiver.me.timbers.waiting.validation.ValidResult;
 
 import java.util.concurrent.Callable;
 

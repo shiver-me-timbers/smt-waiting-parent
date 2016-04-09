@@ -19,6 +19,9 @@ package shiver.me.timbers.waiting;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import shiver.me.timbers.waiting.execution.PropertyWaitingIncludeAndExclude;
+import shiver.me.timbers.waiting.execution.WaitingExclude;
+import shiver.me.timbers.waiting.test.WaitingPropertyRuleAware;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,8 +34,8 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static shiver.me.timbers.waiting.RandomExceptions.someOtherThrowable;
-import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
+import static shiver.me.timbers.waiting.random.RandomExceptions.someOtherThrowable;
+import static shiver.me.timbers.waiting.random.RandomExceptions.someThrowable;
 
 public abstract class AbstractITWaiterExcludeProperty extends AbstractITWaiterExclude
     implements ITWaiterDefaults, WaitingPropertyRuleAware {

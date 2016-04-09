@@ -17,6 +17,8 @@
 package shiver.me.timbers.waiting;
 
 import org.junit.Test;
+import shiver.me.timbers.waiting.execution.WaitingForTrue;
+import shiver.me.timbers.waiting.test.WaitingPropertyRuleAware;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;

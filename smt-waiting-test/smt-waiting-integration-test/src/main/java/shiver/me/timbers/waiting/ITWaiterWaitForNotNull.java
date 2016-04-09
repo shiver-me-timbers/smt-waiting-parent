@@ -1,5 +1,7 @@
 package shiver.me.timbers.waiting;
 
+import shiver.me.timbers.waiting.execution.WaitingForNotNull;
+
 import java.util.concurrent.TimeUnit;
 
 public interface ITWaiterWaitForNotNull {
