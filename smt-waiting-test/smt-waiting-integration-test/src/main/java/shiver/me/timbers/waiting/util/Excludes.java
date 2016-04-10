@@ -5,6 +5,7 @@ import shiver.me.timbers.waiting.Options;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static shiver.me.timbers.waiting.util.Classes.toClasses;
 
 public class Excludes {
 
@@ -12,11 +13,9 @@ public class Excludes {
         return addExcludes(options, asList(excludes));
     }
 
+    @SuppressWarnings("unchecked")
     public static Options addExcludes(Options options, List<Throwable> excludes) {
-        for (Throwable include : excludes) {
-            options.exclude(include.getClass());
-        }
-
+        options.excludes(toClasses(excludes).toArray(new Class[excludes.size()]));
         return options;
     }
 }

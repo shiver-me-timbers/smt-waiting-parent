@@ -36,8 +36,8 @@ public class Waiter implements WaiterService {
      * smt.waiting.waitForTrue       # false
      * smt.waiting.waitForNotNull    # false
      * smt.waiting.waitFor           # empty
-     * smt.waiting.include           # empty
-     * smt.waiting.exclude           # empty
+     * smt.waiting.includes           # empty
+     * smt.waiting.excludes           # empty
      * </code>
      */
     public Waiter() {

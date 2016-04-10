@@ -73,16 +73,16 @@ class WaitOptionsConfigurer implements OptionsConfigurer<Wait> {
     }
 
     private static void applyIncludes(OptionsService options, Wait wait) {
-        final Class<? extends Throwable>[] includes = wait.include();
-        for (Class<? extends Throwable> include : includes) {
-            options.include(include);
+        final Class<? extends Throwable>[] includes = wait.includes();
+        if (includes.length > 0) {
+            options.includes(wait.includes());
         }
     }
 
     private static void applyExcludes(OptionsService options, Wait wait) {
-        final Class<? extends Throwable>[] excludes = wait.exclude();
-        for (Class<? extends Throwable> exclude : excludes) {
-            options.exclude(exclude);
+        final Class<? extends Throwable>[] excludes = wait.excludes();
+        if (excludes.length > 0) {
+            options.excludes(excludes);
         }
     }
 

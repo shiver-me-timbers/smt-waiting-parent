@@ -22,7 +22,7 @@ import java.util.concurrent.Callable;
 
 public class CanAddExtraWaitingIncludeMethod implements WaitingInclude {
 
-    @Wait(include = IllegalStateException.class)
+    @Wait(includes = IllegalStateException.class)
     @Override
     public <T> T includeMethod(Callable<T> callable) throws Exception {
         return callable.call();

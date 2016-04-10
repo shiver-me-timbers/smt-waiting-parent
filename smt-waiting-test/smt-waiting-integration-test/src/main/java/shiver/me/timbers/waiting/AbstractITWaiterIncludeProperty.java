@@ -86,7 +86,7 @@ public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterIn
         // Given
         properties().setProperty("smt.waiting.timeout.duration", "500");
         properties().setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
-        properties().setProperty("smt.waiting.include", format("%s,%s",
+        properties().setProperty("smt.waiting.includes", format("%s,%s",
             exception1.getClass().getName(),
             exception2.getClass().getName()
         ));
@@ -111,7 +111,7 @@ public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterIn
         final Object expected = new Object();
 
         // Given
-        properties().setProperty("smt.waiting.include", exception1.getClass().getName());
+        properties().setProperty("smt.waiting.includes", exception1.getClass().getName());
         given(callable.call()).willThrow(exception1).willThrow(exception2).willReturn(expected);
 
         // When

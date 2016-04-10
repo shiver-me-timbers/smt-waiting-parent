@@ -21,8 +21,8 @@ import shiver.me.timbers.waiting.Wait;
 import java.util.concurrent.Callable;
 
 @Wait(
-    include = {RuntimeException.class, IllegalArgumentException.class, Error.class},
-    exclude = {IllegalStateException.class, ClassCastException.class, IllegalAccessError.class}
+    includes = {RuntimeException.class, IllegalArgumentException.class, Error.class},
+    excludes = {IllegalStateException.class, ClassCastException.class, IllegalAccessError.class}
 )
 public class CanIgnoreIncludeExcludeWaitingIncludeClass implements WaitingInclude {
 

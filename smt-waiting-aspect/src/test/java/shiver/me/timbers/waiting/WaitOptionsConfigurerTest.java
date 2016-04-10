@@ -84,8 +84,8 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
         given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(defaultWaitFor);
-        given(wait.include()).willReturn(defaultInclude);
-        given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.includes()).willReturn(defaultInclude);
+        given(wait.excludes()).willReturn(defaultExclude);
         given(wait.withDefaults()).willReturn(defaultWithDefaults);
 
         // When
@@ -111,8 +111,8 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
         given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(defaultWaitFor);
-        given(wait.include()).willReturn(defaultInclude);
-        given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.includes()).willReturn(defaultInclude);
+        given(wait.excludes()).willReturn(defaultExclude);
         given(wait.withDefaults()).willReturn(defaultWithDefaults);
 
         // When
@@ -140,8 +140,8 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
         given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(defaultWaitFor);
-        given(wait.include()).willReturn(defaultInclude);
-        given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.includes()).willReturn(defaultInclude);
+        given(wait.excludes()).willReturn(defaultExclude);
         given(wait.withDefaults()).willReturn(defaultWithDefaults);
 
         // When
@@ -163,8 +163,8 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
         given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(new Class[]{TestResultOne.class, TestResultTwo.class});
-        given(wait.include()).willReturn(defaultInclude);
-        given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.includes()).willReturn(defaultInclude);
+        given(wait.excludes()).willReturn(defaultExclude);
         given(wait.withDefaults()).willReturn(defaultWithDefaults);
 
         // When
@@ -187,8 +187,8 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
         given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(new Class[]{TestResultOne.class, NoDefaultTestResult.class});
-        given(wait.include()).willReturn(defaultInclude);
-        given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.includes()).willReturn(defaultInclude);
+        given(wait.excludes()).willReturn(defaultExclude);
         given(wait.withDefaults()).willReturn(defaultWithDefaults);
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectCause(isA(InstantiationException.class));
@@ -207,8 +207,8 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
         given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(new Class[]{TestResultOne.class, NoPublicTestResult.class});
-        given(wait.include()).willReturn(defaultInclude);
-        given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.includes()).willReturn(defaultInclude);
+        given(wait.excludes()).willReturn(defaultExclude);
         given(wait.withDefaults()).willReturn(defaultWithDefaults);
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectCause(isA(IllegalAccessException.class));
@@ -226,8 +226,8 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(YES);
         given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(defaultWaitFor);
-        given(wait.include()).willReturn(defaultInclude);
-        given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.includes()).willReturn(defaultInclude);
+        given(wait.excludes()).willReturn(defaultExclude);
         given(wait.withDefaults()).willReturn(defaultWithDefaults);
 
         // When
@@ -248,8 +248,8 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
         given(wait.waitForNotNull()).willReturn(YES);
         given(wait.waitFor()).willReturn(defaultWaitFor);
-        given(wait.include()).willReturn(defaultInclude);
-        given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.includes()).willReturn(defaultInclude);
+        given(wait.excludes()).willReturn(defaultExclude);
         given(wait.withDefaults()).willReturn(defaultWithDefaults);
 
         // When
@@ -265,7 +265,8 @@ public class WaitOptionsConfigurerTest {
     @SuppressWarnings("unchecked")
     public void Can_configure_includes() {
 
-        final Class<? extends Throwable> exceptionClass = IllegalArgumentException.class;
+        final Class<? extends Throwable> throwable1 = IllegalArgumentException.class;
+        final Class<? extends Throwable> throwable2 = IllegalStateException.class;
 
         // Given
         given(wait.value()).willReturn(defaultTimeout);
@@ -273,8 +274,8 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
         given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(defaultWaitFor);
-        given(wait.include()).willReturn(new Class[]{exceptionClass});
-        given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.includes()).willReturn(new Class[]{throwable1, throwable2});
+        given(wait.excludes()).willReturn(defaultExclude);
         given(wait.withDefaults()).willReturn(defaultWithDefaults);
 
         // When
@@ -282,7 +283,7 @@ public class WaitOptionsConfigurerTest {
 
         // Then
         assertThat(actual, is(options));
-        verify(options).include(exceptionClass);
+        verify(options).includes(throwable1, throwable2);
         verifyNoMoreInteractions(options);
     }
 
@@ -290,7 +291,8 @@ public class WaitOptionsConfigurerTest {
     @SuppressWarnings("unchecked")
     public void Can_configure_excludes() {
 
-        final Class<? extends Throwable> exceptionClass = IllegalArgumentException.class;
+        final Class<? extends Throwable> throwable1 = IllegalArgumentException.class;
+        final Class<? extends Throwable> throwable2 = IllegalStateException.class;
 
         // Given
         given(wait.value()).willReturn(defaultTimeout);
@@ -298,8 +300,8 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
         given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(defaultWaitFor);
-        given(wait.include()).willReturn(defaultInclude);
-        given(wait.exclude()).willReturn(new Class[]{exceptionClass});
+        given(wait.includes()).willReturn(defaultInclude);
+        given(wait.excludes()).willReturn(new Class[]{throwable1, throwable2});
         given(wait.withDefaults()).willReturn(defaultWithDefaults);
 
         // When
@@ -307,7 +309,7 @@ public class WaitOptionsConfigurerTest {
 
         // Then
         assertThat(actual, is(options));
-        verify(options).exclude(exceptionClass);
+        verify(options).excludes(throwable1, throwable2);
         verifyNoMoreInteractions(options);
     }
 
@@ -321,8 +323,8 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
         given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
         given(wait.waitFor()).willReturn(defaultWaitFor);
-        given(wait.include()).willReturn(defaultInclude);
-        given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.includes()).willReturn(defaultInclude);
+        given(wait.excludes()).willReturn(defaultExclude);
         given(wait.withDefaults()).willReturn(true);
 
         // When

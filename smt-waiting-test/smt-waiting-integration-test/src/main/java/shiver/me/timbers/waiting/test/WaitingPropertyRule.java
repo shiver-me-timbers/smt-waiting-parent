@@ -25,7 +25,7 @@ public class WaitingPropertyRule extends PropertyRule {
             return this;
         }
 
-        setProperty("smt.waiting.include", concat(classNames(includes), ","));
+        setProperty("smt.waiting.includes", concat(classNames(includes), ","));
         return this;
     }
 
@@ -34,7 +34,7 @@ public class WaitingPropertyRule extends PropertyRule {
             return this;
         }
 
-        setProperty("smt.waiting.exclude", concat(classNames(excludes), ","));
+        setProperty("smt.waiting.excludes", concat(classNames(excludes), ","));
         return this;
     }
 }

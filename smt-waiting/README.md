@@ -222,10 +222,10 @@ You can apply global configuration for all instantiated `Waiter`s with the follo
 * `smt.waiting.waitFor`: Set any [`ResultValidator`s](src/main/java/shiver/me/timbers/waiting/ResultValidator.java) that
 should be automatically applied to all `Waiter`s.
   * Example: `smt.waiting.waitFor=org.example.ExampleResultOne,org.example.ExampleResultTwo`
-* `smt.waiting.include`: Set a global include exceptions list.
-  * Example: `smt.waiting.include=org.example.ExampleOneException,org.example.ExampleTwoError`
-* `smt.waiting.exclude`: Set a global exclude exceptions list.
-  * Example: `smt.waiting.exclude=org.example.ExampleOneException,org.example.ExampleTwoError`
+* `smt.waiting.includes`: Set a global include exceptions list.
+  * Example: `smt.waiting.includes=org.example.ExampleOneException,org.example.ExampleTwoError`
+* `smt.waiting.excludes`: Set a global exclude exceptions list.
+  * Example: `smt.waiting.excludes=org.example.ExampleOneException,org.example.ExampleTwoError`
 
 ## License
 

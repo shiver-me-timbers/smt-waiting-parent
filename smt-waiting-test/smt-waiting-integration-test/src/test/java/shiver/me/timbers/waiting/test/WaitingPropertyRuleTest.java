@@ -59,7 +59,7 @@ public class WaitingPropertyRuleTest {
 
         // Then
         assertThat(actual, is(rule));
-        verify(properties).setProperty("smt.waiting.include", concat(classNames(includes), ","));
+        verify(properties).setProperty("smt.waiting.includes", concat(classNames(includes), ","));
     }
 
     @Test
@@ -95,7 +95,7 @@ public class WaitingPropertyRuleTest {
 
         // Then
         assertThat(actual, is(rule));
-        verify(properties).setProperty("smt.waiting.exclude", concat(classNames(excludes), ","));
+        verify(properties).setProperty("smt.waiting.excludes", concat(classNames(excludes), ","));
     }
 
     @Test

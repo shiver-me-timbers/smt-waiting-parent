@@ -12,6 +12,7 @@ import static shiver.me.timbers.waiting.random.RandomExceptions.someThrowable;
 public class ExcludesTest {
 
     @Test
+    @SuppressWarnings("unchecked")
     public void Can_add_excludes() {
 
         // Given
@@ -23,8 +24,7 @@ public class ExcludesTest {
         Excludes.addExcludes(options, throwable1, throwable2);
 
         // Then
-        verify(options).exclude(throwable1.getClass());
-        verify(options).exclude(throwable2.getClass());
+        verify(options).excludes(throwable1.getClass(), throwable2.getClass());
         verifyNoMoreInteractions(options);
     }
 }

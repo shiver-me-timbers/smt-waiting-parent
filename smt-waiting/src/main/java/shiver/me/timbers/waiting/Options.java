@@ -22,9 +22,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static java.util.Arrays.asList;
+
 /**
  * This class is used to customise the options for the {@link Waiter}. With this you can set the
- * {@link #withTimeout timeout}, {@link #withInterval interval}, {@link #include includes}, {@link #exclude excludes},
+ * {@link #withTimeout timeout}, {@link #withInterval interval}, {@link #includes includes}, {@link #excludes excludes},
  * {@link #waitFor validators}, or whether the the method being waited on must return {@link #willWaitForTrue true} or a
  * non {@link #willWaitForNotNull null} result.
  * <p>
@@ -37,8 +39,8 @@ import java.util.concurrent.TimeUnit;
  * smt.waiting.waitForTrue       # boolean
  * smt.waiting.waitForNotNull    # boolean
  * smt.waiting.waitFor           # Name of class with a default constructor that implements ResultValidator
- * smt.waiting.include           # Comma separated list of names of classes that extend Throwable
- * smt.waiting.exclude           # Comma separated list of names of classes that extend Throwable
+ * smt.waiting.includes           # Comma separated list of names of classes that extend Throwable
+ * smt.waiting.excludes           # Comma separated list of names of classes that extend Throwable
  * </code>
  *
  * @author Karl Bennett
@@ -141,22 +143,24 @@ public class Options implements OptionsService {
     }
 
     /**
-     * The {@code Waiter} will rerun the method being waited on if it throws any {@code Throwable}s added to the include
+     * The {@code Waiter} will rerun the method being waited on if it throws any {@code Throwable}s added to the includes
      * list, any other {@code Throwable}s will be instantly rethrown and the method will not be rerun.
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public Options include(Class<? extends Throwable> throwable) {
-        this.includes.add(throwable);
+    public Options includes(Class<? extends Throwable>... includes) {
+        this.includes = new HashSet<>(asList(includes));
         return this;
     }
 
     /**
      * The {@code Waiter} will not rerun the method being waited on if it throws any {@code Throwable}s added to the
-     * exclude list, it will instead rethrow. Any other {@code Throwable}s will cause the method to be rerun.
+     * excludes list, it will instead rethrow. Any other {@code Throwable}s will cause the method to be rerun.
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public Options exclude(Class<? extends Throwable> throwable) {
-        this.excludes.add(throwable);
+    public Options excludes(Class<? extends Throwable>... excludes) {
+        this.excludes = new HashSet<>(asList(excludes));
         return this;
     }
 

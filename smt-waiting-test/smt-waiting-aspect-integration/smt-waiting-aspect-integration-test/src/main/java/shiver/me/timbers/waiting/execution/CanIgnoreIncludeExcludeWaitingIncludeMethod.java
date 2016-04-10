@@ -23,8 +23,8 @@ import java.util.concurrent.Callable;
 public class CanIgnoreIncludeExcludeWaitingIncludeMethod implements WaitingInclude {
 
     @Wait(
-        include = {RuntimeException.class, IllegalArgumentException.class, Error.class},
-        exclude = {IllegalStateException.class, ClassCastException.class, IllegalAccessError.class}
+        includes = {RuntimeException.class, IllegalArgumentException.class, Error.class},
+        excludes = {IllegalStateException.class, ClassCastException.class, IllegalAccessError.class}
     )
     @Override
     public <T> T includeMethod(Callable<T> callable) throws Exception {

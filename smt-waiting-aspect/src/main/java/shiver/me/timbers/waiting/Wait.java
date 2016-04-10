@@ -69,13 +69,13 @@ public @interface Wait {
      * The {@code Waiter} will rerun the method being waited on if it throws any {@code Throwable}s added to the include
      * list, any other {@code Throwable}s will be instantly rethrown and the method will not be rerun.
      */
-    Class<? extends Throwable>[] include() default {};
+    Class<? extends Throwable>[] includes() default {};
 
     /**
      * The {@code Waiter} will not rerun the method being waited on if it throws any {@code Throwable}s added to the
      * exclude list, it will instead rethrow. Any other {@code Throwable}s will cause the method to be rerun.
      */
-    Class<? extends Throwable>[] exclude() default {};
+    Class<? extends Throwable>[] excludes() default {};
 
     /**
      * The {@code Waiter} will ignore all global {@code Options} set through properties and just use the normal default

@@ -86,9 +86,9 @@ public class PropertyParserChoicesTest {
             .willReturn(waitForNotNull);
         given(propertyParser.getInstanceProperty("smt.waiting.waitFor", previousValidators))
             .willReturn((List) propertyValidators);
-        given(propertyParser.getClassProperty("smt.waiting.include", (List) previousIncludes))
+        given(propertyParser.getClassProperty("smt.waiting.includes", (List) previousIncludes))
             .willReturn((List) propertyIncludes);
-        given(propertyParser.getClassProperty("smt.waiting.exclude", (List) previousExcludes))
+        given(propertyParser.getClassProperty("smt.waiting.excludes", (List) previousExcludes))
             .willReturn((List) propertyExcludes);
 
         // When

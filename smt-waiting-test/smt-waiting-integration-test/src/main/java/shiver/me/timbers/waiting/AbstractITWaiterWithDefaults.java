@@ -48,8 +48,8 @@ public abstract class AbstractITWaiterWithDefaults
         properties().setProperty("smt.waiting.waitForTrue", "true");
         properties().setProperty("smt.waiting.waitForNotNull", "true");
         properties().setProperty("smt.waiting.waitFor", FailResult.class.getName());
-        properties().setProperty("smt.waiting.include", IllegalArgumentException.class.getName());
-        properties().setProperty("smt.waiting.exclude", IllegalStateException.class.getName());
+        properties().setProperty("smt.waiting.includes", IllegalArgumentException.class.getName());
+        properties().setProperty("smt.waiting.excludes", IllegalStateException.class.getName());
         given(until.call()).willThrow(new IllegalStateException()).willReturn(expected);
 
         // When

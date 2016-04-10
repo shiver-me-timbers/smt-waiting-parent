@@ -81,7 +81,7 @@ public abstract class AbstractITWaiterExcludeProperty extends AbstractITWaiterEx
         // Given
         properties().setProperty("smt.waiting.timeout.duration", "500");
         properties().setProperty("smt.waiting.timeout.unit", MILLISECONDS.name());
-        properties().setProperty("smt.waiting.exclude", format("%s,%s",
+        properties().setProperty("smt.waiting.excludes", format("%s,%s",
             someThrowable().getClass().getName(),
             expected.getClass().getName()
         ));
@@ -100,7 +100,7 @@ public abstract class AbstractITWaiterExcludeProperty extends AbstractITWaiterEx
         final Throwable expected = SOME_OTHER_THROWABLES[0];
 
         // Given
-        properties().setProperty("smt.waiting.exclude", someThrowable().getClass().getName());
+        properties().setProperty("smt.waiting.excludes", someThrowable().getClass().getName());
         given(callable.call()).willThrow(expected);
         expectedException.expect(is(expected));
 

@@ -43,8 +43,8 @@ class PropertyParserChoices implements PropertyChoices {
             propertyParser.getBooleanProperty("smt.waiting.waitForTrue", choices.isWaitForTrue()),
             propertyParser.getBooleanProperty("smt.waiting.waitForNotNull", choices.isWaitForNotNull()),
             propertyParser.getInstanceProperty("smt.waiting.waitFor", choices.getResultValidators()),
-            toSet(propertyParser.getClassProperty("smt.waiting.include", toList(choices.getIncludes()))),
-            toSet(propertyParser.getClassProperty("smt.waiting.exclude", toList(choices.getExcludes())
+            toSet(propertyParser.getClassProperty("smt.waiting.includes", toList(choices.getIncludes()))),
+            toSet(propertyParser.getClassProperty("smt.waiting.excludes", toList(choices.getExcludes())
             ))
         );
     }

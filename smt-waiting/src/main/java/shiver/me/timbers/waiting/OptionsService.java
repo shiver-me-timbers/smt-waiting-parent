@@ -55,14 +55,16 @@ interface OptionsService {
     OptionsService willWaitForNotNull(boolean shouldWait);
 
     /**
-     * @see Options#include(Class)
+     * @see Options#includes(Class[])
      */
-    OptionsService include(Class<? extends Throwable> throwable);
+    @SuppressWarnings("unchecked")
+    OptionsService includes(Class<? extends Throwable>... includes);
 
     /**
-     * @see Options#exclude(Class)
+     * @see Options#excludes(Class[])
      */
-    OptionsService exclude(Class<? extends Throwable> throwable);
+    @SuppressWarnings("unchecked")
+    OptionsService excludes(Class<? extends Throwable>... excludes);
 
     /**
      * @see Options#choose()

@@ -145,16 +145,15 @@ public class OptionsTest {
         given(chooser.choose(manual)).willReturn(expected);
 
         // When
+        @SuppressWarnings("unchecked")
         final Choice actual = options.withTimeout(timeoutDuration, timeoutUnit)
             .withInterval(intervalDuration, intervalUnit)
             .willWaitForTrue(shouldWaitForTrue)
             .willWaitForNotNull(shouldWaitForNotNull)
             .waitFor(validator1)
             .waitFor(validator2)
-            .include(throwable1)
-            .include(throwable2)
-            .exclude(throwable3)
-            .exclude(throwable4)
+            .includes(throwable1, throwable2)
+            .excludes(throwable3, throwable4)
             .choose();
 
         // Then

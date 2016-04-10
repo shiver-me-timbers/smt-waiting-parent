@@ -22,7 +22,7 @@ import java.util.concurrent.Callable;
 
 public class ExcludePrecedenceWaitingExcludeMethod implements WaitingExclude {
 
-    @Wait(include = RuntimeException.class, exclude = RuntimeException.class)
+    @Wait(includes = RuntimeException.class, excludes = RuntimeException.class)
     @Override
     public <T> T excludeMethod(Callable<T> callable) throws Exception {
         return callable.call();

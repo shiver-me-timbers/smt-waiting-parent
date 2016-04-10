@@ -66,13 +66,13 @@ public class WaitingAllMethods implements WaitingAll {
         return callable.call();
     }
 
-    @Wait(include = IllegalArgumentException.class)
+    @Wait(includes = IllegalArgumentException.class)
     @Override
     public <T> T includeMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
 
-    @Wait(exclude = IllegalArgumentException.class)
+    @Wait(excludes = IllegalArgumentException.class)
     @Override
     public <T> T excludeMethod(Callable<T> callable) throws Exception {
         return callable.call();
