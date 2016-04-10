@@ -1,0 +1,4 @@
+package shiver.me.timbers.waiting;
+
+public class ITCompileTimeSpringAspectWaiterIntervalPropertyClass extends AbstractITSpringAspectWaiterIntervalPropertyClass {
+}
