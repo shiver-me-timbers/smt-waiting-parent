@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright 2015 Karl Bennett
   ~
@@ -14,10 +15,15 @@
   ~ limitations under the License.
   -->
 
-<!DOCTYPE aspectj PUBLIC "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
-<aspectj>
-    <weaver options="-Xlint:ignore">
-        <include within="shiver.me.timbers.waiting.WaiterAspect" />
-        <include within="shiver.me.timbers.waiting.execution.*Waiting*" />
-    </weaver>
-</aspectj>
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="ERROR">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

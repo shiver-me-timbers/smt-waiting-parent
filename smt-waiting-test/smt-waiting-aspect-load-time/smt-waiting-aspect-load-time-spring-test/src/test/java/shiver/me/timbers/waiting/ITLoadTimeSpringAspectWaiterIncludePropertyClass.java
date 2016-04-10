@@ -1,0 +1,4 @@
+package shiver.me.timbers.waiting;
+
+public class ITLoadTimeSpringAspectWaiterIncludePropertyClass extends AbstractITSpringAspectWaiterIncludePropertyClass {
+}
