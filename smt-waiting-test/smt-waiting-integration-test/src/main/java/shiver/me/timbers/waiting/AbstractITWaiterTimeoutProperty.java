@@ -27,8 +27,9 @@ import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
@@ -95,8 +96,10 @@ public abstract class AbstractITWaiterTimeoutProperty extends AbstractITWaiterTi
         // Given
         properties().setProperty("smt.waiting.timeout.duration", "1");
         properties().setProperty("smt.waiting.timeout.unit", invalidTimeUnit);
-        expectedException.expect(IllegalStateException.class);
-        expectedException.expectMessage(containsString(invalidTimeUnit));
+        expectedException.expect(anyOf(
+            instanceOf(IllegalArgumentException.class),
+            instanceOf(IllegalStateException.class)
+        ));
 
         // When
         defaults().defaultsMethod(callable);
