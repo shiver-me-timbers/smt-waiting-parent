@@ -21,7 +21,7 @@ public class ITAutoProxyAspectWaiterTimeoutPropertyMethod extends AbstractITAspe
     private AutoProxyWaitingDefaultsMethodFactory defaultsFactory;
 
     @Autowired
-    private AutoProxyWaitingTimeoutMethodFactory classFactory;
+    private AutoProxyWaitingTimeoutMethodFactory timeoutFactory;
 
     @Override
     public WaitingPropertyRule properties() {
@@ -35,6 +35,6 @@ public class ITAutoProxyAspectWaiterTimeoutPropertyMethod extends AbstractITAspe
 
     @Override
     public AutoProxyWaitingTimeoutMethodFactory timeoutFactory() {
-        return classFactory;
+        return timeoutFactory;
     }
 }

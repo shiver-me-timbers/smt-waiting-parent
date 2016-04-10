@@ -5,23 +5,23 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import shiver.me.timbers.waiting.factory.AutoProxyWaitingDefaultsClassFactory;
-import shiver.me.timbers.waiting.factory.AutoProxyWaitingTimeoutClassFactory;
+import shiver.me.timbers.waiting.factory.AutoProxyWaitingDefaultsMethodFactory;
+import shiver.me.timbers.waiting.factory.AutoProxyWaitingForMethodFactory;
 import shiver.me.timbers.waiting.property.SystemPropertyManager;
 import shiver.me.timbers.waiting.test.WaitingPropertyRule;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = WaiterConfiguration.class)
-public class ITAutoProxyAspectWaiterTimeoutPropertyClass extends AbstractITAspectWaiterTimeoutPropertyClass {
+public class ITAutoProxyAspectWaiterWaitForPropertyMethod extends AbstractITAspectWaiterWaitForPropertyMethod {
 
     @Rule
     public WaitingPropertyRule properties = new WaitingPropertyRule(new SystemPropertyManager());
 
     @Autowired
-    private AutoProxyWaitingDefaultsClassFactory defaultsFactory;
+    private AutoProxyWaitingDefaultsMethodFactory defaultsFactory;
 
     @Autowired
-    private AutoProxyWaitingTimeoutClassFactory timeoutFactory;
+    private AutoProxyWaitingForMethodFactory waitingForFactory;
 
     @Override
     public WaitingPropertyRule properties() {
@@ -29,12 +29,12 @@ public class ITAutoProxyAspectWaiterTimeoutPropertyClass extends AbstractITAspec
     }
 
     @Override
-    public AutoProxyWaitingDefaultsClassFactory defaultsFactory() {
+    public AutoProxyWaitingDefaultsMethodFactory defaultsFactory() {
         return defaultsFactory;
     }
 
     @Override
-    public AutoProxyWaitingTimeoutClassFactory timeoutFactory() {
-        return timeoutFactory;
+    public AutoProxyWaitingForMethodFactory waitForFactory() {
+        return waitingForFactory;
     }
 }

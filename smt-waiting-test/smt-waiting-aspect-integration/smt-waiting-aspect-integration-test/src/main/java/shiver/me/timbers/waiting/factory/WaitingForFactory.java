@@ -2,6 +2,7 @@ package shiver.me.timbers.waiting.factory;
 
 import shiver.me.timbers.waiting.ResultValidator;
 import shiver.me.timbers.waiting.execution.WaitingFor;
+import shiver.me.timbers.waiting.validation.SuccessResult;
 import shiver.me.timbers.waiting.validation.ValidResult;
 
 import java.util.concurrent.TimeUnit;
@@ -14,12 +15,14 @@ public class WaitingForFactory {
 
     public WaitingForFactory(
         WaitingFor canWaitUntilValidWaitingFor,
-        WaitingFor canWaitUntilTimeoutWaitingFor
+        WaitingFor canWaitUntilTimeoutWaitingFor,
+        WaitingFor canAddExtraWaitingFor
     ) {
         this(new MapLookupFactory<WaitingFor>());
         final ValidResult validator = new ValidResult();
         add(canWaitUntilValidWaitingFor, 500L, MILLISECONDS, validator);
         add(canWaitUntilTimeoutWaitingFor, 200L, MILLISECONDS, validator);
+        add(canAddExtraWaitingFor, 500L, MILLISECONDS, new SuccessResult());
     }
 
     public WaitingForFactory(LookupFactory<WaitingFor> lookupFactory) {
