@@ -9,12 +9,12 @@ public abstract class AbstractITAspectWaiterIntervalProperty extends AbstractITW
     implements WaitingIntervalFactoryAware, WaitingDefaultsFactoryAware {
 
     @Override
-    protected WaitingInterval overrideInterval(long duration, TimeUnit unit) {
-        return intervalFactory().create(duration, unit);
+    public WaitingDefaults defaults() {
+        return defaultsFactory().create();
     }
 
     @Override
-    public WaitingDefaults defaults() {
-        return defaultsFactory().create();
+    protected WaitingInterval overrideInterval(long duration, TimeUnit unit) {
+        return intervalFactory().create(duration, unit);
     }
 }

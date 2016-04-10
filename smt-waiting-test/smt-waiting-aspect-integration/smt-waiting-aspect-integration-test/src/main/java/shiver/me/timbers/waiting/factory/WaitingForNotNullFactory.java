@@ -12,11 +12,13 @@ public class WaitingForNotNullFactory {
 
     public WaitingForNotNullFactory(
         WaitingForNotNull canWaitUntilWaitingForNotNull,
-        WaitingForNotNull canWaitUntilTimeoutWaitingForNotNull
+        WaitingForNotNull canWaitUntilTimeoutWaitingForNotNull,
+        WaitingForNotNull canAddExtraWaitingForNotNull
     ) {
         this(new MapLookupFactory<WaitingForNotNull>());
         add(canWaitUntilWaitingForNotNull, 500L, MILLISECONDS, true);
         add(canWaitUntilTimeoutWaitingForNotNull, 200L, MILLISECONDS, true);
+        add(canAddExtraWaitingForNotNull, 500L, MILLISECONDS, false);
     }
 
     public WaitingForNotNullFactory(LookupFactory<WaitingForNotNull> lookupFactory) {

@@ -9,12 +9,12 @@ public abstract class AbstractITAspectWaiterTimeoutProperty extends AbstractITWa
     implements WaitingTimeoutFactoryAware, WaitingDefaultsFactoryAware {
 
     @Override
-    protected WaitingTimeout overrideTimeout(long duration, TimeUnit unit) {
-        return timeoutFactory().create(duration, unit);
+    public WaitingDefaults defaults() {
+        return defaultsFactory().create();
     }
 
     @Override
-    public WaitingDefaults defaults() {
-        return defaultsFactory().create();
+    protected WaitingTimeout overrideTimeout(long duration, TimeUnit unit) {
+        return timeoutFactory().create(duration, unit);
     }
 }

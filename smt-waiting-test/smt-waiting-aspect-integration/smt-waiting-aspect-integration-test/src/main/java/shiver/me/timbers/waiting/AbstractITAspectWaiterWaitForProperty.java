@@ -10,12 +10,12 @@ public abstract class AbstractITAspectWaiterWaitForProperty extends AbstractITWa
     implements WaitingForFactoryAware, WaitingDefaultsFactoryAware {
 
     @Override
-    protected WaitingFor addWaitFor(long duration, TimeUnit unit, SuccessResult successResult) {
-        return waitForFactory().create(duration, unit, successResult);
+    public WaitingDefaults defaults() {
+        return defaultsFactory().create();
     }
 
     @Override
-    public WaitingDefaults defaults() {
-        return defaultsFactory().create();
+    protected WaitingFor addWaitFor(long duration, TimeUnit unit, SuccessResult successResult) {
+        return waitForFactory().create(duration, unit, successResult);
     }
 }

@@ -9,12 +9,12 @@ public abstract class AbstractITAspectWaiterIncludeProperty extends AbstractITWa
     implements WaitingIncludeFactoryAware, WaitingDefaultsFactoryAware {
 
     @Override
-    protected WaitingInclude addInclude(long duration, TimeUnit unit, Throwable exclude) {
-        return includesFactory().create(duration, unit, exclude);
+    public WaitingDefaults defaults() {
+        return defaultsFactory().create();
     }
 
     @Override
-    public WaitingDefaults defaults() {
-        return defaultsFactory().create();
+    protected WaitingInclude addInclude(long duration, TimeUnit unit, Throwable exclude) {
+        return includesFactory().create(duration, unit, exclude);
     }
 }
