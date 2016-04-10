@@ -76,4 +76,10 @@ public @interface Wait {
      * exclude list, it will instead rethrow. Any other {@code Throwable}s will cause the method to be rerun.
      */
     Class<? extends Throwable>[] exclude() default {};
+
+    /**
+     * The {@code Waiter} will ignore all global {@code Options} set through properties and just use the normal default
+     * values.
+     */
+    boolean withDefaults() default false;
 }
