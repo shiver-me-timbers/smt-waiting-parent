@@ -54,6 +54,7 @@ public class WaitOptionsConfigurerTest {
     private Class<ResultValidator>[] defaultWaitFor;
     private Class<? extends Throwable>[] defaultInclude;
     private Class<? extends Throwable>[] defaultExclude;
+    private boolean defaultWithDefaults;
 
     @Before
     @SuppressWarnings("unchecked")
@@ -71,6 +72,7 @@ public class WaitOptionsConfigurerTest {
         defaultWaitFor = new Class[0];
         defaultInclude = new Class[0];
         defaultExclude = new Class[0];
+        defaultWithDefaults = false;
     }
 
     @Test
@@ -84,6 +86,7 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitFor()).willReturn(defaultWaitFor);
         given(wait.include()).willReturn(defaultInclude);
         given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.withDefaults()).willReturn(defaultWithDefaults);
 
         // When
         final OptionsService actual = configurer.apply(options, wait);
@@ -110,6 +113,7 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitFor()).willReturn(defaultWaitFor);
         given(wait.include()).willReturn(defaultInclude);
         given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.withDefaults()).willReturn(defaultWithDefaults);
 
         // When
         final OptionsService actual = configurer.apply(options, wait);
@@ -138,6 +142,7 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitFor()).willReturn(defaultWaitFor);
         given(wait.include()).willReturn(defaultInclude);
         given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.withDefaults()).willReturn(defaultWithDefaults);
 
         // When
         final OptionsService actual = configurer.apply(options, wait);
@@ -160,6 +165,7 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitFor()).willReturn(new Class[]{TestResultOne.class, TestResultTwo.class});
         given(wait.include()).willReturn(defaultInclude);
         given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.withDefaults()).willReturn(defaultWithDefaults);
 
         // When
         final OptionsService actual = configurer.apply(options, wait);
@@ -183,6 +189,7 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitFor()).willReturn(new Class[]{TestResultOne.class, NoDefaultTestResult.class});
         given(wait.include()).willReturn(defaultInclude);
         given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.withDefaults()).willReturn(defaultWithDefaults);
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectCause(isA(InstantiationException.class));
 
@@ -202,6 +209,7 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitFor()).willReturn(new Class[]{TestResultOne.class, NoPublicTestResult.class});
         given(wait.include()).willReturn(defaultInclude);
         given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.withDefaults()).willReturn(defaultWithDefaults);
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectCause(isA(IllegalAccessException.class));
 
@@ -220,6 +228,7 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitFor()).willReturn(defaultWaitFor);
         given(wait.include()).willReturn(defaultInclude);
         given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.withDefaults()).willReturn(defaultWithDefaults);
 
         // When
         final OptionsService actual = configurer.apply(options, wait);
@@ -241,6 +250,7 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitFor()).willReturn(defaultWaitFor);
         given(wait.include()).willReturn(defaultInclude);
         given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.withDefaults()).willReturn(defaultWithDefaults);
 
         // When
         final OptionsService actual = configurer.apply(options, wait);
@@ -265,6 +275,7 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitFor()).willReturn(defaultWaitFor);
         given(wait.include()).willReturn(new Class[]{exceptionClass});
         given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.withDefaults()).willReturn(defaultWithDefaults);
 
         // When
         final OptionsService actual = configurer.apply(options, wait);
@@ -289,6 +300,7 @@ public class WaitOptionsConfigurerTest {
         given(wait.waitFor()).willReturn(defaultWaitFor);
         given(wait.include()).willReturn(defaultInclude);
         given(wait.exclude()).willReturn(new Class[]{exceptionClass});
+        given(wait.withDefaults()).willReturn(defaultWithDefaults);
 
         // When
         final OptionsService actual = configurer.apply(options, wait);
@@ -296,6 +308,29 @@ public class WaitOptionsConfigurerTest {
         // Then
         assertThat(actual, is(options));
         verify(options).exclude(exceptionClass);
+        verifyNoMoreInteractions(options);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Can_configure_with_defaults() {
+
+        // Given
+        given(wait.value()).willReturn(defaultTimeout);
+        given(wait.interval()).willReturn(defaultInterval);
+        given(wait.waitForTrue()).willReturn(defaultWaitForTrue);
+        given(wait.waitForNotNull()).willReturn(defaultWaitForNotNull);
+        given(wait.waitFor()).willReturn(defaultWaitFor);
+        given(wait.include()).willReturn(defaultInclude);
+        given(wait.exclude()).willReturn(defaultExclude);
+        given(wait.withDefaults()).willReturn(true);
+
+        // When
+        final OptionsService actual = configurer.apply(options, wait);
+
+        // Then
+        assertThat(actual, is(options));
+        verify(options).withDefaults(true);
         verifyNoMoreInteractions(options);
     }
 

@@ -10,8 +10,8 @@ public class AutoProxyWaitingWithDefaultsClassFactory extends WaitingWithDefault
 
     @Autowired
     public AutoProxyWaitingWithDefaultsClassFactory(
-        WaitingDefaultsClass waitingWithDefaults,
-        WaitingWithDefaultsClass waitingWithoutDefaults
+        WaitingWithDefaultsClass waitingWithDefaults,
+        WaitingDefaultsClass waitingWithoutDefaults
     ) {
         super(waitingWithDefaults, waitingWithoutDefaults);
     }

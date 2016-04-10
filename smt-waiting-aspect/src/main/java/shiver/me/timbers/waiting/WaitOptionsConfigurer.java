@@ -33,6 +33,7 @@ class WaitOptionsConfigurer implements OptionsConfigurer<Wait> {
         applyWaitForNotNull(options, wait);
         applyIncludes(options, wait);
         applyExcludes(options, wait);
+        applyWithDefaults(options, wait);
         return options;
     }
 
@@ -58,14 +59,16 @@ class WaitOptionsConfigurer implements OptionsConfigurer<Wait> {
     }
 
     private static void applyWaitForTrue(OptionsService options, Wait wait) {
-        if (!UNDECIDED.equals(wait.waitForTrue())) {
-            options.willWaitForTrue(YES.equals(wait.waitForTrue()));
+        final Decision waitForTrue = wait.waitForTrue();
+        if (!UNDECIDED.equals(waitForTrue)) {
+            options.willWaitForTrue(YES.equals(waitForTrue));
         }
     }
 
     private static void applyWaitForNotNull(OptionsService options, Wait wait) {
-        if (!UNDECIDED.equals(wait.waitForNotNull())) {
-            options.willWaitForNotNull(YES.equals(wait.waitForNotNull()));
+        final Decision waitForNotNull = wait.waitForNotNull();
+        if (!UNDECIDED.equals(waitForNotNull)) {
+            options.willWaitForNotNull(YES.equals(waitForNotNull));
         }
     }
 
@@ -80,6 +83,13 @@ class WaitOptionsConfigurer implements OptionsConfigurer<Wait> {
         final Class<? extends Throwable>[] excludes = wait.exclude();
         for (Class<? extends Throwable> exclude : excludes) {
             options.exclude(exclude);
+        }
+    }
+
+    private static void applyWithDefaults(OptionsService options, Wait wait) {
+        final boolean withDefaults = wait.withDefaults();
+        if (withDefaults == true) {
+            options.withDefaults(withDefaults);
         }
     }
 

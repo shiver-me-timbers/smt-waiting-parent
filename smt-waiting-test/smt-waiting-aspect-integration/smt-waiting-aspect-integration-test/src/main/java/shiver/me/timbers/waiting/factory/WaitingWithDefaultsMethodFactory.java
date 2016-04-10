@@ -6,12 +6,12 @@ import shiver.me.timbers.waiting.execution.WaitingWithDefaultsMethod;
 public class WaitingWithDefaultsMethodFactory extends WaitingWithDefaultsFactory {
 
     public WaitingWithDefaultsMethodFactory() {
-        this(new WaitingDefaultsMethod(), new WaitingWithDefaultsMethod());
+        this(new WaitingWithDefaultsMethod(), new WaitingDefaultsMethod());
     }
 
     public WaitingWithDefaultsMethodFactory(
-        WaitingDefaultsMethod waitingWithDefaults,
-        WaitingWithDefaultsMethod waitingWithoutDefaults
+        WaitingWithDefaultsMethod waitingWithDefaults,
+        WaitingDefaultsMethod waitingWithoutDefaults
     ) {
         super(waitingWithDefaults, waitingWithoutDefaults);
     }
