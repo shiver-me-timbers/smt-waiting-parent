@@ -12,11 +12,13 @@ public class WaitingForTrueFactory {
 
     public WaitingForTrueFactory(
         WaitingForTrue canWaitUntilWaitingForTrue,
-        WaitingForTrue canWaitUntilTimeoutWaitingForTrue
+        WaitingForTrue canWaitUntilTimeoutWaitingForTrue,
+        WaitingForTrue canAddExtraWaitingForTrue
     ) {
         this(new MapLookupFactory<WaitingForTrue>());
         add(canWaitUntilWaitingForTrue, 500L, MILLISECONDS, true);
         add(canWaitUntilTimeoutWaitingForTrue, 200L, MILLISECONDS, true);
+        add(canAddExtraWaitingForTrue, 500L, MILLISECONDS, false);
     }
 
     public WaitingForTrueFactory(LookupFactory<WaitingForTrue> lookupFactory) {

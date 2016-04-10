@@ -57,7 +57,7 @@ public abstract class AbstractITWaiterWaitForTrueProperty extends AbstractITWait
         given(callable.call()).willReturn(false);
 
         // When
-        final Object actual = overrideWaitForTrue(200L, MILLISECONDS, false).waitForTrueMethod(callable);
+        final Object actual = overrideWaitForTrue(500L, MILLISECONDS, false).waitForTrueMethod(callable);
 
         // Then
         assertThat(actual, is((Object) false));
