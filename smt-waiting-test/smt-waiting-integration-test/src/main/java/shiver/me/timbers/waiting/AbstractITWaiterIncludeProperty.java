@@ -37,6 +37,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static shiver.me.timbers.waiting.random.RandomExceptions.SOME_OTHER_THROWABLES;
 import static shiver.me.timbers.waiting.random.RandomExceptions.someThrowable;
 
 public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterInclude
@@ -105,7 +106,7 @@ public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterIn
         final Callable callable = mock(Callable.class);
 
         final Throwable exception1 = someThrowable();
-        final Throwable exception2 = someThrowable();
+        final Throwable exception2 = SOME_OTHER_THROWABLES[0];
 
         final Object expected = new Object();
 
