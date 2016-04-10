@@ -27,8 +27,9 @@ import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -83,8 +84,10 @@ public abstract class AbstractITWaiterIntervalProperty extends AbstractITWaiterI
         // Given
         properties().setProperty("smt.waiting.interval.duration", "1");
         properties().setProperty("smt.waiting.interval.unit", invalidTimeUnit);
-        expectedException.expect(IllegalStateException.class);
-        expectedException.expectMessage(containsString(invalidTimeUnit));
+        expectedException.expect(anyOf(
+            instanceOf(IllegalStateException.class),
+            instanceOf(IllegalArgumentException.class)
+        ));
 
         // When
         defaults().defaultsMethod(callable);
