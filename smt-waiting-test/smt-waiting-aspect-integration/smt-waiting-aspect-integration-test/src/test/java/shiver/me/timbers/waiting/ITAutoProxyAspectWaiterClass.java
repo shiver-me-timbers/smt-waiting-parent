@@ -16,7 +16,7 @@ import shiver.me.timbers.waiting.factory.AutoProxyWaitingTimeoutClassFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = WaiterConfiguration.class)
-public class ITAutoProxyWaiterClass extends AbstractITAspectWaiter {
+public class ITAutoProxyAspectWaiterClass extends AbstractITAspectWaiterClass {
 
     @Autowired
     private AutoProxyWaitingIntervalClassFactory intervalFactory;
