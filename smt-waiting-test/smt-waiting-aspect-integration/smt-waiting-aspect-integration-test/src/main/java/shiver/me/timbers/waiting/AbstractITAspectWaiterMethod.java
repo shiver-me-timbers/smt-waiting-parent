@@ -13,47 +13,47 @@ import shiver.me.timbers.waiting.factory.WaitingTimeoutMethodFactory;
 public abstract class AbstractITAspectWaiterMethod extends AbstractITAspectWaiter {
 
     @Override
-    protected WaitingIntervalMethodFactory intervalFactory() {
+    public WaitingIntervalMethodFactory intervalFactory() {
         return new WaitingIntervalMethodFactory();
     }
 
     @Override
-    protected WaitingTimeoutMethodFactory timeoutFactory() {
+    public WaitingTimeoutMethodFactory timeoutFactory() {
         return new WaitingTimeoutMethodFactory();
     }
 
     @Override
-    protected WaitingForMethodFactory waitForFactory() {
+    public WaitingForMethodFactory waitForFactory() {
         return new WaitingForMethodFactory();
     }
 
     @Override
-    protected WaitingForNotNullMethodFactory waitForNotNullFactory() {
+    public WaitingForNotNullMethodFactory waitForNotNullFactory() {
         return new WaitingForNotNullMethodFactory();
     }
 
     @Override
-    protected WaitingForTrueMethodFactory waitForTrueFactory() {
+    public WaitingForTrueMethodFactory waitForTrueFactory() {
         return new WaitingForTrueMethodFactory();
     }
 
     @Override
-    protected WaitingIncludeMethodFactory includesFactory() {
+    public WaitingIncludeMethodFactory includesFactory() {
         return new WaitingIncludeMethodFactory();
     }
 
     @Override
-    protected WaitingIncludesWithExcludesMethodFactory includesWithExcludesFactory() {
+    public WaitingIncludesWithExcludesMethodFactory includesWithExcludesFactory() {
         return new WaitingIncludesWithExcludesMethodFactory();
     }
 
     @Override
-    protected WaitingExcludeMethodFactory excludesFactory() {
+    public WaitingExcludeMethodFactory excludesFactory() {
         return new WaitingExcludeMethodFactory();
     }
 
     @Override
-    protected WaitingExcludesWithIncludesMethodFactory excludesWithIncludesFactory() {
+    public WaitingExcludesWithIncludesMethodFactory excludesWithIncludesFactory() {
         return new WaitingExcludesWithIncludesMethodFactory();
     }
 }

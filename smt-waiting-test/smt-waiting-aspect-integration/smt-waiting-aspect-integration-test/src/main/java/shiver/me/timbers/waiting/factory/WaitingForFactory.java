@@ -13,13 +13,13 @@ public class WaitingForFactory {
     private final LookupFactory<WaitingFor> lookupFactory;
 
     public WaitingForFactory(
-        WaitingFor canWaitUntilValidWaitingForClass,
-        WaitingFor canWaitUntilTimeoutWaitingForClass
+        WaitingFor canWaitUntilValidWaitingFor,
+        WaitingFor canWaitUntilTimeoutWaitingFor
     ) {
         this(new MapLookupFactory<WaitingFor>());
         final ValidResult validator = new ValidResult();
-        add(canWaitUntilValidWaitingForClass, 500L, MILLISECONDS, validator);
-        add(canWaitUntilTimeoutWaitingForClass, 200L, MILLISECONDS, validator);
+        add(canWaitUntilValidWaitingFor, 500L, MILLISECONDS, validator);
+        add(canWaitUntilTimeoutWaitingFor, 200L, MILLISECONDS, validator);
     }
 
     public WaitingForFactory(LookupFactory<WaitingFor> lookupFactory) {

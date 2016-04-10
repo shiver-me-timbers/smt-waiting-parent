@@ -17,16 +17,16 @@ public class WaitingExcludesWithIncludesFactory {
     private final LookupFactory<WaitingExclude> lookupFactory;
 
     public WaitingExcludesWithIncludesFactory(
-        WaitingExclude cannotIgnoreExcludeIncludeWaitingExcludeClass,
-        WaitingExclude excludePrecedenceWaitingExcludeClass
+        WaitingExclude cannotIgnoreExcludeIncludeWaitingExclude,
+        WaitingExclude excludePrecedenceWaitingExclude
     ) {
         this(new MapLookupFactory<WaitingExclude>());
         add(
-            cannotIgnoreExcludeIncludeWaitingExcludeClass,
+            cannotIgnoreExcludeIncludeWaitingExclude,
             500L, MILLISECONDS, asList(SOME_THROWABLES), asList(SOME_OTHER_THROWABLES)
         );
         add(
-            excludePrecedenceWaitingExcludeClass,
+            excludePrecedenceWaitingExclude,
             500L, MILLISECONDS, singletonList(SOME_THROWABLES[0]), singletonList(SOME_THROWABLES[0])
         );
     }

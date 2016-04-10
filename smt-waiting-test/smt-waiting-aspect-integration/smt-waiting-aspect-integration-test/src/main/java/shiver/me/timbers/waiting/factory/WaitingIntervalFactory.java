@@ -10,9 +10,9 @@ public class WaitingIntervalFactory {
 
     private final LookupFactory<WaitingInterval> lookupFactory;
 
-    public WaitingIntervalFactory(WaitingInterval canChangeWaitingIntervalClass) {
+    public WaitingIntervalFactory(WaitingInterval canChangeWaitingInterval) {
         this(new MapLookupFactory<WaitingInterval>());
-        add(canChangeWaitingIntervalClass, 200L, MILLISECONDS);
+        add(canChangeWaitingInterval, 200L, MILLISECONDS);
     }
 
     public WaitingIntervalFactory(LookupFactory<WaitingInterval> lookupFactory) {

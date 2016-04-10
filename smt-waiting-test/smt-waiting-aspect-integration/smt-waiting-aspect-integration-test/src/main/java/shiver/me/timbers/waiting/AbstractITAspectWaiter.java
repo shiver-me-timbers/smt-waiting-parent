@@ -7,38 +7,11 @@ import shiver.me.timbers.waiting.execution.WaitingForTrue;
 import shiver.me.timbers.waiting.execution.WaitingInclude;
 import shiver.me.timbers.waiting.execution.WaitingInterval;
 import shiver.me.timbers.waiting.execution.WaitingTimeout;
-import shiver.me.timbers.waiting.factory.WaitingExcludeFactory;
-import shiver.me.timbers.waiting.factory.WaitingExcludesWithIncludesFactory;
-import shiver.me.timbers.waiting.factory.WaitingForFactory;
-import shiver.me.timbers.waiting.factory.WaitingForNotNullFactory;
-import shiver.me.timbers.waiting.factory.WaitingForTrueFactory;
-import shiver.me.timbers.waiting.factory.WaitingIncludeFactory;
-import shiver.me.timbers.waiting.factory.WaitingIncludesWithExcludesFactory;
-import shiver.me.timbers.waiting.factory.WaitingIntervalFactory;
-import shiver.me.timbers.waiting.factory.WaitingTimeoutFactory;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public abstract class AbstractITAspectWaiter extends AbstractITWaiter {
-
-    protected abstract WaitingIntervalFactory intervalFactory();
-
-    protected abstract WaitingTimeoutFactory timeoutFactory();
-
-    protected abstract WaitingForFactory waitForFactory();
-
-    protected abstract WaitingForNotNullFactory waitForNotNullFactory();
-
-    protected abstract WaitingForTrueFactory waitForTrueFactory();
-
-    protected abstract WaitingIncludeFactory includesFactory();
-
-    protected abstract WaitingIncludesWithExcludesFactory includesWithExcludesFactory();
-
-    protected abstract WaitingExcludeFactory excludesFactory();
-
-    protected abstract WaitingExcludesWithIncludesFactory excludesWithIncludesFactory();
+public abstract class AbstractITAspectWaiter extends AbstractITWaiter implements WaitingFactoriesAware {
 
     @Override
     public WaitingInterval interval(long duration, TimeUnit unit) {

@@ -2,6 +2,7 @@ package shiver.me.timbers.waiting.factory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import shiver.me.timbers.waiting.execution.CanAddExtraWaitingExcludeMethod;
 import shiver.me.timbers.waiting.execution.CanIgnoreWaitingExcludeMethod;
 import shiver.me.timbers.waiting.execution.CannotIgnoreWaitingExcludeMethod;
 
@@ -11,8 +12,9 @@ public class AutoProxyWaitingExcludeMethodFactory extends WaitingExcludeMethodFa
     @Autowired
     public AutoProxyWaitingExcludeMethodFactory(
         CannotIgnoreWaitingExcludeMethod cannotIgnoreWaitingExcludeMethod,
-        CanIgnoreWaitingExcludeMethod canIgnoreWaitingExcludeMethod
+        CanIgnoreWaitingExcludeMethod canIgnoreWaitingExcludeMethod,
+        CanAddExtraWaitingExcludeMethod canAddExtraWaitingExcludeMethod
     ) {
-        super(cannotIgnoreWaitingExcludeMethod, canIgnoreWaitingExcludeMethod);
+        super(cannotIgnoreWaitingExcludeMethod, canIgnoreWaitingExcludeMethod, canAddExtraWaitingExcludeMethod);
     }
 }

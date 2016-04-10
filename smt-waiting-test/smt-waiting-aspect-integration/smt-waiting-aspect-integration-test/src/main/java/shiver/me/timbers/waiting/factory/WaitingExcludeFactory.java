@@ -15,17 +15,22 @@ public class WaitingExcludeFactory {
     private final LookupFactory<WaitingExclude> lookupFactory;
 
     public WaitingExcludeFactory(
-        WaitingExclude cannotIgnoreWaitingExcludeClass,
-        WaitingExclude canIgnoreWaitingExcludeClass
+        WaitingExclude cannotIgnoreWaitingExclude,
+        WaitingExclude canIgnoreWaitingExclude,
+        WaitingExclude canAddExtraWaitingExclude
     ) {
         this(new MapLookupFactory<WaitingExclude>());
         add(
-            cannotIgnoreWaitingExcludeClass,
+            cannotIgnoreWaitingExclude,
             500L, MILLISECONDS, SOME_THROWABLES[0], SOME_OTHER_THROWABLES[0], SOME_THROWABLES[1]
         );
         add(
-            canIgnoreWaitingExcludeClass,
+            canIgnoreWaitingExclude,
             500L, MILLISECONDS, SOME_OTHER_THROWABLES
+        );
+        add(
+            canAddExtraWaitingExclude,
+            500L, MILLISECONDS, SOME_OTHER_THROWABLES[0]
         );
     }
 

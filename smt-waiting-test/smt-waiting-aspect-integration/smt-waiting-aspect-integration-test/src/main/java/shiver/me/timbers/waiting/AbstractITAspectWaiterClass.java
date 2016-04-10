@@ -13,47 +13,47 @@ import shiver.me.timbers.waiting.factory.WaitingTimeoutClassFactory;
 public abstract class AbstractITAspectWaiterClass extends AbstractITAspectWaiter {
 
     @Override
-    protected WaitingIntervalClassFactory intervalFactory() {
+    public WaitingIntervalClassFactory intervalFactory() {
         return new WaitingIntervalClassFactory();
     }
 
     @Override
-    protected WaitingTimeoutClassFactory timeoutFactory() {
+    public WaitingTimeoutClassFactory timeoutFactory() {
         return new WaitingTimeoutClassFactory();
     }
 
     @Override
-    protected WaitingForClassFactory waitForFactory() {
+    public WaitingForClassFactory waitForFactory() {
         return new WaitingForClassFactory();
     }
 
     @Override
-    protected WaitingForNotNullClassFactory waitForNotNullFactory() {
+    public WaitingForNotNullClassFactory waitForNotNullFactory() {
         return new WaitingForNotNullClassFactory();
     }
 
     @Override
-    protected WaitingForTrueClassFactory waitForTrueFactory() {
+    public WaitingForTrueClassFactory waitForTrueFactory() {
         return new WaitingForTrueClassFactory();
     }
 
     @Override
-    protected WaitingIncludeClassFactory includesFactory() {
+    public WaitingIncludeClassFactory includesFactory() {
         return new WaitingIncludeClassFactory();
     }
 
     @Override
-    protected WaitingIncludesWithExcludesClassFactory includesWithExcludesFactory() {
+    public WaitingIncludesWithExcludesClassFactory includesWithExcludesFactory() {
         return new WaitingIncludesWithExcludesClassFactory();
     }
 
     @Override
-    protected WaitingExcludeClassFactory excludesFactory() {
+    public WaitingExcludeClassFactory excludesFactory() {
         return new WaitingExcludeClassFactory();
     }
 
     @Override
-    protected WaitingExcludesWithIncludesClassFactory excludesWithIncludesFactory() {
+    public WaitingExcludesWithIncludesClassFactory excludesWithIncludesFactory() {
         return new WaitingExcludesWithIncludesClassFactory();
     }
 }

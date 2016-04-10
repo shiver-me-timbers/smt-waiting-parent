@@ -11,14 +11,14 @@ public class WaitingTimeoutFactory {
     private final LookupFactory<WaitingTimeout> lookupFactory;
 
     public WaitingTimeoutFactory(
-        WaitingTimeout canChangeWaitingTimeoutClass,
-        WaitingTimeout canWaitUntilExceptionWaitingTimeoutClass,
-        WaitingTimeout shortWaitingTimeoutClass
+        WaitingTimeout canChangeWaitingTimeout,
+        WaitingTimeout canWaitUntilExceptionWaitingTimeout,
+        WaitingTimeout shortWaitingTimeout
     ) {
         this(new MapLookupFactory<WaitingTimeout>());
-        add(canChangeWaitingTimeoutClass, 200L, MILLISECONDS);
-        add(canWaitUntilExceptionWaitingTimeoutClass, 500L, MILLISECONDS);
-        add(shortWaitingTimeoutClass, 10L, MILLISECONDS);
+        add(canChangeWaitingTimeout, 200L, MILLISECONDS);
+        add(canWaitUntilExceptionWaitingTimeout, 500L, MILLISECONDS);
+        add(shortWaitingTimeout, 10L, MILLISECONDS);
     }
 
     public WaitingTimeoutFactory(LookupFactory<WaitingTimeout> lookupFactory) {

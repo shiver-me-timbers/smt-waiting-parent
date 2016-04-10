@@ -34,6 +34,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static shiver.me.timbers.waiting.random.RandomExceptions.SOME_OTHER_THROWABLES;
 import static shiver.me.timbers.waiting.random.RandomExceptions.someOtherThrowable;
 import static shiver.me.timbers.waiting.random.RandomExceptions.someThrowable;
 
@@ -96,7 +97,7 @@ public abstract class AbstractITWaiterExcludeProperty extends AbstractITWaiterEx
 
         final Callable callable = mock(Callable.class);
 
-        final Throwable expected = someOtherThrowable();
+        final Throwable expected = SOME_OTHER_THROWABLES[0];
 
         // Given
         properties().setProperty("smt.waiting.exclude", someThrowable().getClass().getName());

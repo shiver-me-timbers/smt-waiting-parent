@@ -46,47 +46,47 @@ public class ITAutoProxyAspectWaiterClass extends AbstractITAspectWaiterClass {
     private AutoProxyWaitingExcludesWithIncludesClassFactory excludesWithIncludesFactory;
 
     @Override
-    protected AutoProxyWaitingIntervalClassFactory intervalFactory() {
+    public AutoProxyWaitingIntervalClassFactory intervalFactory() {
         return intervalFactory;
     }
 
     @Override
-    protected AutoProxyWaitingTimeoutClassFactory timeoutFactory() {
+    public AutoProxyWaitingTimeoutClassFactory timeoutFactory() {
         return timeoutFactory;
     }
 
     @Override
-    protected AutoProxyWaitingForClassFactory waitForFactory() {
+    public AutoProxyWaitingForClassFactory waitForFactory() {
         return waitForFactory;
     }
 
     @Override
-    protected AutoProxyWaitingForNotNullClassFactory waitForNotNullFactory() {
+    public AutoProxyWaitingForNotNullClassFactory waitForNotNullFactory() {
         return waitForNotNullFactory;
     }
 
     @Override
-    protected AutoProxyWaitingForTrueClassFactory waitForTrueFactory() {
+    public AutoProxyWaitingForTrueClassFactory waitForTrueFactory() {
         return waitForTrueFactory;
     }
 
     @Override
-    protected AutoProxyWaitingIncludeClassFactory includesFactory() {
+    public AutoProxyWaitingIncludeClassFactory includesFactory() {
         return includesFactory;
     }
 
     @Override
-    protected AutoProxyWaitingIncludesWithExcludesClassFactory includesWithExcludesFactory() {
+    public AutoProxyWaitingIncludesWithExcludesClassFactory includesWithExcludesFactory() {
         return includesWithExcludesFactory;
     }
 
     @Override
-    protected AutoProxyWaitingExcludeClassFactory excludesFactory() {
+    public AutoProxyWaitingExcludeClassFactory excludesFactory() {
         return excludesFactory;
     }
 
     @Override
-    protected AutoProxyWaitingExcludesWithIncludesClassFactory excludesWithIncludesFactory() {
+    public AutoProxyWaitingExcludesWithIncludesClassFactory excludesWithIncludesFactory() {
         return excludesWithIncludesFactory;
     }
 }

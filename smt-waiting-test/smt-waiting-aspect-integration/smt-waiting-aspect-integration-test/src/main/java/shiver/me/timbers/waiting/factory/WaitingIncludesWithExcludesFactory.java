@@ -15,12 +15,10 @@ public class WaitingIncludesWithExcludesFactory {
 
     private final LookupFactory<WaitingInclude> lookupFactory;
 
-    public WaitingIncludesWithExcludesFactory(
-        WaitingInclude canIgnoreIncludeExcludeWaitingIncludeClass
-    ) {
+    public WaitingIncludesWithExcludesFactory(WaitingInclude canIgnoreIncludeExcludeWaitingInclude) {
         this(new MapLookupFactory<WaitingInclude>());
         add(
-            canIgnoreIncludeExcludeWaitingIncludeClass,
+            canIgnoreIncludeExcludeWaitingInclude,
             500L, MILLISECONDS, asList(SOME_THROWABLES), asList(SOME_OTHER_THROWABLES)
         );
     }
