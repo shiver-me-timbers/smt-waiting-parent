@@ -16,18 +16,18 @@
 
 package shiver.me.timbers.waiting;
 
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
-import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static shiver.me.timbers.data.random.RandomBooleans.someBoolean;
@@ -41,7 +41,7 @@ public class OptionsTest {
     private PropertyChoices propertyChoices;
     private ManualChoices manualChoices;
     private Chooser chooser;
-    private Options options;
+    private OptionsService options;
 
     @Before
     public void setUp() {
@@ -66,7 +66,7 @@ public class OptionsTest {
         new Options(defaultChoices, propertyChoices, manualChoices, chooser);
 
         // Then
-        verifyZeroInteractions(defaultChoices, propertyChoices, manualChoices);
+        verifyZeroInteractions(defaultChoices, propertyChoices, manualChoices, chooser);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class OptionsTest {
 
         // Given
         given(defaultChoices.create()).willReturn(defaults);
-        given(propertyChoices.apply(defaults)).willReturn(properties);
+        given(propertyChoices.apply(defaults, (Options) options)).willReturn(properties);
         given(manualChoices.apply(properties, options)).willReturn(manual);
         given(chooser.choose(manual)).willReturn(expected);
 
@@ -92,8 +92,10 @@ public class OptionsTest {
     }
 
     @Test
-    public void Can_create_a_choice_with_custom_values() throws InterruptedException {
+    @SuppressWarnings("unchecked")
+    public void Can_set_options() {
 
+        // Given
         final Long timeoutDuration = someLong();
         final TimeUnit timeoutUnit = someEnum(TimeUnit.class);
         final Long intervalDuration = someLong();
@@ -106,52 +108,34 @@ public class OptionsTest {
         final Class<? extends Throwable> throwable2 = someThrowable().getClass();
         final Class<? extends Throwable> throwable3 = someThrowable().getClass();
         final Class<? extends Throwable> throwable4 = someThrowable().getClass();
-
-        final Choices defaults = mock(Choices.class);
-        final Choices properties = mock(Choices.class);
-        final Choices manual = mock(Choices.class);
-
-        final Choice expected = mock(Choice.class);
-
-        // Given
-        given(defaultChoices.create()).willReturn(defaults);
-        given(propertyChoices.apply(defaults)).willReturn(properties);
-        given(manualChoices.apply(properties, options)).willReturn(manual);
-        given(chooser.choose(manual)).willReturn(expected);
+        final Boolean useDefaults = someBoolean();
 
         // When
-        @SuppressWarnings("unchecked")
-        final Choice actual = options.withTimeout(timeoutDuration, timeoutUnit)
+        options.withTimeout(timeoutDuration, timeoutUnit)
             .withInterval(intervalDuration, intervalUnit)
             .willWaitForTrue(shouldWaitForTrue)
             .willWaitForNotNull(shouldWaitForNotNull)
             .waitFor(validator1, validator2)
             .includes(throwable1, throwable2)
             .excludes(throwable3, throwable4)
-            .choose();
+            .withDefaults(useDefaults);
 
         // Then
-        assertThat(actual, is(expected));
-    }
-
-    @Test
-    public void Can_create_a_choice_with_defaults() throws InterruptedException {
-
-        final Choices defaults = mock(Choices.class);
-        final Choices manual = mock(Choices.class);
-
-        final Choice expected = mock(Choice.class);
-
-        // Given
-        given(defaultChoices.create()).willReturn(defaults);
-        given(manualChoices.apply(defaults, options)).willReturn(manual);
-        given(chooser.choose(manual)).willReturn(expected);
-
-        // When
-        final Choice actual = options.withDefaults(true).choose();
-
-        // Then
-        assertThat(actual, is(expected));
-        verifyZeroInteractions(propertyChoices);
+        assertThat(options.getTimeoutDuration(), is(timeoutDuration));
+        assertThat(options.getTimeoutUnit(), is(timeoutUnit));
+        assertThat(options.getIntervalDuration(), is(intervalDuration));
+        assertThat(options.getIntervalUnit(), is(intervalUnit));
+        assertThat(options.isWaitForTrue(), is(shouldWaitForTrue));
+        assertThat(options.isWaitForNotNull(), is(shouldWaitForNotNull));
+        assertThat(options.getResultValidators(), contains(
+            instanceOf(validator1.getClass()), instanceOf(validator2.getClass())
+        ));
+        assertThat(options.getIncludes(), (Matcher) hasItems(
+            instanceOf(throwable1.getClass()), instanceOf(throwable1.getClass())
+        ));
+        assertThat(options.getExcludes(), (Matcher) hasItems(
+            instanceOf(throwable3.getClass()), instanceOf(throwable4.getClass())
+        ));
+        assertThat(((Options) options).isWithDefaults(), is(useDefaults));
     }
 }

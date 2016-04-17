@@ -34,17 +34,21 @@ class PropertyParserChoices implements PropertyChoices {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Choices apply(Choices choices) {
+    public Choices apply(Choices currentChoices, Options options) {
+        if (options.isWithDefaults()) {
+            return currentChoices;
+        }
+
         return new BasicChoices(
-            propertyParser.getLongProperty("smt.waiting.timeout.duration", choices.getTimeoutDuration()),
-            propertyParser.getEnumProperty("smt.waiting.timeout.unit", choices.getTimeoutUnit()),
-            propertyParser.getLongProperty("smt.waiting.interval.duration", choices.getIntervalDuration()),
-            propertyParser.getEnumProperty("smt.waiting.interval.unit", choices.getIntervalUnit()),
-            propertyParser.getBooleanProperty("smt.waiting.waitForTrue", choices.isWaitForTrue()),
-            propertyParser.getBooleanProperty("smt.waiting.waitForNotNull", choices.isWaitForNotNull()),
-            propertyParser.getInstanceProperty("smt.waiting.waitFor", choices.getResultValidators()),
-            toSet(propertyParser.getClassProperty("smt.waiting.includes", toList(choices.getIncludes()))),
-            toSet(propertyParser.getClassProperty("smt.waiting.excludes", toList(choices.getExcludes())
+            propertyParser.getLongProperty("smt.waiting.timeout.duration", currentChoices.getTimeoutDuration()),
+            propertyParser.getEnumProperty("smt.waiting.timeout.unit", currentChoices.getTimeoutUnit()),
+            propertyParser.getLongProperty("smt.waiting.interval.duration", currentChoices.getIntervalDuration()),
+            propertyParser.getEnumProperty("smt.waiting.interval.unit", currentChoices.getIntervalUnit()),
+            propertyParser.getBooleanProperty("smt.waiting.waitForTrue", currentChoices.isWaitForTrue()),
+            propertyParser.getBooleanProperty("smt.waiting.waitForNotNull", currentChoices.isWaitForNotNull()),
+            propertyParser.getInstanceProperty("smt.waiting.waitFor", currentChoices.getResultValidators()),
+            toSet(propertyParser.getClassProperty("smt.waiting.includes", toList(currentChoices.getIncludes()))),
+            toSet(propertyParser.getClassProperty("smt.waiting.excludes", toList(currentChoices.getExcludes())
             ))
         );
     }

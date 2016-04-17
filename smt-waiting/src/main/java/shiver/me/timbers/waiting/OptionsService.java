@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  * @author Karl Bennett
  * @see Options
  */
-interface OptionsService {
+interface OptionsService extends Choices {
 
     /**
      * @see Options#withDefaults(boolean)

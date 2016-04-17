@@ -16,6 +16,7 @@
 
 package shiver.me.timbers.waiting;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -37,13 +38,35 @@ import static shiver.me.timbers.data.random.RandomLongs.someLong;
 
 public class PropertyParserChoicesTest {
 
+    private PropertyParser propertyParser;
+    private Choices currentChoices;
+    private Options options;
+    private PropertyParserChoices choices;
+
+    @Before
+    public void setUp() {
+        propertyParser = mock(PropertyParser.class);
+        currentChoices = mock(Choices.class);
+        options = mock(Options.class);
+        choices = new PropertyParserChoices(propertyParser);
+    }
+
+    @Test
+    public void Can_return_the_current_choices_instead_of_the_properties() {
+
+        // Given
+        given(options.isWithDefaults()).willReturn(true);
+
+        // When
+        final Choices actual = choices.apply(currentChoices, options);
+
+        // Then
+        assertThat(actual, is(currentChoices));
+    }
+
     @Test
     @SuppressWarnings("unchecked")
     public void Can_create_a_system_property_choices() {
-
-        final PropertyParser propertyParser = mock(PropertyParser.class);
-
-        final Choices choices = mock(Choices.class);
 
         final Long previousTimeoutDuration = someLong();
         final TimeUnit previousTimeoutUnit = someEnum(TimeUnit.class);
@@ -66,13 +89,14 @@ public class PropertyParserChoicesTest {
         final List<Class<? extends Throwable>> propertyExcludes = spy(new ArrayList<Class<? extends Throwable>>());
 
         // Given
-        given(choices.getTimeoutDuration()).willReturn(previousTimeoutDuration);
-        given(choices.getTimeoutUnit()).willReturn(previousTimeoutUnit);
-        given(choices.getIntervalDuration()).willReturn(previousIntervalDuration);
-        given(choices.getIntervalUnit()).willReturn(previousIntervalUnit);
-        given(choices.isWaitForTrue()).willReturn(previousWaitForTrue);
-        given(choices.isWaitForNotNull()).willReturn(previousWaitForNotNull);
-        given(choices.getResultValidators()).willReturn(previousResultValidators);
+        given(options.isWithDefaults()).willReturn(false);
+        given(currentChoices.getTimeoutDuration()).willReturn(previousTimeoutDuration);
+        given(currentChoices.getTimeoutUnit()).willReturn(previousTimeoutUnit);
+        given(currentChoices.getIntervalDuration()).willReturn(previousIntervalDuration);
+        given(currentChoices.getIntervalUnit()).willReturn(previousIntervalUnit);
+        given(currentChoices.isWaitForTrue()).willReturn(previousWaitForTrue);
+        given(currentChoices.isWaitForNotNull()).willReturn(previousWaitForNotNull);
+        given(currentChoices.getResultValidators()).willReturn(previousResultValidators);
         given(propertyParser.getLongProperty("smt.waiting.timeout.duration", previousTimeoutDuration))
             .willReturn(timeoutDuration);
         given(propertyParser.getEnumProperty("smt.waiting.timeout.unit", previousTimeoutUnit)).willReturn(timeoutUnit);
@@ -92,7 +116,7 @@ public class PropertyParserChoicesTest {
             .willReturn((List) propertyExcludes);
 
         // When
-        final Choices actual = new PropertyParserChoices(propertyParser).apply(choices);
+        final Choices actual = choices.apply(currentChoices, options);
 
         // Then
         assertThat(actual.getTimeoutDuration(), is(timeoutDuration));

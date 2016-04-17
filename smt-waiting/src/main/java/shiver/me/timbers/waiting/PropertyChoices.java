@@ -21,5 +21,5 @@ package shiver.me.timbers.waiting;
  */
 interface PropertyChoices {
 
-    Choices apply(Choices choices);
+    Choices apply(Choices currentChoices, Options options);
 }

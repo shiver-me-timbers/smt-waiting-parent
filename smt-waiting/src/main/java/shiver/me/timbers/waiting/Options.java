@@ -45,7 +45,7 @@ import static java.util.Arrays.asList;
  *
  * @author Karl Bennett
  */
-public class Options implements OptionsService, Choices {
+public class Options implements OptionsService {
 
     private final Chooser chooser;
     private final DefaultChoices defaultChoices;
@@ -170,7 +170,8 @@ public class Options implements OptionsService, Choices {
     @Override
     public Choice choose() {
         final Choices defaults = defaultChoices.create();
-        final Choices manual = manualChoices.apply(withDefaults ? defaults : propertyChoices.apply(defaults), this);
+        final Choices properties = propertyChoices.apply(defaults, this);
+        final Choices manual = manualChoices.apply(properties, this);
         return chooser.choose(manual);
     }
 
@@ -207,6 +208,10 @@ public class Options implements OptionsService, Choices {
     @Override
     public List<ResultValidator> getResultValidators() {
         return new ArrayList<>(resultValidators);
+    }
+
+    public Boolean isWithDefaults() {
+        return withDefaults;
     }
 
     @Override
