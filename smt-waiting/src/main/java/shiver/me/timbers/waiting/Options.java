@@ -45,7 +45,7 @@ import static java.util.Arrays.asList;
  *
  * @author Karl Bennett
  */
-public class Options implements OptionsService {
+public class Options implements OptionsService, Choices {
 
     private final Chooser chooser;
     private final DefaultChoices defaultChoices;
@@ -170,20 +170,52 @@ public class Options implements OptionsService {
     @Override
     public Choice choose() {
         final Choices defaults = defaultChoices.create();
-        final Choices manual = manualChoices.apply(
-            withDefaults ? defaults : propertyChoices.apply(defaults),
-            new BasicChoices(
-                timeoutDuration,
-                timeoutUnit,
-                intervalDuration,
-                intervalUnit,
-                waitForTrue,
-                waitForNotNull,
-                resultValidators,
-                includes,
-                excludes
-            )
-        );
+        final Choices manual = manualChoices.apply(withDefaults ? defaults : propertyChoices.apply(defaults), this);
         return chooser.choose(manual);
+    }
+
+    @Override
+    public Long getTimeoutDuration() {
+        return timeoutDuration;
+    }
+
+    @Override
+    public TimeUnit getTimeoutUnit() {
+        return timeoutUnit;
+    }
+
+    @Override
+    public Long getIntervalDuration() {
+        return intervalDuration;
+    }
+
+    @Override
+    public TimeUnit getIntervalUnit() {
+        return intervalUnit;
+    }
+
+    @Override
+    public Boolean isWaitForTrue() {
+        return waitForTrue;
+    }
+
+    @Override
+    public Boolean isWaitForNotNull() {
+        return waitForNotNull;
+    }
+
+    @Override
+    public List<ResultValidator> getResultValidators() {
+        return new ArrayList<>(resultValidators);
+    }
+
+    @Override
+    public Set<Class<? extends Throwable>> getIncludes() {
+        return new HashSet<>(includes);
+    }
+
+    @Override
+    public Set<Class<? extends Throwable>> getExcludes() {
+        return new HashSet<>(excludes);
     }
 }

@@ -37,23 +37,11 @@ import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
 
 public class OptionsTest {
 
-    private static final BasicChoices EMPTY_CHOICES = new BasicChoices(
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        Collections.<ResultValidator>emptyList(),
-        Collections.<Class<? extends Throwable>>emptySet(),
-        Collections.<Class<? extends Throwable>>emptySet()
-    );
-
     private DefaultChoices defaultChoices;
     private PropertyChoices propertyChoices;
     private ManualChoices manualChoices;
     private Chooser chooser;
-    private OptionsService options;
+    private Options options;
 
     @Before
     public void setUp() {
@@ -93,7 +81,7 @@ public class OptionsTest {
         // Given
         given(defaultChoices.create()).willReturn(defaults);
         given(propertyChoices.apply(defaults)).willReturn(properties);
-        given(manualChoices.apply(eq(properties), eq(EMPTY_CHOICES))).willReturn(manual);
+        given(manualChoices.apply(properties, options)).willReturn(manual);
         given(chooser.choose(manual)).willReturn(expected);
 
         // When
@@ -128,20 +116,7 @@ public class OptionsTest {
         // Given
         given(defaultChoices.create()).willReturn(defaults);
         given(propertyChoices.apply(defaults)).willReturn(properties);
-        given(manualChoices.apply(
-            eq(properties),
-            eq(new BasicChoices(
-                timeoutDuration,
-                timeoutUnit,
-                intervalDuration,
-                intervalUnit,
-                shouldWaitForTrue,
-                shouldWaitForNotNull,
-                asList(validator1, validator2),
-                new HashSet<>(asList(throwable1, throwable2)),
-                new HashSet<>(asList(throwable3, throwable4))
-            ))
-        )).willReturn(manual);
+        given(manualChoices.apply(properties, options)).willReturn(manual);
         given(chooser.choose(manual)).willReturn(expected);
 
         // When
@@ -169,7 +144,7 @@ public class OptionsTest {
 
         // Given
         given(defaultChoices.create()).willReturn(defaults);
-        given(manualChoices.apply(eq(defaults), eq(EMPTY_CHOICES))).willReturn(manual);
+        given(manualChoices.apply(defaults, options)).willReturn(manual);
         given(chooser.choose(manual)).willReturn(expected);
 
         // When
