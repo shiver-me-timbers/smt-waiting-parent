@@ -29,7 +29,6 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -172,8 +171,7 @@ public class WaitOptionsConfigurerTest {
 
         // Then
         assertThat(actual, is(options));
-        verify(options, times(2)).waitFor(any(TestResultOne.class));
-        verify(options, times(2)).waitFor(any(TestResultTwo.class));
+        verify(options).waitFor(any(TestResultOne.class), any(TestResultTwo.class));
         verifyNoMoreInteractions(options);
     }
 

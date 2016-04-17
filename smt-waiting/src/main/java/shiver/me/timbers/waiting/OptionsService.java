@@ -40,9 +40,9 @@ interface OptionsService {
     OptionsService withInterval(long duration, TimeUnit unit);
 
     /**
-     * @see Options#waitFor(ResultValidator)
+     * @see Options#waitFor(ResultValidator[])
      */
-    OptionsService waitFor(ResultValidator resultValidator);
+    OptionsService waitFor(ResultValidator... resultValidators);
 
     /**
      * @see Options#willWaitForTrue(boolean)

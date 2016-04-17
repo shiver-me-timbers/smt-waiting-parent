@@ -53,8 +53,8 @@ class WaitOptionsConfigurer implements OptionsConfigurer<Wait> {
 
     private static void applyResultValidators(OptionsService options, Wait wait) {
         final Class<? extends ResultValidator>[] waitFor = wait.waitFor();
-        for (Class<? extends ResultValidator> validator : waitFor) {
-            options.waitFor(newInstance(validator));
+        if (waitFor.length > 0) {
+            options.waitFor(newInstances(waitFor));
         }
     }
 
@@ -91,6 +91,14 @@ class WaitOptionsConfigurer implements OptionsConfigurer<Wait> {
         if (withDefaults == true) {
             options.withDefaults(withDefaults);
         }
+    }
+
+    private static ResultValidator[] newInstances(Class<? extends ResultValidator>[] waitFor) {
+        final ResultValidator[] validators = new ResultValidator[waitFor.length];
+        for (int i = 0; i < waitFor.length; i++) {
+            validators[i] = newInstance(waitFor[i]);
+        }
+        return validators;
     }
 
     private static <T> T newInstance(Class<T> type) {

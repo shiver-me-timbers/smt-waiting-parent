@@ -115,12 +115,11 @@ public class Options implements OptionsService {
     }
 
     /**
-     * Add a {@code ResultValidator} that must pass before the method is considered to have succeeded in executing.
-     * Additional calls to this method will add more {@code ResultValidator}s.
+     * Add any {@code ResultValidator}s that must pass before the method is considered to have succeeded in executing.
      */
     @Override
-    public Options waitFor(ResultValidator resultValidator) {
-        this.resultValidators.add(resultValidator);
+    public Options waitFor(ResultValidator... resultValidators) {
+        this.resultValidators = asList(resultValidators);
         return this;
     }
 
@@ -143,8 +142,8 @@ public class Options implements OptionsService {
     }
 
     /**
-     * The {@code Waiter} will rerun the method being waited on if it throws any {@code Throwable}s added to the includes
-     * list, any other {@code Throwable}s will be instantly rethrown and the method will not be rerun.
+     * The {@code Waiter} will rerun the method being waited on if it throws any {@code Throwable}s added to the
+     * includes list, any other {@code Throwable}s will be instantly rethrown and the method will not be rerun.
      */
     @SuppressWarnings("unchecked")
     @Override

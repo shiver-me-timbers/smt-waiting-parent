@@ -150,8 +150,7 @@ public class OptionsTest {
             .withInterval(intervalDuration, intervalUnit)
             .willWaitForTrue(shouldWaitForTrue)
             .willWaitForNotNull(shouldWaitForNotNull)
-            .waitFor(validator1)
-            .waitFor(validator2)
+            .waitFor(validator1, validator2)
             .includes(throwable1, throwable2)
             .excludes(throwable3, throwable4)
             .choose();
