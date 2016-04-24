@@ -2,12 +2,11 @@ package shiver.me.timbers.waiting;
 
 import shiver.me.timbers.waiting.execution.WaitingDefaults;
 import shiver.me.timbers.waiting.execution.WaitingFor;
-import shiver.me.timbers.waiting.validation.SuccessResult;
 
 import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractITAspectWaiterWaitForProperty extends AbstractITWaiterWaitForProperty
-    implements WaitingForFactoryAware, WaitingDefaultsFactoryAware {
+    implements WaitingForFactoryAware, WaitingDefaultsFactoryAware, ClearWaitingForFactoryAware {
 
     @Override
     public WaitingDefaults defaults() {
@@ -15,7 +14,17 @@ public abstract class AbstractITAspectWaiterWaitForProperty extends AbstractITWa
     }
 
     @Override
-    protected WaitingFor addWaitFor(long duration, TimeUnit unit, SuccessResult successResult) {
-        return waitForFactory().create(duration, unit, successResult);
+    protected WaitingFor addWaitFor(long duration, TimeUnit unit, ResultValidator validator) {
+        return waitForFactory().create(duration, unit, validator);
+    }
+
+    @Override
+    protected WaitingFor clearThenAddWaitFor(
+        long duration,
+        TimeUnit unit,
+        boolean clearWaitFor,
+        ResultValidator validator
+    ) {
+        return clearWaitForFactory().create(duration, unit, clearWaitFor, validator);
     }
 }

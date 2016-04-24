@@ -52,6 +52,7 @@ public class Options implements OptionsService {
     private final PropertyChoices propertyChoices;
     private final ManualChoices manualChoices;
 
+    private Boolean withDefaults = false;
     private Long timeoutDuration;
     private TimeUnit timeoutUnit;
     private Long intervalDuration;
@@ -59,7 +60,7 @@ public class Options implements OptionsService {
     private Boolean waitForTrue;
     private Boolean waitForNotNull;
     private List<ResultValidator> resultValidators = new ArrayList<>();
-    private Boolean withDefaults = false;
+    private Boolean clearWaitFor = false;
     private Set<Class<? extends Throwable>> includes = new HashSet<>();
     private Set<Class<? extends Throwable>> excludes = new HashSet<>();
 
@@ -124,6 +125,15 @@ public class Options implements OptionsService {
     }
 
     /**
+     * If set to true any {@code ResultValidator}s set through global properties will be ignored.
+     */
+    @Override
+    public Options clearWaitFor(boolean clearWaitFor) {
+        this.clearWaitFor = clearWaitFor;
+        return this;
+    }
+
+    /**
      * If set to {@code true} the methods execution will not be considered successful until it returns true.
      */
     @Override
@@ -175,6 +185,14 @@ public class Options implements OptionsService {
         return chooser.choose(manual);
     }
 
+    public Boolean isWithDefaults() {
+        return withDefaults;
+    }
+
+    public Boolean isClearWaitFor() {
+        return clearWaitFor;
+    }
+
     @Override
     public Long getTimeoutDuration() {
         return timeoutDuration;
@@ -208,10 +226,6 @@ public class Options implements OptionsService {
     @Override
     public List<ResultValidator> getResultValidators() {
         return new ArrayList<>(resultValidators);
-    }
-
-    public Boolean isWithDefaults() {
-        return withDefaults;
     }
 
     @Override

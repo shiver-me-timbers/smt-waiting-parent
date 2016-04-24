@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Karl Bennett
@@ -32,7 +33,6 @@ class PropertyParserChoices implements PropertyChoices {
         this.propertyParser = propertyParser;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Choices apply(Choices currentChoices, Options options) {
         if (options.isWithDefaults()) {
@@ -40,17 +40,41 @@ class PropertyParserChoices implements PropertyChoices {
         }
 
         return new BasicChoices(
-            propertyParser.getLongProperty("smt.waiting.timeout.duration", currentChoices.getTimeoutDuration()),
-            propertyParser.getEnumProperty("smt.waiting.timeout.unit", currentChoices.getTimeoutUnit()),
-            propertyParser.getLongProperty("smt.waiting.interval.duration", currentChoices.getIntervalDuration()),
-            propertyParser.getEnumProperty("smt.waiting.interval.unit", currentChoices.getIntervalUnit()),
-            propertyParser.getBooleanProperty("smt.waiting.waitForTrue", currentChoices.isWaitForTrue()),
-            propertyParser.getBooleanProperty("smt.waiting.waitForNotNull", currentChoices.isWaitForNotNull()),
-            propertyParser.getInstanceProperty("smt.waiting.waitFor", currentChoices.getResultValidators()),
-            toSet(propertyParser.getClassProperty("smt.waiting.includes", toList(currentChoices.getIncludes()))),
-            toSet(propertyParser.getClassProperty("smt.waiting.excludes", toList(currentChoices.getExcludes())
-            ))
+            findLongProperty("smt.waiting.timeout.duration", currentChoices.getTimeoutDuration()),
+            findEnumProperty("smt.waiting.timeout.unit", currentChoices.getTimeoutUnit()),
+            findLongProperty("smt.waiting.interval.duration", currentChoices.getIntervalDuration()),
+            findEnumProperty("smt.waiting.interval.unit", currentChoices.getIntervalUnit()),
+            findBooleanProperty("smt.waiting.waitForTrue", currentChoices.isWaitForTrue()),
+            findBooleanProperty("smt.waiting.waitForNotNull", currentChoices.isWaitForNotNull()),
+            findResultValidators("smt.waiting.waitFor", currentChoices, options),
+            findClassProperty("smt.waiting.includes", currentChoices.getIncludes()),
+            findClassProperty("smt.waiting.excludes", currentChoices.getExcludes())
         );
+    }
+
+    private Boolean findBooleanProperty(String key, Boolean waitForTrue) {
+        return propertyParser.getBooleanProperty(key, waitForTrue);
+    }
+
+    private Long findLongProperty(String key, Long timeoutDuration) {
+        return propertyParser.getLongProperty(key, timeoutDuration);
+    }
+
+    private TimeUnit findEnumProperty(String key, TimeUnit timeoutUnit) {
+        return propertyParser.getEnumProperty(key, timeoutUnit);
+    }
+
+    @SuppressWarnings("unchecked")
+    private Set<Class<? extends Throwable>> findClassProperty(String key, Set<Class<? extends Throwable>> throwables) {
+        return toSet(propertyParser.getClassProperty(key, toList(throwables)));
+    }
+
+    private List<ResultValidator> findResultValidators(String key, Choices currentChoices, Options options) {
+        if (options.isClearWaitFor()) {
+            return options.getResultValidators();
+        }
+
+        return propertyParser.getInstanceProperty(key, currentChoices.getResultValidators());
     }
 
     @SuppressWarnings("unchecked")

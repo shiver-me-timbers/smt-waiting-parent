@@ -34,9 +34,9 @@ class MergingManualChoices implements ManualChoices {
             overrideIntervalUnit(currentChoices, manualChoices),
             overrideWaitForTrue(currentChoices, manualChoices),
             overrideWaitForNotNull(currentChoices, manualChoices),
-            overrideResultValidators(currentChoices, manualChoices),
-            overrideIncludes(currentChoices, manualChoices),
-            overrideExcludes(currentChoices, manualChoices)
+            appendResultValidators(currentChoices, manualChoices),
+            appendIncludes(currentChoices, manualChoices),
+            appendExcludes(currentChoices, manualChoices)
         );
     }
 
@@ -70,19 +70,19 @@ class MergingManualChoices implements ManualChoices {
         return waitForNotNull == null ? currentChoices.isWaitForNotNull() : waitForNotNull;
     }
 
-    private List<ResultValidator> overrideResultValidators(Choices currentChoices, Choices manualChoices) {
+    private List<ResultValidator> appendResultValidators(Choices currentChoices, Choices manualChoices) {
         final List<ResultValidator> resultValidators = currentChoices.getResultValidators();
         resultValidators.addAll(manualChoices.getResultValidators());
         return resultValidators;
     }
 
-    private Set<Class<? extends Throwable>> overrideIncludes(Choices currentChoices, Choices manualChoices) {
+    private Set<Class<? extends Throwable>> appendIncludes(Choices currentChoices, Choices manualChoices) {
         final Set<Class<? extends Throwable>> resultValidators = currentChoices.getIncludes();
         resultValidators.addAll(manualChoices.getIncludes());
         return resultValidators;
     }
 
-    private Set<Class<? extends Throwable>> overrideExcludes(Choices currentChoices, Choices manualChoices) {
+    private Set<Class<? extends Throwable>> appendExcludes(Choices currentChoices, Choices manualChoices) {
         final Set<Class<? extends Throwable>> resultValidators = currentChoices.getExcludes();
         resultValidators.addAll(manualChoices.getExcludes());
         return resultValidators;

@@ -55,6 +55,11 @@ public @interface Wait {
     Class<? extends ResultValidator>[] waitFor() default {};
 
     /**
+     * If set to true any {@code ResultValidator}s set through global properties will be ignored.
+     */
+    boolean clearWaitFor() default false;
+
+    /**
      * If set to {@link Decision#YES} the methods execution will not be considered successful until it returns true.
      */
     Decision waitForTrue() default UNDECIDED;
@@ -78,8 +83,8 @@ public @interface Wait {
     Class<? extends Throwable>[] excludes() default {};
 
     /**
-     * The {@code Waiter} will ignore all global {@code Options} set through properties and just use the normal default
-     * values.
+     * If set to true {@code Waiter} will ignore all global {@code Options} set through properties and just use the
+     * normal default values.
      */
     boolean withDefaults() default false;
 }

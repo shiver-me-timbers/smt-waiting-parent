@@ -45,6 +45,11 @@ interface OptionsService extends Choices {
     OptionsService waitFor(ResultValidator... resultValidators);
 
     /**
+     * @see Options#clearWaitFor(boolean)
+     */
+    OptionsService clearWaitFor(boolean clearWaitFor);
+
+    /**
      * @see Options#willWaitForTrue(boolean)
      */
     OptionsService willWaitForTrue(boolean shouldWait);

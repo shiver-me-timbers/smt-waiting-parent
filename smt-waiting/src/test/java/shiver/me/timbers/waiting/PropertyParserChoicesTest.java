@@ -26,12 +26,12 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static shiver.me.timbers.data.random.RandomBooleans.someBoolean;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLong;
@@ -65,6 +65,22 @@ public class PropertyParserChoicesTest {
     }
 
     @Test
+    public void Can_ignore_any_wait_for_set_through_properties() {
+
+        final List<ResultValidator> validators = singletonList(mock(ResultValidator.class));
+
+        // Given
+        given(options.isClearWaitFor()).willReturn(true);
+        given(options.getResultValidators()).willReturn(validators);
+
+        // When
+        final Choices actual = choices.apply(currentChoices, options);
+
+        // Then
+        assertThat(actual.getResultValidators(), is(validators));
+    }
+
+    @Test
     @SuppressWarnings("unchecked")
     public void Can_create_a_system_property_choices() {
 
@@ -81,12 +97,12 @@ public class PropertyParserChoicesTest {
         final TimeUnit intervalUnit = someEnum(TimeUnit.class);
         final Boolean waitForTrue = someBoolean();
         final Boolean waitForNotNull = someBoolean();
-        final List<ResultValidator> previousValidators = spy(new ArrayList<ResultValidator>());
-        final List<ResultValidator> propertyValidators = spy(new ArrayList<ResultValidator>());
-        final List<Class<? extends Throwable>> previousIncludes = spy(new ArrayList<Class<? extends Throwable>>());
-        final List<Class<? extends Throwable>> propertyIncludes = spy(new ArrayList<Class<? extends Throwable>>());
-        final List<Class<? extends Throwable>> previousExcludes = spy(new ArrayList<Class<? extends Throwable>>());
-        final List<Class<? extends Throwable>> propertyExcludes = spy(new ArrayList<Class<? extends Throwable>>());
+        final List<ResultValidator> previousValidators = new ArrayList<>();
+        final List<ResultValidator> propertyValidators = new ArrayList<>();
+        final List<Class<? extends Throwable>> previousIncludes = new ArrayList<>();
+        final List<Class<? extends Throwable>> propertyIncludes = new ArrayList<>();
+        final List<Class<? extends Throwable>> previousExcludes = new ArrayList<>();
+        final List<Class<? extends Throwable>> propertyExcludes = new ArrayList<>();
 
         // Given
         given(options.isWithDefaults()).willReturn(false);
@@ -109,7 +125,7 @@ public class PropertyParserChoicesTest {
         given(propertyParser.getBooleanProperty("smt.waiting.waitForNotNull", previousWaitForNotNull))
             .willReturn(waitForNotNull);
         given(propertyParser.getInstanceProperty("smt.waiting.waitFor", previousValidators))
-            .willReturn((List) propertyValidators);
+            .willReturn(propertyValidators);
         given(propertyParser.getClassProperty("smt.waiting.includes", (List) previousIncludes))
             .willReturn((List) propertyIncludes);
         given(propertyParser.getClassProperty("smt.waiting.excludes", (List) previousExcludes))

@@ -104,6 +104,7 @@ public class OptionsTest {
         final Boolean shouldWaitForNotNull = someBoolean();
         final ResultValidator validator1 = mock(ResultValidator.class);
         final ResultValidator validator2 = mock(ResultValidator.class);
+        final Boolean clearWaitFor = someBoolean();
         final Class<? extends Throwable> throwable1 = someThrowable().getClass();
         final Class<? extends Throwable> throwable2 = someThrowable().getClass();
         final Class<? extends Throwable> throwable3 = someThrowable().getClass();
@@ -116,6 +117,7 @@ public class OptionsTest {
             .willWaitForTrue(shouldWaitForTrue)
             .willWaitForNotNull(shouldWaitForNotNull)
             .waitFor(validator1, validator2)
+            .clearWaitFor(clearWaitFor)
             .includes(throwable1, throwable2)
             .excludes(throwable3, throwable4)
             .withDefaults(useDefaults);
@@ -137,5 +139,6 @@ public class OptionsTest {
             instanceOf(throwable3.getClass()), instanceOf(throwable4.getClass())
         ));
         assertThat(((Options) options).isWithDefaults(), is(useDefaults));
+        assertThat(((Options) options).isClearWaitFor(), is(clearWaitFor));
     }
 }
