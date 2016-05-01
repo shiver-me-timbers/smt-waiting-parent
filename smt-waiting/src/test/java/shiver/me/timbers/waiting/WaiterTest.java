@@ -29,6 +29,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
+import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
 
 public class WaiterTest {
 
@@ -67,7 +68,7 @@ public class WaiterTest {
 
         final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
-        final RuntimeException exception = new RuntimeException();
+        final Throwable exception = someThrowable();
 
         final Object expected = new Object();
 

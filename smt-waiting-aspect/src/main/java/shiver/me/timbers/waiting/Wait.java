@@ -76,6 +76,8 @@ public @interface Wait {
      */
     Class<? extends Throwable>[] includes() default {};
 
+    boolean clearIncludes() default false;
+
     /**
      * The {@code Waiter} will not rerun the method being waited on if it throws any {@code Throwable}s added to the
      * exclude list, it will instead rethrow. Any other {@code Throwable}s will cause the method to be rerun.

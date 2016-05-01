@@ -12,11 +12,9 @@ public class ClearWaitingForFactory {
 
     private final LookupFactory<WaitingFor> lookupFactory;
 
-    public ClearWaitingForFactory(
-        WaitingFor clearAndWaitUntilSuccessWaitingForClass
-    ) {
+    public ClearWaitingForFactory(WaitingFor clearAndWaitUntilSuccessWaitingFor) {
         this(new MapLookupFactory<WaitingFor>());
-        add(clearAndWaitUntilSuccessWaitingForClass, 500L, MILLISECONDS, true, new SuccessResult());
+        add(clearAndWaitUntilSuccessWaitingFor, 500L, MILLISECONDS, true, new SuccessResult());
     }
 
     public ClearWaitingForFactory(LookupFactory<WaitingFor> lookupFactory) {

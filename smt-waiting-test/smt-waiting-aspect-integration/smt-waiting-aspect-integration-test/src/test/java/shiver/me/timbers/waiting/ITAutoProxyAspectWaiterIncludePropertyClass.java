@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import shiver.me.timbers.waiting.factory.AutoProxyClearWaitingIncludeClassFactory;
 import shiver.me.timbers.waiting.factory.AutoProxyWaitingDefaultsClassFactory;
 import shiver.me.timbers.waiting.factory.AutoProxyWaitingIncludeClassFactory;
 import shiver.me.timbers.waiting.property.SystemPropertyManager;
@@ -23,6 +24,9 @@ public class ITAutoProxyAspectWaiterIncludePropertyClass extends AbstractITAspec
     @Autowired
     private AutoProxyWaitingIncludeClassFactory excludesFactory;
 
+    @Autowired
+    private AutoProxyClearWaitingIncludeClassFactory clearWaitingIncludeFactory;
+
     @Override
     public WaitingPropertyRule properties() {
         return properties;
@@ -36,5 +40,10 @@ public class ITAutoProxyAspectWaiterIncludePropertyClass extends AbstractITAspec
     @Override
     public AutoProxyWaitingIncludeClassFactory includesFactory() {
         return excludesFactory;
+    }
+
+    @Override
+    public AutoProxyClearWaitingIncludeClassFactory clearIncludesFactory() {
+        return clearWaitingIncludeFactory;
     }
 }

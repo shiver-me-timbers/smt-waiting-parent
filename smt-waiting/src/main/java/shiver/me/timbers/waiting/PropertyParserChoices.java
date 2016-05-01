@@ -47,7 +47,7 @@ class PropertyParserChoices implements PropertyChoices {
             findBooleanProperty("smt.waiting.waitForTrue", currentChoices.isWaitForTrue()),
             findBooleanProperty("smt.waiting.waitForNotNull", currentChoices.isWaitForNotNull()),
             findResultValidators("smt.waiting.waitFor", currentChoices, options),
-            findClassProperty("smt.waiting.includes", currentChoices.getIncludes()),
+            findIncludes("smt.waiting.includes", currentChoices, options),
             findClassProperty("smt.waiting.excludes", currentChoices.getExcludes())
         );
     }
@@ -64,17 +64,26 @@ class PropertyParserChoices implements PropertyChoices {
         return propertyParser.getEnumProperty(key, timeoutUnit);
     }
 
-    @SuppressWarnings("unchecked")
-    private Set<Class<? extends Throwable>> findClassProperty(String key, Set<Class<? extends Throwable>> throwables) {
-        return toSet(propertyParser.getClassProperty(key, toList(throwables)));
-    }
-
     private List<ResultValidator> findResultValidators(String key, Choices currentChoices, Options options) {
         if (options.isClearWaitFor()) {
-            return options.getResultValidators();
+            return currentChoices.getResultValidators();
         }
 
         return propertyParser.getInstanceProperty(key, currentChoices.getResultValidators());
+    }
+
+    @SuppressWarnings("unchecked")
+    private Set<Class<? extends Throwable>> findIncludes(String key, Choices currentChoices, Options options) {
+        if (options.isClearIncludes()) {
+            return currentChoices.getIncludes();
+        }
+
+        return toSet(propertyParser.getClassProperty(key, toList(currentChoices.getIncludes())));
+    }
+
+    @SuppressWarnings("unchecked")
+    private Set<Class<? extends Throwable>> findClassProperty(String key, Set<Class<? extends Throwable>> throwables) {
+        return toSet(propertyParser.getClassProperty(key, toList(throwables)));
     }
 
     @SuppressWarnings("unchecked")

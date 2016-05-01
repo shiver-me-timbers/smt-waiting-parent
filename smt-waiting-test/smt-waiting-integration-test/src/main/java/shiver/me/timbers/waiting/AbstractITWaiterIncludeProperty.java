@@ -38,6 +38,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static shiver.me.timbers.waiting.random.RandomExceptions.SOME_OTHER_THROWABLES;
+import static shiver.me.timbers.waiting.random.RandomExceptions.SOME_THROWABLES;
+import static shiver.me.timbers.waiting.random.RandomExceptions.someOtherThrowable;
 import static shiver.me.timbers.waiting.random.RandomExceptions.someThrowable;
 
 public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterInclude
@@ -72,6 +74,8 @@ public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterIn
     }
 
     protected abstract WaitingInclude addInclude(long duration, TimeUnit unit, Throwable include);
+
+    protected abstract WaitingInclude clearThenAddInclude(long duration, TimeUnit unit, boolean clearInclude, Throwable include);
 
     @Test
     public void Can_set_multiple_includes_with_a_system_property() throws Throwable {
@@ -120,5 +124,22 @@ public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterIn
         // Then
         assertThat(actual, is(expected));
         verify(callable, times(3)).call();
+    }
+
+    @Test
+    public void Can_clear_the_include_properties_and_add_new_included_exception() throws Throwable {
+
+        final Callable callable = mock(Callable.class);
+
+        final Throwable exception1 = SOME_THROWABLES[0];
+        final Throwable exception2 = someOtherThrowable();
+
+        // Given
+        properties().setProperty("smt.waiting.includes", exception2.getClass().getName());
+        given(callable.call()).willThrow(exception1).willThrow(exception2);
+        expectedException.expect(is(exception2));
+
+        // When
+        clearThenAddInclude(500L, MILLISECONDS, true, exception1).includeMethod(callable);
     }
 }

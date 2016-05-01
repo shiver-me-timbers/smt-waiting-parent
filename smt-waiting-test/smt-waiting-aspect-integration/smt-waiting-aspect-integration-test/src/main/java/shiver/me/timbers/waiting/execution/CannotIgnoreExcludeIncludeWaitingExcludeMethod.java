@@ -24,7 +24,7 @@ public class CannotIgnoreExcludeIncludeWaitingExcludeMethod implements WaitingEx
 
     @Wait(
         includes = {IllegalStateException.class, ClassCastException.class, IllegalAccessError.class},
-        excludes = {RuntimeException.class, IllegalArgumentException.class, Error.class}
+        excludes = {IllegalMonitorStateException.class, IllegalArgumentException.class, Error.class}
     )
     @Override
     public <T> T excludeMethod(Callable<T> callable) throws Exception {

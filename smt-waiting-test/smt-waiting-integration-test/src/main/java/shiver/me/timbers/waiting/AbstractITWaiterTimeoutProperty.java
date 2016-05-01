@@ -36,6 +36,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
+import static shiver.me.timbers.waiting.random.RandomExceptions.someThrowable;
 
 public abstract class AbstractITWaiterTimeoutProperty extends AbstractITWaiterTimeout
     implements ITWaiterDefaults, WaitingPropertyRuleAware {
@@ -68,7 +69,7 @@ public abstract class AbstractITWaiterTimeoutProperty extends AbstractITWaiterTi
         final Callable callable = mock(Callable.class);
         final long start = System.currentTimeMillis();
 
-        final Exception exception = new RuntimeException();
+        final Throwable exception = someThrowable();
 
         // Given
         properties().setProperty("smt.waiting.timeout.duration", "1");
@@ -78,7 +79,7 @@ public abstract class AbstractITWaiterTimeoutProperty extends AbstractITWaiterTi
         // When
         try {
             overrideTimeout(200L, MILLISECONDS).timeoutMethod(callable);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             assertThat(e, is(exception));
         }
 

@@ -23,7 +23,7 @@ import static shiver.me.timbers.data.random.RandomThings.someThings;
 
 public class RandomExceptions {
 
-    public static Throwable[] SOME_THROWABLES = {new RuntimeException(), new IllegalArgumentException(), new Error()};
+    public static Throwable[] SOME_THROWABLES = {new IllegalMonitorStateException(), new IllegalArgumentException(), new Error()};
 
     public static Throwable[] SOME_OTHER_THROWABLES = {
         new IllegalStateException(), new ClassCastException(), new IllegalAccessError()

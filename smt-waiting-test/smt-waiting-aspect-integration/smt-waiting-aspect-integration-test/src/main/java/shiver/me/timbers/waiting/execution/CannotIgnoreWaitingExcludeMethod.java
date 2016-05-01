@@ -22,7 +22,7 @@ import java.util.concurrent.Callable;
 
 public class CannotIgnoreWaitingExcludeMethod implements WaitingExclude {
 
-    @Wait(excludes = {RuntimeException.class, IllegalStateException.class, IllegalArgumentException.class})
+    @Wait(excludes = {IllegalMonitorStateException.class, IllegalStateException.class, IllegalArgumentException.class})
     @Override
     public <T> T excludeMethod(Callable<T> callable) throws Exception {
         return callable.call();

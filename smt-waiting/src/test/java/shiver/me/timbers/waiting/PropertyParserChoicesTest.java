@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.Collections.emptyList;
+import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -35,6 +36,7 @@ import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomBooleans.someBoolean;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLong;
+import static shiver.me.timbers.waiting.RandomExceptions.someThrowable;
 
 public class PropertyParserChoicesTest {
 
@@ -71,13 +73,30 @@ public class PropertyParserChoicesTest {
 
         // Given
         given(options.isClearWaitFor()).willReturn(true);
-        given(options.getResultValidators()).willReturn(validators);
+        given(currentChoices.getResultValidators()).willReturn(validators);
 
         // When
         final Choices actual = choices.apply(currentChoices, options);
 
         // Then
         assertThat(actual.getResultValidators(), is(validators));
+    }
+
+    @Test
+    public void Can_ignore_any_includes_set_through_properties() {
+
+        @SuppressWarnings("unchecked")
+        final Set<Class<? extends Throwable>> includes = (Set) singleton(someThrowable().getClass());
+
+        // Given
+        given(options.isClearIncludes()).willReturn(true);
+        given(currentChoices.getIncludes()).willReturn(includes);
+
+        // When
+        final Choices actual = choices.apply(currentChoices, options);
+
+        // Then
+        assertThat(actual.getIncludes(), is(includes));
     }
 
     @Test

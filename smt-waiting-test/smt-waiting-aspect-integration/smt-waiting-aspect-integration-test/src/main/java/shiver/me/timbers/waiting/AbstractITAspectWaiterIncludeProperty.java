@@ -6,7 +6,7 @@ import shiver.me.timbers.waiting.execution.WaitingInclude;
 import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractITAspectWaiterIncludeProperty extends AbstractITWaiterIncludeProperty
-    implements WaitingIncludeFactoryAware, WaitingDefaultsFactoryAware {
+    implements WaitingIncludeFactoryAware, WaitingDefaultsFactoryAware, ClearWaitingIncludeFactoryAware {
 
     @Override
     public WaitingDefaults defaults() {
@@ -14,7 +14,12 @@ public abstract class AbstractITAspectWaiterIncludeProperty extends AbstractITWa
     }
 
     @Override
-    protected WaitingInclude addInclude(long duration, TimeUnit unit, Throwable exclude) {
-        return includesFactory().create(duration, unit, exclude);
+    protected WaitingInclude addInclude(long duration, TimeUnit unit, Throwable include) {
+        return includesFactory().create(duration, unit, include);
+    }
+
+    @Override
+    protected WaitingInclude clearThenAddInclude(long duration, TimeUnit unit, boolean clearInclude, Throwable include) {
+        return clearIncludesFactory().create(duration, unit, clearInclude, include);
     }
 }

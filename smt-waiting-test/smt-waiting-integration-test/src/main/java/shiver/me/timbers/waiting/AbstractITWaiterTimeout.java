@@ -32,6 +32,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static shiver.me.timbers.waiting.random.RandomExceptions.someThrowable;
 import static shiver.me.timbers.waiting.test.WasDurationMatcher.durationWas;
 
 public abstract class AbstractITWaiterTimeout implements ITWaiterTimeout {
@@ -43,7 +44,7 @@ public abstract class AbstractITWaiterTimeout implements ITWaiterTimeout {
         final Callable callable = mock(Callable.class);
         final long start = System.currentTimeMillis();
 
-        final Exception exception = new RuntimeException();
+        final Throwable exception = someThrowable();
 
         // Given
         given(callable.call()).willThrow(exception);
@@ -51,7 +52,7 @@ public abstract class AbstractITWaiterTimeout implements ITWaiterTimeout {
         // When
         try {
             timeout(200L, MILLISECONDS).timeoutMethod(callable);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             assertThat(e, is(exception));
         }
 

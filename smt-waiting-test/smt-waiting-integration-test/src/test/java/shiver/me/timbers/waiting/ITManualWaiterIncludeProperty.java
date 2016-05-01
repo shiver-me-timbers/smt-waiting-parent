@@ -1,6 +1,7 @@
 package shiver.me.timbers.waiting;
 
 import org.junit.Rule;
+import shiver.me.timbers.waiting.execution.ManualClearWaitingInclude;
 import shiver.me.timbers.waiting.execution.ManualWaitingDefaults;
 import shiver.me.timbers.waiting.execution.ManualWaitingInclude;
 import shiver.me.timbers.waiting.execution.WaitingDefaults;
@@ -28,5 +29,10 @@ public class ITManualWaiterIncludeProperty extends AbstractITWaiterIncludeProper
     @Override
     protected WaitingInclude addInclude(long duration, TimeUnit unit, Throwable include) {
         return new ManualWaitingInclude(duration, unit, include);
+    }
+
+    @Override
+    protected WaitingInclude clearThenAddInclude(long duration, TimeUnit unit, boolean clearInclude, Throwable include) {
+        return new ManualClearWaitingInclude(duration, unit, clearInclude, include);
     }
 }

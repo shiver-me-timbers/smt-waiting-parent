@@ -1,15 +1,14 @@
 package shiver.me.timbers.waiting.execution;
 
-import shiver.me.timbers.waiting.ResultValidator;
 import shiver.me.timbers.waiting.SpringOptions;
 import shiver.me.timbers.waiting.SpringWaiter;
 
 import java.util.concurrent.TimeUnit;
 
-public class SpringManualClearWaitingFor extends ManualClearWaitingFor<SpringOptions, SpringWaiter> {
+public class SpringManualClearWaitingInclude extends ManualClearWaitingInclude<SpringOptions, SpringWaiter> {
 
-    public SpringManualClearWaitingFor(long duration, TimeUnit unit, boolean clearWaitFor, ResultValidator validator) {
-        super(duration, unit, clearWaitFor, validator);
+    public SpringManualClearWaitingInclude(long duration, TimeUnit unit, boolean clearInclude, Throwable include) {
+        super(duration, unit, clearInclude, include);
     }
 
     @Override

@@ -107,6 +107,7 @@ public class OptionsTest {
         final Boolean clearWaitFor = someBoolean();
         final Class<? extends Throwable> throwable1 = someThrowable().getClass();
         final Class<? extends Throwable> throwable2 = someThrowable().getClass();
+        final Boolean cleaIncludes = someBoolean();
         final Class<? extends Throwable> throwable3 = someThrowable().getClass();
         final Class<? extends Throwable> throwable4 = someThrowable().getClass();
         final Boolean useDefaults = someBoolean();
@@ -119,6 +120,7 @@ public class OptionsTest {
             .waitFor(validator1, validator2)
             .clearWaitFor(clearWaitFor)
             .includes(throwable1, throwable2)
+            .clearIncludes(cleaIncludes)
             .excludes(throwable3, throwable4)
             .withDefaults(useDefaults);
 
@@ -132,13 +134,14 @@ public class OptionsTest {
         assertThat(options.getResultValidators(), contains(
             instanceOf(validator1.getClass()), instanceOf(validator2.getClass())
         ));
+        assertThat(((Options) options).isClearWaitFor(), is(clearWaitFor));
         assertThat(options.getIncludes(), (Matcher) hasItems(
             instanceOf(throwable1.getClass()), instanceOf(throwable1.getClass())
         ));
+        assertThat(((Options) options).isClearIncludes(), is(cleaIncludes));
         assertThat(options.getExcludes(), (Matcher) hasItems(
             instanceOf(throwable3.getClass()), instanceOf(throwable4.getClass())
         ));
         assertThat(((Options) options).isWithDefaults(), is(useDefaults));
-        assertThat(((Options) options).isClearWaitFor(), is(clearWaitFor));
     }
 }

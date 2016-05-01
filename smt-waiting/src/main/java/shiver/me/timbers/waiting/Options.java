@@ -62,6 +62,7 @@ public class Options implements OptionsService {
     private List<ResultValidator> resultValidators = new ArrayList<>();
     private Boolean clearWaitFor = false;
     private Set<Class<? extends Throwable>> includes = new HashSet<>();
+    private boolean clearIncludes = false;
     private Set<Class<? extends Throwable>> excludes = new HashSet<>();
 
     public Options() {
@@ -163,6 +164,15 @@ public class Options implements OptionsService {
     }
 
     /**
+     * If set to true any includes set through global properties will be ignored.
+     */
+    @Override
+    public Options clearIncludes(boolean clearIncludes) {
+        this.clearIncludes = clearIncludes;
+        return this;
+    }
+
+    /**
      * The {@code Waiter} will not rerun the method being waited on if it throws any {@code Throwable}s added to the
      * excludes list, it will instead rethrow. Any other {@code Throwable}s will cause the method to be rerun.
      */
@@ -191,6 +201,10 @@ public class Options implements OptionsService {
 
     public Boolean isClearWaitFor() {
         return clearWaitFor;
+    }
+
+    public boolean isClearIncludes() {
+        return clearIncludes;
     }
 
     @Override

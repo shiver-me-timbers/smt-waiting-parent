@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Karl Bennett
+ * Copyright 2015 Karl Bennett
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,22 @@
 
 package shiver.me.timbers.waiting.execution;
 
+import shiver.me.timbers.waiting.Timeout;
 import shiver.me.timbers.waiting.Wait;
 
 import java.util.concurrent.Callable;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 @Wait(
-    includes = {IllegalStateException.class, ClassCastException.class, IllegalAccessError.class},
-    excludes = {IllegalMonitorStateException.class, IllegalArgumentException.class, Error.class}
+    value = @Timeout(duration = 500, unit = MILLISECONDS),
+    clearIncludes = true,
+    includes = IllegalMonitorStateException.class
 )
-public class CannotIgnoreExcludeIncludeWaitingExcludeClass implements WaitingExclude {
+public class ClearAndAddIncludeWaitingForClass implements WaitingInclude {
 
     @Override
-    public <T> T excludeMethod(Callable<T> callable) throws Exception {
+    public <T> T includeMethod(Callable<T> callable) throws Exception {
         return callable.call();
     }
 }
