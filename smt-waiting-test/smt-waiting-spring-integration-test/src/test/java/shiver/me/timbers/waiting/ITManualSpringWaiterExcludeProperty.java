@@ -16,6 +16,7 @@
 
 package shiver.me.timbers.waiting;
 
+import shiver.me.timbers.waiting.execution.SpringManualClearWaitingExclude;
 import shiver.me.timbers.waiting.execution.SpringManualWaitingDefaults;
 import shiver.me.timbers.waiting.execution.SpringManualWaitingExclude;
 import shiver.me.timbers.waiting.execution.WaitingDefaults;
@@ -33,5 +34,15 @@ public class ITManualSpringWaiterExcludeProperty extends AbstractITSpringWaiterE
     @Override
     protected WaitingExclude addExclude(long duration, TimeUnit unit, Throwable exclude) {
         return new SpringManualWaitingExclude(duration, unit, exclude);
+    }
+
+    @Override
+    protected WaitingExclude clearThenAddExclude(
+        long duration,
+        TimeUnit unit,
+        boolean clearExcludes,
+        Throwable exclude
+    ) {
+        return new SpringManualClearWaitingExclude(duration, unit, clearExcludes, exclude);
     }
 }

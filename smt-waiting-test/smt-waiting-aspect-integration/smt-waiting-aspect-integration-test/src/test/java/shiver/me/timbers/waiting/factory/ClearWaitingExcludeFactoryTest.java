@@ -2,7 +2,7 @@ package shiver.me.timbers.waiting.factory;
 
 import org.junit.Before;
 import org.junit.Test;
-import shiver.me.timbers.waiting.execution.WaitingInclude;
+import shiver.me.timbers.waiting.execution.WaitingExclude;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,52 +15,52 @@ import static shiver.me.timbers.data.random.RandomBooleans.someBoolean;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLong;
 
-public class ClearWaitingIncludeFactoryTest {
+public class ClearWaitingExcludeFactoryTest {
 
-    private LookupFactory<WaitingInclude> lookupFactory;
-    private ClearWaitingIncludeFactory factory;
+    private LookupFactory<WaitingExclude> lookupFactory;
+    private ClearWaitingExcludeFactory factory;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() {
         lookupFactory = mock(LookupFactory.class);
-        factory = new ClearWaitingIncludeFactory(lookupFactory);
+        factory = new ClearWaitingExcludeFactory(lookupFactory);
     }
 
     @Test
-    public void Can_create_a_clear_waiting_include() {
+    public void Can_create_a_clear_waiting_exclude() {
 
         final Long duration = someLong();
         final TimeUnit unit = someEnum(TimeUnit.class);
-        final Boolean clearIncludes = someBoolean();
+        final Boolean clearExcludes = someBoolean();
         final Throwable include = mock(Throwable.class);
 
-        final WaitingInclude expected = mock(WaitingInclude.class);
+        final WaitingExclude expected = mock(WaitingExclude.class);
 
         // Given
-        given(lookupFactory.find(duration, unit, clearIncludes, include.getClass())).willReturn(expected);
+        given(lookupFactory.find(duration, unit, clearExcludes, include.getClass())).willReturn(expected);
 
         // When
-        final WaitingInclude actual = factory.create(duration, unit, clearIncludes, include);
+        final WaitingExclude actual = factory.create(duration, unit, clearExcludes, include);
 
         // Then
         assertThat(actual, is(expected));
     }
 
     @Test
-    public void Can_add_a_waiting_include() {
+    public void Can_add_a_waiting_exclude() {
 
         // Given
-        final WaitingInclude waitingInclude = mock(WaitingInclude.class);
+        final WaitingExclude waitingExclude = mock(WaitingExclude.class);
         final Long duration = someLong();
         final TimeUnit unit = someEnum(TimeUnit.class);
-        final Boolean clearIncludes = someBoolean();
+        final Boolean clearExcludes = someBoolean();
         final Throwable include = mock(Throwable.class);
 
         // When
-        factory.add(waitingInclude, duration, unit, clearIncludes, include);
+        factory.add(waitingExclude, duration, unit, clearExcludes, include);
 
         // Then
-        verify(lookupFactory).add(waitingInclude, duration, unit, clearIncludes, include.getClass());
+        verify(lookupFactory).add(waitingExclude, duration, unit, clearExcludes, include.getClass());
     }
 }

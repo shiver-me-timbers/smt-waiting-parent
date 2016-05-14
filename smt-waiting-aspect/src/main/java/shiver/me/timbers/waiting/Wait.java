@@ -76,6 +76,9 @@ public @interface Wait {
      */
     Class<? extends Throwable>[] includes() default {};
 
+    /**
+     * If set to true any includes set through global properties will be ignored.
+     */
     boolean clearIncludes() default false;
 
     /**
@@ -83,6 +86,11 @@ public @interface Wait {
      * exclude list, it will instead rethrow. Any other {@code Throwable}s will cause the method to be rerun.
      */
     Class<? extends Throwable>[] excludes() default {};
+
+    /**
+     * If set to true any excludes set through global properties will be ignored.
+     */
+    boolean clearExcludes() default false;
 
     /**
      * If set to true {@code Waiter} will ignore all global {@code Options} set through properties and just use the

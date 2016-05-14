@@ -48,7 +48,7 @@ class PropertyParserChoices implements PropertyChoices {
             findBooleanProperty("smt.waiting.waitForNotNull", currentChoices.isWaitForNotNull()),
             findResultValidators("smt.waiting.waitFor", currentChoices, options),
             findIncludes("smt.waiting.includes", currentChoices, options),
-            findClassProperty("smt.waiting.excludes", currentChoices.getExcludes())
+            findExcludes("smt.waiting.excludes", currentChoices, options)
         );
     }
 
@@ -78,7 +78,16 @@ class PropertyParserChoices implements PropertyChoices {
             return currentChoices.getIncludes();
         }
 
-        return toSet(propertyParser.getClassProperty(key, toList(currentChoices.getIncludes())));
+        return findClassProperty(key, currentChoices.getIncludes());
+    }
+
+    @SuppressWarnings("unchecked")
+    private Set<Class<? extends Throwable>> findExcludes(String key, Choices currentChoices, Options options) {
+        if (options.isClearExcludes()) {
+            return currentChoices.getExcludes();
+        }
+
+        return findClassProperty(key, currentChoices.getExcludes());
     }
 
     @SuppressWarnings("unchecked")

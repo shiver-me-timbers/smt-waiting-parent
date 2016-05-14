@@ -100,6 +100,23 @@ public class PropertyParserChoicesTest {
     }
 
     @Test
+    public void Can_ignore_any_excludes_set_through_properties() {
+
+        @SuppressWarnings("unchecked")
+        final Set<Class<? extends Throwable>> excludes = (Set) singleton(someThrowable().getClass());
+
+        // Given
+        given(options.isClearExcludes()).willReturn(true);
+        given(currentChoices.getExcludes()).willReturn(excludes);
+
+        // When
+        final Choices actual = choices.apply(currentChoices, options);
+
+        // Then
+        assertThat(actual.getExcludes(), is(excludes));
+    }
+
+    @Test
     @SuppressWarnings("unchecked")
     public void Can_create_a_system_property_choices() {
 

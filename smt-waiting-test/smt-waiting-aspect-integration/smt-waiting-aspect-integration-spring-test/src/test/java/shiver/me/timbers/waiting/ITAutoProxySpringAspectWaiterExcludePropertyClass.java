@@ -1,6 +1,7 @@
 package shiver.me.timbers.waiting;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import shiver.me.timbers.waiting.factory.AutoProxyClearWaitingExcludeClassFactory;
 import shiver.me.timbers.waiting.factory.AutoProxyWaitingDefaultsClassFactory;
 import shiver.me.timbers.waiting.factory.AutoProxyWaitingExcludeClassFactory;
 
@@ -12,6 +13,9 @@ public class ITAutoProxySpringAspectWaiterExcludePropertyClass extends AbstractI
     @Autowired
     private AutoProxyWaitingExcludeClassFactory excludesFactory;
 
+    @Autowired
+    private AutoProxyClearWaitingExcludeClassFactory clearExcludesFactory;
+
     @Override
     public AutoProxyWaitingDefaultsClassFactory defaultsFactory() {
         return defaultsFactory;
@@ -20,5 +24,10 @@ public class ITAutoProxySpringAspectWaiterExcludePropertyClass extends AbstractI
     @Override
     public AutoProxyWaitingExcludeClassFactory excludesFactory() {
         return excludesFactory;
+    }
+
+    @Override
+    public AutoProxyClearWaitingExcludeClassFactory clearExcludesFactory() {
+        return clearExcludesFactory;
     }
 }

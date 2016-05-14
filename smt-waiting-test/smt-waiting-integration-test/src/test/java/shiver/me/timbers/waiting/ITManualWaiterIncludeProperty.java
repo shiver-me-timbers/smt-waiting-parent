@@ -32,7 +32,7 @@ public class ITManualWaiterIncludeProperty extends AbstractITWaiterIncludeProper
     }
 
     @Override
-    protected WaitingInclude clearThenAddInclude(long duration, TimeUnit unit, boolean clearInclude, Throwable include) {
-        return new ManualClearWaitingInclude(duration, unit, clearInclude, include);
+    protected WaitingInclude clearThenAddInclude(long duration, TimeUnit unit, boolean clearIncludes, Throwable include) {
+        return new ManualClearWaitingInclude(duration, unit, clearIncludes, include);
     }
 }

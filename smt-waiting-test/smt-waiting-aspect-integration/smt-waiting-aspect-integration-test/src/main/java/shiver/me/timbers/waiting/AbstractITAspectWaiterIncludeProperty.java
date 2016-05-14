@@ -19,7 +19,7 @@ public abstract class AbstractITAspectWaiterIncludeProperty extends AbstractITWa
     }
 
     @Override
-    protected WaitingInclude clearThenAddInclude(long duration, TimeUnit unit, boolean clearInclude, Throwable include) {
-        return clearIncludesFactory().create(duration, unit, clearInclude, include);
+    protected WaitingInclude clearThenAddInclude(long duration, TimeUnit unit, boolean clearIncludes, Throwable include) {
+        return clearIncludesFactory().create(duration, unit, clearIncludes, include);
     }
 }

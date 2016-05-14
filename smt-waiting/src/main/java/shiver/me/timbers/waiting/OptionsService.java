@@ -77,6 +77,11 @@ interface OptionsService extends Choices {
     OptionsService excludes(Class<? extends Throwable>... excludes);
 
     /**
+     * @see Options#clearExcludes(boolean)
+     */
+    OptionsService clearExcludes(boolean clearInclude);
+
+    /**
      * @see Options#choose()
      */
     Choice choose();

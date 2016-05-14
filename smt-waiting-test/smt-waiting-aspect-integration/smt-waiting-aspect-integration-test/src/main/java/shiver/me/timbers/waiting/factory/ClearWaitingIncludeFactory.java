@@ -20,11 +20,11 @@ public class ClearWaitingIncludeFactory {
         this.lookupFactory = lookupFactory;
     }
 
-    public WaitingInclude create(long duration, TimeUnit unit, boolean clearInclude, Throwable include) {
-        return lookupFactory.find(duration, unit, clearInclude, include.getClass());
+    public WaitingInclude create(long duration, TimeUnit unit, boolean clearIncludes, Throwable include) {
+        return lookupFactory.find(duration, unit, clearIncludes, include.getClass());
     }
 
-    public void add(WaitingInclude waitingFor, Long duration, TimeUnit unit, Boolean clearInclude, Throwable include) {
-        lookupFactory.add(waitingFor, duration, unit, clearInclude, include.getClass());
+    public void add(WaitingInclude waitingInclude, Long duration, TimeUnit unit, Boolean clearIncludes, Throwable include) {
+        lookupFactory.add(waitingInclude, duration, unit, clearIncludes, include.getClass());
     }
 }

@@ -75,7 +75,12 @@ public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterIn
 
     protected abstract WaitingInclude addInclude(long duration, TimeUnit unit, Throwable include);
 
-    protected abstract WaitingInclude clearThenAddInclude(long duration, TimeUnit unit, boolean clearInclude, Throwable include);
+    protected abstract WaitingInclude clearThenAddInclude(
+        long duration,
+        TimeUnit unit,
+        boolean clearIncludes,
+        Throwable include
+    );
 
     @Test
     public void Can_set_multiple_includes_with_a_system_property() throws Throwable {
@@ -127,7 +132,7 @@ public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterIn
     }
 
     @Test
-    public void Can_clear_the_include_properties_and_add_new_included_exception() throws Throwable {
+    public void Can_clear_the_include_properties_and_add_a_new_included_exception() throws Throwable {
 
         final Callable callable = mock(Callable.class);
 

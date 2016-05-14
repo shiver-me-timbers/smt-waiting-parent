@@ -36,6 +36,7 @@ class WaitOptionsConfigurer implements OptionsConfigurer<Wait> {
         applyWithDefaults(options, wait);
         applyClearWaitFor(options, wait);
         applyClearInclude(options, wait);
+        applyClearExclude(options, wait);
         return options;
     }
 
@@ -106,6 +107,13 @@ class WaitOptionsConfigurer implements OptionsConfigurer<Wait> {
         final boolean clearIncludes = wait.clearIncludes();
         if (clearIncludes == true) {
             options.clearIncludes(clearIncludes);
+        }
+    }
+
+    private void applyClearExclude(OptionsService options, Wait wait) {
+        final boolean clearExcludes = wait.clearExcludes();
+        if (clearExcludes == true) {
+            options.clearExcludes(clearExcludes);
         }
     }
 

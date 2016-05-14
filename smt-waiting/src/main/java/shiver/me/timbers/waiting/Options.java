@@ -64,6 +64,7 @@ public class Options implements OptionsService {
     private Set<Class<? extends Throwable>> includes = new HashSet<>();
     private boolean clearIncludes = false;
     private Set<Class<? extends Throwable>> excludes = new HashSet<>();
+    private boolean clearInclude = false;
 
     public Options() {
         this(
@@ -184,6 +185,15 @@ public class Options implements OptionsService {
     }
 
     /**
+     * If set to true any excludes set through global properties will be ignored.
+     */
+    @Override
+    public Options clearExcludes(boolean clearInclude) {
+        this.clearInclude = clearInclude;
+        return this;
+    }
+
+    /**
      * Generate the choices that will be used by the {@code Waiter}. There should be no need to manually call this
      * method.
      */
@@ -205,6 +215,10 @@ public class Options implements OptionsService {
 
     public boolean isClearIncludes() {
         return clearIncludes;
+    }
+
+    public Boolean isClearExcludes() {
+        return clearInclude;
     }
 
     @Override

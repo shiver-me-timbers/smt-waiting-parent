@@ -18,9 +18,7 @@ package shiver.me.timbers.waiting;
 
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 
 public class ThreadSleeperTest {
@@ -35,6 +33,6 @@ public class ThreadSleeperTest {
         new ThreadSleeper().sleep(100L);
 
         // Then
-        assertThat(System.currentTimeMillis() - start, allOf(greaterThanOrEqualTo(100L), lessThan(500L)));
+        assertThat(System.currentTimeMillis() - start, greaterThanOrEqualTo(100L));
     }
 }

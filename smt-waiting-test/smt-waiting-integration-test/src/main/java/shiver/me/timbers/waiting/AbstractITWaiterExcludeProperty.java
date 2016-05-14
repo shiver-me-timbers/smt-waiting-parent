@@ -71,6 +71,13 @@ public abstract class AbstractITWaiterExcludeProperty extends AbstractITWaiterEx
 
     protected abstract WaitingExclude addExclude(long duration, TimeUnit unit, Throwable exclude);
 
+    protected abstract WaitingExclude clearThenAddExclude(
+        long duration,
+        TimeUnit unit,
+        boolean clearExcludes,
+        Throwable exclude
+    );
+
     @Test
     public void Can_set_multiple_excludes_with_a_system_property() throws Throwable {
 
@@ -106,5 +113,22 @@ public abstract class AbstractITWaiterExcludeProperty extends AbstractITWaiterEx
 
         // When
         addExclude(500L, MILLISECONDS, expected).excludeMethod(callable);
+    }
+
+    @Test
+    public void Can_clear_the_exclude_properties_and_add_a_new_exclude_exception() throws Throwable {
+
+        final Callable callable = mock(Callable.class);
+
+        final Throwable exception1 = someThrowable();
+        final Throwable exception2 = SOME_OTHER_THROWABLES[0];
+
+        // Given
+        properties().setProperty("smt.waiting.excludes", exception1.getClass().getName());
+        given(callable.call()).willThrow(exception1).willThrow(exception2);
+        expectedException.expect(is(exception2));
+
+        // When
+        clearThenAddExclude(500L, MILLISECONDS, true, exception2).excludeMethod(callable);
     }
 }

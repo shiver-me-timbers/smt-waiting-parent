@@ -21,7 +21,12 @@ public class ITManualSpringWaiterIncludeProperty extends AbstractITSpringWaiterI
     }
 
     @Override
-    protected WaitingInclude clearThenAddInclude(long duration, TimeUnit unit, boolean clearInclude, Throwable include) {
-        return new SpringManualClearWaitingInclude(duration, unit, clearInclude, include);
+    protected WaitingInclude clearThenAddInclude(
+        long duration,
+        TimeUnit unit,
+        boolean clearIncludes,
+        Throwable include
+    ) {
+        return new SpringManualClearWaitingInclude(duration, unit, clearIncludes, include);
     }
 }
