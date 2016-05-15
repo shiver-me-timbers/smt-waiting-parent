@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import shiver.me.timbers.waiting.factory.AutoProxyOverrideClassLevelWaitingMethodFactory;
 import shiver.me.timbers.waiting.factory.AutoProxyWaitingExcludeMethodFactory;
 import shiver.me.timbers.waiting.factory.AutoProxyWaitingExcludesWithIncludesMethodFactory;
 import shiver.me.timbers.waiting.factory.AutoProxyWaitingForMethodFactory;
@@ -44,6 +45,9 @@ public class ITAutoProxyAspectWaiterMethod extends AbstractITAspectWaiterMethod 
 
     @Autowired
     private AutoProxyWaitingExcludesWithIncludesMethodFactory excludesWithIncludesFactory;
+
+    @Autowired
+    private AutoProxyOverrideClassLevelWaitingMethodFactory overrideClassLevelWaitingMethodFactory;
 
     @Override
     public AutoProxyWaitingIntervalMethodFactory intervalFactory() {
@@ -88,5 +92,10 @@ public class ITAutoProxyAspectWaiterMethod extends AbstractITAspectWaiterMethod 
     @Override
     public AutoProxyWaitingExcludesWithIncludesMethodFactory excludesWithIncludesFactory() {
         return excludesWithIncludesFactory;
+    }
+
+    @Override
+    public AutoProxyOverrideClassLevelWaitingMethodFactory overrideClassLevelWaitingMethodFactory() {
+        return overrideClassLevelWaitingMethodFactory;
     }
 }

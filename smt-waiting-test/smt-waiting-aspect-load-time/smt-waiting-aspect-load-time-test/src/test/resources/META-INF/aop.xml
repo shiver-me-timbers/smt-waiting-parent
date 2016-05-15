@@ -18,6 +18,6 @@
 <aspectj>
     <weaver options="-Xlint:ignore">
         <include within="shiver.me.timbers.waiting.WaiterAspect" />
-        <include within="shiver.me.timbers.waiting.execution.*Waiting*" />
+        <include within="shiver.me.timbers.waiting.execution.*" />
     </weaver>
 </aspectj>

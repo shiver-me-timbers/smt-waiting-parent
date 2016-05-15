@@ -17,9 +17,12 @@
 package shiver.me.timbers.waiting;
 
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+
+import java.lang.reflect.Method;
 
 /**
  * Use this aspect to add support for the {@link Wait} annotation at the class and method level
@@ -45,7 +48,11 @@ public class WaiterAspect {
     }
 
     @Around("@within(wait) && isMethod()")
-    public Object waitOnClass(ProceedingJoinPoint joinPoint, Wait wait) throws Exception {
+    public Object waitOnClass(ProceedingJoinPoint joinPoint, Wait wait) throws Throwable {
+        if (methodHasWait(joinPoint)) {
+            return joinPoint.proceed();
+        }
+
         return wait(joinPoint, wait);
     }
 
@@ -71,5 +78,18 @@ public class WaiterAspect {
                 return joinPoint.toString();
             }
         });
+    }
+
+    private static boolean methodHasWait(ProceedingJoinPoint joinPoint) {
+        final Signature signature = joinPoint.getSignature();
+        final String methodName = signature.getName();
+
+        for (Method method : signature.getDeclaringType().getDeclaredMethods()) {
+            if (methodName.equals(method.getName())) {
+                return method.isAnnotationPresent(Wait.class);
+            }
+        }
+
+        return false;
     }
 }

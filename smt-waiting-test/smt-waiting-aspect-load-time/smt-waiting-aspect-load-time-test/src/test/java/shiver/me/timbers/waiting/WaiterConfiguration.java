@@ -17,9 +17,11 @@
 package shiver.me.timbers.waiting;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.EnableLoadTimeWeaving;
 
 @Configuration
 @EnableLoadTimeWeaving
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class WaiterConfiguration {
 }

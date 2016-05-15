@@ -17,6 +17,7 @@
 package shiver.me.timbers.waiting;
 
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -33,6 +34,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static shiver.me.timbers.data.random.RandomStrings.someString;
 
 @SuppressWarnings("unchecked")
 public class WaiterAspectTest {
@@ -71,11 +74,15 @@ public class WaiterAspectTest {
         final WaiterService waiterService = mock(WaiterService.class);
         final OptionsService options = mock(OptionsService.class);
 
+        final Signature signature = mock(Signature.class);
         final String[] toString = new String[1];
         final Object[] success = new Object[1];
         final Object expected = new Object();
 
         // Given
+        given(joinPoint.getSignature()).willReturn(signature);
+        given(signature.getDeclaringType()).willReturn(Object.class);
+        given(signature.getName()).willReturn(someString());
         given(optionsLoader.load(wait)).willReturn(options);
         given(waiterLoader.load(options)).willReturn(waiterService);
         willAnswer(new Answer() {
@@ -138,10 +145,14 @@ public class WaiterAspectTest {
         final ProceedingJoinPoint joinPoint = mock(ProceedingJoinPoint.class);
         final Wait wait = mock(Wait.class);
 
+        final Signature signature = mock(Signature.class);
         final WaiterService waiterService = mock(WaiterService.class);
         final OptionsService options = mock(OptionsService.class);
 
         // Given
+        given(joinPoint.getSignature()).willReturn(signature);
+        given(signature.getDeclaringType()).willReturn(Object.class);
+        given(signature.getName()).willReturn(someString());
         given(optionsLoader.load(wait)).willReturn(options);
         given(waiterLoader.load(options)).willReturn(waiterService);
 
@@ -154,5 +165,35 @@ public class WaiterAspectTest {
         verify(optionsLoader, times(3)).load(wait);
         verify(waiterLoader, times(3)).load(options);
         verify(waiterService, times(3)).wait(any(Until.class));
+    }
+
+    @Test
+    public void Will_ignore_class_annotation_if_method_is_annotated() throws Throwable {
+
+        final ProceedingJoinPoint joinPoint = mock(ProceedingJoinPoint.class);
+        final Wait wait = mock(Wait.class);
+
+        final Signature signature = mock(Signature.class);
+        @Wait
+        class WaitMethodOverride {
+            @Wait
+            private void overrideWaitMethod() {
+            }
+        }
+
+        final Object expected = new Object();
+
+        // Given
+        given(joinPoint.getSignature()).willReturn(signature);
+        given(signature.getDeclaringType()).willReturn(WaitMethodOverride.class);
+        given(signature.getName()).willReturn("overrideWaitMethod");
+        given(joinPoint.proceed()).willReturn(expected);
+
+        // When
+        final Object actual = aspect.waitOnClass(joinPoint, wait);
+
+        // Then
+        assertThat(actual, is(expected));
+        verifyZeroInteractions(optionsLoader, waiterLoader);
     }
 }
