@@ -57,7 +57,7 @@ public abstract class AbstractITWaiterTimeout implements ITWaiterTimeout {
         }
 
         // Then
-        assertThat(System.currentTimeMillis() - start, allOf(greaterThanOrEqualTo(200L), lessThan(300L)));
+        assertThat(System.currentTimeMillis() - start, allOf(greaterThanOrEqualTo(200L), lessThan(600L)));
     }
 
     @Test
