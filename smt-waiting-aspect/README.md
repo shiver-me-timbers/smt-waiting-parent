@@ -26,36 +26,34 @@ The [`WaiterAspect`](src/main/java/shiver/me/timbers/waiting/WaiterAspect.java) 
 [compile time weaving](../smt-waiting-test/smt-waiting-aspect-compile-time),
 [load time weaving](../smt-waiting-test/smt-waiting-aspect-load-time), or even with the use of
 [auto proxies](../smt-waiting-test/smt-waiting-aspect-integration). Then the `@Wait` annotation can be added to any
-class or method. When annotated at the class level all methods within that class will have the wait applied.
-
-**Note:** The `@Wait` is not inherited, so applying the annotation to a super class or method will have no impact on the
-child.
+class or method. When annotated at the class level all methods within that class will have the wait applied. Class level
+`@Wait` annotations can be overridden with a method level annotation.
 
 ```java
 import shiver.me.timbers.waiting.Wait;
+import shiver.me.timbers.waiting.Timeout;
+import java.util.concurrent.TimeUnit.MILLISECONDS;
+import java.util.concurrent.TimeUnit.SECONDS;
 
 class Examples {
-
-    @Wait
-    class WaitOnAllMethods {
-        public void one() {
-        }
-        public void two() {
-        }
-    }
 
     class WaitOnOneMethod {
 
         @Wait
         public void one() {
         }
+
         public void two() {
         }
     }
 
-    class WaitOnNoMethods extends WaitOnAllMethods {
+    @Wait(@Timeout(duration = 500L, unit = MILLISECONDS))
+    class WaitOnAllMethods {
+
         public void one() {
         }
+
+        @Wait(@Timeout(duration = 2L, unit = SECONDS))
         public void two() {
         }
     }
