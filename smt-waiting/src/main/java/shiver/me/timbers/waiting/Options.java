@@ -64,7 +64,7 @@ public class Options implements OptionsService {
     private Set<Class<? extends Throwable>> includes = new HashSet<>();
     private boolean clearIncludes = false;
     private Set<Class<? extends Throwable>> excludes = new HashSet<>();
-    private boolean clearInclude = false;
+    private boolean clearExcludes = false;
 
     public Options() {
         this(
@@ -85,6 +85,26 @@ public class Options implements OptionsService {
         this.propertyChoices = propertyChoices;
         this.manualChoices = manualChoices;
         this.chooser = chooser;
+    }
+
+    private Options(Options options) {
+        this.defaultChoices = options.defaultChoices;
+        this.propertyChoices = options.propertyChoices;
+        this.manualChoices = options.manualChoices;
+        this.chooser = options.chooser;
+        this.withDefaults = options.isWithDefaults();
+        this.timeoutDuration = options.getTimeoutDuration();
+        this.timeoutUnit = options.getTimeoutUnit();
+        this.intervalDuration = options.getIntervalDuration();
+        this.intervalUnit = options.getIntervalUnit();
+        this.waitForTrue = options.isWaitForTrue();
+        this.waitForNotNull = options.isWaitForNotNull();
+        this.resultValidators = options.getResultValidators();
+        this.clearWaitFor = options.isClearWaitFor();
+        this.includes = options.getIncludes();
+        this.clearIncludes = options.isClearIncludes();
+        this.excludes = options.getExcludes();
+        this.clearExcludes = options.isClearExcludes();
     }
 
     /**
@@ -189,7 +209,7 @@ public class Options implements OptionsService {
      */
     @Override
     public Options clearExcludes(boolean clearInclude) {
-        this.clearInclude = clearInclude;
+        this.clearExcludes = clearInclude;
         return this;
     }
 
@@ -218,7 +238,7 @@ public class Options implements OptionsService {
     }
 
     public Boolean isClearExcludes() {
-        return clearInclude;
+        return clearExcludes;
     }
 
     @Override
@@ -264,5 +284,9 @@ public class Options implements OptionsService {
     @Override
     public Set<Class<? extends Throwable>> getExcludes() {
         return new HashSet<>(excludes);
+    }
+
+    public Options copy() {
+        return new Options(this);
     }
 }

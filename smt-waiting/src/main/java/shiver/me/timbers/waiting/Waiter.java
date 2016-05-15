@@ -24,7 +24,7 @@ package shiver.me.timbers.waiting;
  */
 public class Waiter implements WaiterService {
 
-    final Choice choice;
+    final Options options;
 
     /**
      * Create a new waiter with the default options.
@@ -48,7 +48,7 @@ public class Waiter implements WaiterService {
      * Create a new waiter with custom options.
      */
     public Waiter(Options options) {
-        this.choice = options.choose();
+        this.options = options.copy();
     }
 
     /**
@@ -59,6 +59,8 @@ public class Waiter implements WaiterService {
      * @return the result of the waited method call or {@code null} for a {@code void} method.
      */
     public <T> T wait(Until<T> until) {
+
+        final Choice choice = options.choose();
 
         final Timer timer = choice.startTimer();
 

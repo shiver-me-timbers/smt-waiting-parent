@@ -51,21 +51,12 @@ public class WaiterTest {
     }
 
     @Test
-    public void can_create_a_waiter() {
-
-        // When
-        new Waiter(options);
-
-        // Then
-        verify(options).choose();
-    }
-
-    @Test
     public void Can_wait_until_no_exception_is_thrown() throws Throwable {
 
         @SuppressWarnings("unchecked")
         final Until<Object> until = mock(Until.class);
 
+        final Options optionsCopy = mock(Options.class);
         final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
         final Throwable exception = someThrowable();
@@ -73,7 +64,8 @@ public class WaiterTest {
         final Object expected = new Object();
 
         // Given
-        given(options.choose()).willReturn(choice);
+        given(options.copy()).willReturn(optionsCopy);
+        given(optionsCopy.choose()).willReturn(choice);
         given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false);
         given(until.success()).willThrow(exception).willThrow(exception).willReturn(expected);
@@ -97,12 +89,14 @@ public class WaiterTest {
         @SuppressWarnings("unchecked")
         final Until<Object> until = mock(Until.class, untilToString);
 
+        final Options optionsCopy = mock(Options.class);
         final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
         final TestTimeOutException exception = new TestTimeOutException();
 
         // Given
-        given(options.choose()).willReturn(choice);
+        given(options.copy()).willReturn(optionsCopy);
+        given(optionsCopy.choose()).willReturn(choice);
         given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false, false, true);
         given(until.success()).willThrow(exception);
@@ -121,12 +115,14 @@ public class WaiterTest {
         @SuppressWarnings("unchecked")
         final Until<Object> until = mock(Until.class);
 
+        final Options optionsCopy = mock(Options.class);
         final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
         final TestTimeOutRuntimeException exception = new TestTimeOutRuntimeException();
 
         // Given
-        given(options.choose()).willReturn(choice);
+        given(options.copy()).willReturn(optionsCopy);
+        given(optionsCopy.choose()).willReturn(choice);
         given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false, false, true);
         given(until.success()).willThrow(exception);
@@ -142,12 +138,14 @@ public class WaiterTest {
         @SuppressWarnings("unchecked")
         final Until<Object> until = mock(Until.class);
 
+        final Options optionsCopy = mock(Options.class);
         final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
         final TestTimeOutError error = new TestTimeOutError();
 
         // Given
-        given(options.choose()).willReturn(choice);
+        given(options.copy()).willReturn(optionsCopy);
+        given(optionsCopy.choose()).willReturn(choice);
         given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false, false, true);
         given(until.success()).willThrow(error);
@@ -163,13 +161,15 @@ public class WaiterTest {
         @SuppressWarnings("unchecked")
         final Until<Object> until = mock(Until.class);
 
+        final Options optionsCopy = mock(Options.class);
         final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
 
         final Object expected = new Object();
 
         // Given
-        given(options.choose()).willReturn(choice);
+        given(options.copy()).willReturn(optionsCopy);
+        given(optionsCopy.choose()).willReturn(choice);
         given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false);
         given(until.success()).willReturn(expected);
@@ -190,13 +190,15 @@ public class WaiterTest {
         @SuppressWarnings("unchecked")
         final Until<Object> until = mock(Until.class);
 
+        final Options optionsCopy = mock(Options.class);
         final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
 
         final Object expected = new Object();
 
         // Given
-        given(options.choose()).willReturn(choice);
+        given(options.copy()).willReturn(optionsCopy);
+        given(optionsCopy.choose()).willReturn(choice);
         given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false, false, true);
         given(until.success()).willReturn(expected);
@@ -217,6 +219,7 @@ public class WaiterTest {
         @SuppressWarnings("unchecked")
         final Until<Object> until = mock(Until.class);
 
+        final Options optionsCopy = mock(Options.class);
         final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
         final Exception exception = new Exception();
@@ -224,7 +227,8 @@ public class WaiterTest {
         final Object expected = new Object();
 
         // Given
-        given(options.choose()).willReturn(choice);
+        given(options.copy()).willReturn(optionsCopy);
+        given(optionsCopy.choose()).willReturn(choice);
         given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false, false, true);
         given(until.success()).willThrow(exception).willReturn(expected);
@@ -246,6 +250,7 @@ public class WaiterTest {
         @SuppressWarnings("unchecked")
         final Until<Object> until = mock(Until.class);
 
+        final Options optionsCopy = mock(Options.class);
         final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
         final TestTimeOutException exception = new TestTimeOutException();
@@ -253,7 +258,8 @@ public class WaiterTest {
         final Object expected = new Object();
 
         // Given
-        given(options.choose()).willReturn(choice);
+        given(options.copy()).willReturn(optionsCopy);
+        given(optionsCopy.choose()).willReturn(choice);
         given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false);
         given(until.success()).willThrow(exception).willReturn(expected);
@@ -274,12 +280,14 @@ public class WaiterTest {
         @SuppressWarnings("unchecked")
         final Until<Object> until = mock(Until.class);
 
+        final Options optionsCopy = mock(Options.class);
         final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
         final TestTimeOutRuntimeException exception = new TestTimeOutRuntimeException();
 
         // Given
-        given(options.choose()).willReturn(choice);
+        given(options.copy()).willReturn(optionsCopy);
+        given(optionsCopy.choose()).willReturn(choice);
         given(choice.startTimer()).willReturn(timer);
         given(timer.exceeded()).willReturn(false);
         given(until.success()).willThrow(exception);

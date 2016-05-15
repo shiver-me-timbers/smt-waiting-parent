@@ -26,6 +26,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -41,7 +42,7 @@ public class OptionsTest {
     private PropertyChoices propertyChoices;
     private ManualChoices manualChoices;
     private Chooser chooser;
-    private OptionsService options;
+    private Options options;
 
     @Before
     public void setUp() {
@@ -80,7 +81,7 @@ public class OptionsTest {
 
         // Given
         given(defaultChoices.create()).willReturn(defaults);
-        given(propertyChoices.apply(defaults, (Options) options)).willReturn(properties);
+        given(propertyChoices.apply(defaults, options)).willReturn(properties);
         given(manualChoices.apply(properties, options)).willReturn(manual);
         given(chooser.choose(manual)).willReturn(expected);
 
@@ -136,15 +137,75 @@ public class OptionsTest {
         assertThat(options.getResultValidators(), contains(
             instanceOf(validator1.getClass()), instanceOf(validator2.getClass())
         ));
-        assertThat(((Options) options).isClearWaitFor(), is(clearWaitFor));
+        assertThat(options.isClearWaitFor(), is(clearWaitFor));
         assertThat(options.getIncludes(), (Matcher) hasItems(
             instanceOf(throwable1.getClass()), instanceOf(throwable1.getClass())
         ));
-        assertThat(((Options) options).isClearIncludes(), is(clearIncludes));
+        assertThat(options.isClearIncludes(), is(clearIncludes));
         assertThat(options.getExcludes(), (Matcher) hasItems(
             instanceOf(throwable3.getClass()), instanceOf(throwable4.getClass())
         ));
-        assertThat(((Options) options).isClearExcludes(), is(clearExcludes));
-        assertThat(((Options) options).isWithDefaults(), is(useDefaults));
+        assertThat(options.isClearExcludes(), is(clearExcludes));
+        assertThat(options.isWithDefaults(), is(useDefaults));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Can_copy_an_options() {
+
+        final Long timeoutDuration = someLong();
+        final TimeUnit timeoutUnit = someEnum(TimeUnit.class);
+        final Long intervalDuration = someLong();
+        final TimeUnit intervalUnit = someEnum(TimeUnit.class);
+        final Boolean shouldWaitForTrue = someBoolean();
+        final Boolean shouldWaitForNotNull = someBoolean();
+        final ResultValidator validator1 = mock(ResultValidator.class);
+        final ResultValidator validator2 = mock(ResultValidator.class);
+        final Boolean clearWaitFor = someBoolean();
+        final Class<? extends Throwable> throwable1 = someThrowable().getClass();
+        final Class<? extends Throwable> throwable2 = someThrowable().getClass();
+        final Boolean clearIncludes = someBoolean();
+        final Class<? extends Throwable> throwable3 = someThrowable().getClass();
+        final Class<? extends Throwable> throwable4 = someThrowable().getClass();
+        final Boolean clearExcludes = someBoolean();
+        final Boolean useDefaults = someBoolean();
+
+        // Given
+        options.withTimeout(timeoutDuration, timeoutUnit)
+            .withInterval(intervalDuration, intervalUnit)
+            .willWaitForTrue(shouldWaitForTrue)
+            .willWaitForNotNull(shouldWaitForNotNull)
+            .waitFor(validator1, validator2)
+            .clearWaitFor(clearWaitFor)
+            .includes(throwable1, throwable2)
+            .clearIncludes(clearIncludes)
+            .excludes(throwable3, throwable4)
+            .clearExcludes(clearExcludes)
+            .withDefaults(useDefaults);
+
+        // When
+        final Options actual = options.copy();
+
+        // Then
+        assertThat(actual, not(is(options)));
+        assertThat(actual.getTimeoutDuration(), is(timeoutDuration));
+        assertThat(actual.getTimeoutUnit(), is(timeoutUnit));
+        assertThat(actual.getIntervalDuration(), is(intervalDuration));
+        assertThat(actual.getIntervalUnit(), is(intervalUnit));
+        assertThat(actual.isWaitForTrue(), is(shouldWaitForTrue));
+        assertThat(actual.isWaitForNotNull(), is(shouldWaitForNotNull));
+        assertThat(actual.getResultValidators(), contains(
+            instanceOf(validator1.getClass()), instanceOf(validator2.getClass())
+        ));
+        assertThat(actual.isClearWaitFor(), is(clearWaitFor));
+        assertThat(actual.getIncludes(), (Matcher) hasItems(
+            instanceOf(throwable1.getClass()), instanceOf(throwable1.getClass())
+        ));
+        assertThat(actual.isClearIncludes(), is(clearIncludes));
+        assertThat(actual.getExcludes(), (Matcher) hasItems(
+            instanceOf(throwable3.getClass()), instanceOf(throwable4.getClass())
+        ));
+        assertThat(actual.isClearExcludes(), is(clearExcludes));
+        assertThat(actual.isWithDefaults(), is(useDefaults));
     }
 }
