@@ -21,7 +21,7 @@
     <parent>
         <groupId>com.github.shiver-me-timbers</groupId>
         <artifactId>smt-waiting-aspect-compile-time</artifactId>
-        <version>4.0</version>
+        <version>4.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>smt-waiting-aspect-compile-time-spring-test</artifactId>
@@ -34,7 +34,7 @@
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-waiting-aspect-integration-spring-test</artifactId>
-            <version>4.0</version>
+            <version>4.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
