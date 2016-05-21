@@ -54,7 +54,7 @@
                         </weaveDependency>
                         <weaveDependency>
                             <groupId>com.github.shiver-me-timbers</groupId>
-                            <artifactId>smt-waiting-aspect-integration-test</artifactId>
+                            <artifactId>smt-waiting-aspect-test-executions</artifactId>
                         </weaveDependency>
                     </weaveDependencies>
                 </configuration>
