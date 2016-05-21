@@ -39,6 +39,8 @@
     </dependencies>
 
     <modules>
+        <module>smt-waiting-aspect-test-executions</module>
+        <module>smt-waiting-aspect-test-components</module>
         <module>smt-waiting-aspect-integration-test</module>
         <module>smt-waiting-aspect-integration-spring-test</module>
     </modules>

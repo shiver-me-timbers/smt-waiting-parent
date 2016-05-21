@@ -42,6 +42,18 @@
             <version>4.1-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>com.github.shiver-me-timbers</groupId>
+            <artifactId>smt-waiting-aspect-test-executions</artifactId>
+            <version>4.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.shiver-me-timbers</groupId>
+            <artifactId>smt-waiting-aspect-test-components</artifactId>
+            <version>4.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
             <scope>test</scope>
