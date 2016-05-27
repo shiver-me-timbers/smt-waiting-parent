@@ -21,7 +21,7 @@
     <parent>
         <groupId>com.github.shiver-me-timbers</groupId>
         <artifactId>smt-waiting-test</artifactId>
-        <version>4.1-SNAPSHOT</version>
+        <version>4.1</version>
     </parent>
 
     <artifactId>smt-waiting-integration-test</artifactId>
@@ -34,7 +34,7 @@
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-waiting</artifactId>
-            <version>4.1-SNAPSHOT</version>
+            <version>4.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

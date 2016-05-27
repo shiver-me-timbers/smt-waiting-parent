@@ -21,7 +21,7 @@
     <parent>
         <groupId>com.github.shiver-me-timbers</groupId>
         <artifactId>smt-waiting-aspect-integration</artifactId>
-        <version>4.1-SNAPSHOT</version>
+        <version>4.1</version>
     </parent>
 
     <artifactId>smt-waiting-aspect-integration-spring-test</artifactId>
@@ -34,12 +34,12 @@
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-waiting-aspect-integration-test</artifactId>
-            <version>4.1-SNAPSHOT</version>
+            <version>4.1</version>
         </dependency>
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-waiting-spring-integration-test</artifactId>
-            <version>4.1-SNAPSHOT</version>
+            <version>4.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -48,7 +48,7 @@
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-waiting-spring</artifactId>
-            <version>4.1-SNAPSHOT</version>
+            <version>4.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -59,7 +59,7 @@
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-waiting-aspect-test-components</artifactId>
-            <version>4.1-SNAPSHOT</version>
+            <version>4.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
