@@ -21,7 +21,7 @@
     <parent>
         <groupId>com.github.shiver-me-timbers</groupId>
         <artifactId>smt-waiting-parent</artifactId>
-        <version>4.1</version>
+        <version>4.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>smt-waiting-aspect</artifactId>
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>com.github.shiver-me-timbers</groupId>
             <artifactId>smt-waiting</artifactId>
-            <version>4.1</version>
+            <version>4.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <!-- The AspectJ dependency is has provided scope so that it doesn't clash with the version used by the use -->
