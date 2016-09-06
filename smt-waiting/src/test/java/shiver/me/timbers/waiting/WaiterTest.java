@@ -245,7 +245,7 @@ public class WaiterTest {
     }
 
     @Test
-    public void Can_ignore_exceptions_contained_in_the_include_list() throws Throwable {
+    public void Cannot_ignore_exceptions_that_are_not_suppressed() throws Throwable {
 
         @SuppressWarnings("unchecked")
         final Until<Object> until = mock(Until.class);
@@ -253,37 +253,7 @@ public class WaiterTest {
         final Options optionsCopy = mock(Options.class);
         final Choice choice = mock(Choice.class);
         final Timer timer = mock(Timer.class);
-        final TestTimeOutException exception = new TestTimeOutException();
-
-        final Object expected = new Object();
-
-        // Given
-        given(options.copy()).willReturn(optionsCopy);
-        given(optionsCopy.choose()).willReturn(choice);
-        given(choice.startTimer()).willReturn(timer);
-        given(timer.exceeded()).willReturn(false);
-        given(until.success()).willThrow(exception).willReturn(expected);
-        given(choice.isSuppressed(exception)).willReturn(true);
-        given(choice.isValid(expected)).willReturn(true);
-
-        // When
-        final Object actual = new Waiter(options).wait(until);
-
-        // Then
-        assertThat(actual, is(expected));
-        verify(until, times(2)).success();
-    }
-
-    @Test
-    public void Cannot_ignore_exceptions_that_are_not_contained_in_the_include_list() throws Throwable {
-
-        @SuppressWarnings("unchecked")
-        final Until<Object> until = mock(Until.class);
-
-        final Options optionsCopy = mock(Options.class);
-        final Choice choice = mock(Choice.class);
-        final Timer timer = mock(Timer.class);
-        final TestTimeOutRuntimeException exception = new TestTimeOutRuntimeException();
+        final Throwable exception = someThrowable();
 
         // Given
         given(options.copy()).willReturn(optionsCopy);

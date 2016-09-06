@@ -42,7 +42,7 @@ public class OptionsTest {
     private PropertyChoices propertyChoices;
     private ManualChoices manualChoices;
     private Chooser chooser;
-    private Options options;
+    private OptionsService options;
 
     @Before
     public void setUp() {
@@ -81,7 +81,7 @@ public class OptionsTest {
 
         // Given
         given(defaultChoices.create()).willReturn(defaults);
-        given(propertyChoices.apply(defaults, options)).willReturn(properties);
+        given(propertyChoices.apply(defaults, ((Options) options))).willReturn(properties);
         given(manualChoices.apply(properties, options)).willReturn(manual);
         given(chooser.choose(manual)).willReturn(expected);
 
@@ -137,16 +137,16 @@ public class OptionsTest {
         assertThat(options.getResultValidators(), contains(
             instanceOf(validator1.getClass()), instanceOf(validator2.getClass())
         ));
-        assertThat(options.isClearWaitFor(), is(clearWaitFor));
+        assertThat(((Options) options).isClearWaitFor(), is(clearWaitFor));
         assertThat(options.getIncludes(), (Matcher) hasItems(
             instanceOf(throwable1.getClass()), instanceOf(throwable1.getClass())
         ));
-        assertThat(options.isClearIncludes(), is(clearIncludes));
+        assertThat(((Options) options).isClearIncludes(), is(clearIncludes));
         assertThat(options.getExcludes(), (Matcher) hasItems(
             instanceOf(throwable3.getClass()), instanceOf(throwable4.getClass())
         ));
-        assertThat(options.isClearExcludes(), is(clearExcludes));
-        assertThat(options.isWithDefaults(), is(useDefaults));
+        assertThat(((Options) options).isClearExcludes(), is(clearExcludes));
+        assertThat(((Options) options).isWithDefaults(), is(useDefaults));
     }
 
     @Test
@@ -184,7 +184,7 @@ public class OptionsTest {
             .withDefaults(useDefaults);
 
         // When
-        final Options actual = options.copy();
+        final Options actual = ((Options) options).copy();
 
         // Then
         assertThat(actual, not(is(options)));
