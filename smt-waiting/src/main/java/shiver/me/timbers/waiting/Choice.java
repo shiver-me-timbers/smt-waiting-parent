@@ -78,7 +78,7 @@ class Choice {
         }
     }
 
-    public boolean isSuppressed(Throwable throwable) {
+    boolean isSuppressed(Throwable throwable) {
         if (includes.isEmpty() && excludes.isEmpty()) {
             return true;
         }
