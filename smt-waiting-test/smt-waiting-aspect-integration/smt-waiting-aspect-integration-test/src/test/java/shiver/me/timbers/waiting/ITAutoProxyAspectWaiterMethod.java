@@ -2,7 +2,7 @@ package shiver.me.timbers.waiting;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import shiver.me.timbers.waiting.factory.AutoProxyOverrideClassLevelWaitingMethodFactory;
 import shiver.me.timbers.waiting.factory.AutoProxyWaitingExcludeMethodFactory;
@@ -16,7 +16,7 @@ import shiver.me.timbers.waiting.factory.AutoProxyWaitingIntervalMethodFactory;
 import shiver.me.timbers.waiting.factory.AutoProxyWaitingTimeoutMethodFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = WaiterConfiguration.class)
+@SpringBootTest(classes = WaiterConfiguration.class)
 public class ITAutoProxyAspectWaiterMethod extends AbstractITAspectWaiterMethod {
 
     @Autowired

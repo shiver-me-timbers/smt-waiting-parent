@@ -36,13 +36,5 @@
             <artifactId>smt-waiting</artifactId>
             <version>4.2-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.shiver-me-timbers</groupId>
-            <artifactId>smt-random</artifactId>
-        </dependency>
     </dependencies>
 </project>

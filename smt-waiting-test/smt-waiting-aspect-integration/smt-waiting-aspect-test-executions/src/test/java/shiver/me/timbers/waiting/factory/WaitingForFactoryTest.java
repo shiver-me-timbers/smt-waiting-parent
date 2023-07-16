@@ -8,7 +8,7 @@ import shiver.me.timbers.waiting.execution.WaitingFor;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -28,6 +28,7 @@ public class WaitingForFactoryTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_create_a_waiting_for() {
 
         final Long duration = someLong();
@@ -47,6 +48,7 @@ public class WaitingForFactoryTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_add_a_waiting_for() {
 
         // Given

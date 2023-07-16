@@ -25,13 +25,13 @@ import java.util.Collections;
 import java.util.List;
 
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomBooleans.someBoolean;
@@ -157,6 +157,7 @@ public class AbstractPropertyParserTest {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_merge_a_class_property_with_a_manually_set_class() {
 
         final String key = someString();
@@ -165,8 +166,7 @@ public class AbstractPropertyParserTest {
         given(propertyGetter.get(key)).willReturn(AClass.class.getName());
 
         // When
-        @SuppressWarnings("unchecked")
-        final List<Class<? extends AClass>> actual = parser.getClassProperty(key, (List) asList(AnotherClass.class));
+        final List<Class<? extends AClass>> actual = parser.getClassProperty(key, (List) singletonList(AnotherClass.class));
 
         // Then
         assertThat(actual, contains((Class) AnotherClass.class, (Class) AClass.class));
@@ -238,8 +238,7 @@ public class AbstractPropertyParserTest {
         given(propertyGetter.get(key)).willReturn(AClass.class.getName());
 
         // When
-        @SuppressWarnings("unchecked")
-        final List<AClass> actual = parser.getInstanceProperty(key, asList((AClass) new AnotherClass()));
+        final List<AClass> actual = parser.getInstanceProperty(key, singletonList((AClass) new AnotherClass()));
 
         // Then
         assertThat(actual, contains(instanceOf(AnotherClass.class), instanceOf(AClass.class)));
@@ -296,6 +295,7 @@ public class AbstractPropertyParserTest {
         parser.getInstanceProperty(key, Collections.<AClass>emptyList());
     }
 
+    @SuppressWarnings("unused")
     private enum AnEnum {
         A,
         TEST,
@@ -311,6 +311,7 @@ public class AbstractPropertyParserTest {
     }
 
     public static class ANonDefaultClass extends AClass {
+        @SuppressWarnings("unused")
         public ANonDefaultClass(Object argument) {
         }
     }

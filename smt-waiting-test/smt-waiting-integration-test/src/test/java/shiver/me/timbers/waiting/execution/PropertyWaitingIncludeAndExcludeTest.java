@@ -9,7 +9,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -42,6 +42,7 @@ public class PropertyWaitingIncludeAndExcludeTest {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_add_timeout_includes_and_excludes_for_include_method() throws Exception {
 
         final Callable callable = mock(Callable.class);
@@ -62,6 +63,7 @@ public class PropertyWaitingIncludeAndExcludeTest {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_add_timeout_includes_and_excludes_for_exclude_method() throws Exception {
 
         final Callable callable = mock(Callable.class);

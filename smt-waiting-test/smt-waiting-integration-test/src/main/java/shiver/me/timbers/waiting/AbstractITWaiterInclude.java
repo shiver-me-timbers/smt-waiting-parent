@@ -23,7 +23,7 @@ import java.util.concurrent.Callable;
 import static java.util.Arrays.asList;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -35,6 +35,7 @@ import static shiver.me.timbers.waiting.random.RandomExceptions.someOtherThrowab
 public abstract class AbstractITWaiterInclude implements ITWaiterInclude {
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Can_ignore_exceptions_contained_in_the_include_list() throws Throwable {
 
@@ -54,6 +55,7 @@ public abstract class AbstractITWaiterInclude implements ITWaiterInclude {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Cannot_ignore_exceptions_that_are_not_contained_in_the_include_list() throws Throwable {
 
@@ -70,6 +72,7 @@ public abstract class AbstractITWaiterInclude implements ITWaiterInclude {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Can_ignore_all_exceptions_if_no_includes_set() throws Throwable {
 
@@ -89,6 +92,7 @@ public abstract class AbstractITWaiterInclude implements ITWaiterInclude {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Can_ignore_exceptions_contained_in_the_include_list_and_not_in_the_exclude_list() throws Throwable {
 

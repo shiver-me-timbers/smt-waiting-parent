@@ -23,11 +23,12 @@ import shiver.me.timbers.waiting.test.TestRegisteredService;
 import shiver.me.timbers.waiting.test.UnregisteredService;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class SPIServiceClassLoaderTest {
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_load_a_service() {
 
         // Given
@@ -42,6 +43,7 @@ public class SPIServiceClassLoaderTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Cannot_load_a_service_that_has_not_been_registered() {
 
         // Given

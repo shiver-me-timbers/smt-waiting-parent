@@ -23,13 +23,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLong;
 import static shiver.me.timbers.matchers.Matchers.hasField;
@@ -46,7 +46,7 @@ public class BasicChooserTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void Can_choose_all_choice() {
 
         final Choices choices = mock(Choices.class);
@@ -87,11 +87,11 @@ public class BasicChooserTest {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_not_add_true_and_null_result_validators() {
 
         final Choices choices = mock(Choices.class);
 
-        @SuppressWarnings("unchecked")
         final List<ResultValidator> resultValidators = mock(List.class);
 
         // Given
@@ -107,6 +107,6 @@ public class BasicChooserTest {
         chooser.choose(choices);
 
         // Then
-        verifyZeroInteractions(resultValidators);
+        verifyNoInteractions(resultValidators);
     }
 }

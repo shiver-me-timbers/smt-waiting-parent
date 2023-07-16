@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -45,9 +45,11 @@ public abstract class AbstractITWaiterWaitForNotNullProperty extends AbstractITW
         };
     }
 
+    @SuppressWarnings("SameParameterValue")
     protected abstract WaitingForNotNull overrideWaitForNotNull(long duration, TimeUnit unit, boolean isNotNull);
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_override_the_wait_for_not_null_system_property() throws Throwable {
 
         final Callable callable = mock(Callable.class);

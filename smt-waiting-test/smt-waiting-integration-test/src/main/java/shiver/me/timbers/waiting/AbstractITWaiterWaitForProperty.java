@@ -30,8 +30,8 @@ import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -43,6 +43,7 @@ public abstract class AbstractITWaiterWaitForProperty extends AbstractITWaiterWa
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 
+    @SuppressWarnings("rawtypes")
     @Override
     public WaitingFor waitFor(final long duration, final TimeUnit unit, final ResultValidator validator) {
         return new WaitingFor() {
@@ -55,8 +56,10 @@ public abstract class AbstractITWaiterWaitForProperty extends AbstractITWaiterWa
         };
     }
 
+    @SuppressWarnings({"SameParameterValue", "rawtypes"})
     protected abstract WaitingFor addWaitFor(long duration, TimeUnit unit, ResultValidator validator);
 
+    @SuppressWarnings({"SameParameterValue", "rawtypes"})
     protected abstract WaitingFor clearThenAddWaitFor(
         long duration,
         TimeUnit unit,
@@ -65,6 +68,7 @@ public abstract class AbstractITWaiterWaitForProperty extends AbstractITWaiterWa
     );
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_set_multiple_wait_for_with_a_system_property() throws Throwable {
 
         final Callable callable = mock(Callable.class);
@@ -89,6 +93,7 @@ public abstract class AbstractITWaiterWaitForProperty extends AbstractITWaiterWa
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_add_extra_wait_for_to_those_set_with_the_system_property() throws Throwable {
 
         final Callable callable = mock(Callable.class);
@@ -108,6 +113,7 @@ public abstract class AbstractITWaiterWaitForProperty extends AbstractITWaiterWa
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_clear_the_wait_for_properties_and_add_new_validator() throws Throwable {
 
         final Callable callable = mock(Callable.class);

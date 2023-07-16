@@ -25,7 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isA;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -77,7 +77,6 @@ public class ReflectionServiceLoaderTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void Cannot_reflectively_create_a_service_with_the_wrong_target()
         throws IllegalAccessException, InvocationTargetException, InstantiationException {
 
@@ -94,7 +93,6 @@ public class ReflectionServiceLoaderTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void Cannot_reflectively_create_a_service_which_has_a_failing_constructor()
         throws IllegalAccessException, InvocationTargetException, InstantiationException {
 

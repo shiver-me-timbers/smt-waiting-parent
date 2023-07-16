@@ -27,7 +27,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -38,6 +38,7 @@ import static shiver.me.timbers.waiting.test.WasDurationMatcher.durationWas;
 public abstract class AbstractITWaiterTimeout implements ITWaiterTimeout {
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Can_change_the_timeout() throws Throwable {
 
@@ -61,6 +62,7 @@ public abstract class AbstractITWaiterTimeout implements ITWaiterTimeout {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Can_wait_until_no_exception_is_thrown() throws Throwable {
 
@@ -80,6 +82,7 @@ public abstract class AbstractITWaiterTimeout implements ITWaiterTimeout {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Can_wait_until_time_out_if_exception_always_thrown() throws Throwable {
 
@@ -99,6 +102,7 @@ public abstract class AbstractITWaiterTimeout implements ITWaiterTimeout {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Can_directly_throw_a_runtime_exception() throws Throwable {
 
@@ -116,6 +120,7 @@ public abstract class AbstractITWaiterTimeout implements ITWaiterTimeout {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Can_directly_throw_an_error() throws Throwable {
 

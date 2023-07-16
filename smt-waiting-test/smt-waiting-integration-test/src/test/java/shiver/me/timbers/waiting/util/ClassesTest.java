@@ -7,7 +7,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static shiver.me.timbers.data.random.RandomDoubles.someDouble;
 import static shiver.me.timbers.data.random.RandomFloats.someFloat;
 import static shiver.me.timbers.data.random.RandomIntegers.someInteger;
@@ -19,6 +19,7 @@ import static shiver.me.timbers.waiting.util.Classes.toClasses;
 public class ClassesTest {
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_convert_objects_to_classes() {
 
         // Given

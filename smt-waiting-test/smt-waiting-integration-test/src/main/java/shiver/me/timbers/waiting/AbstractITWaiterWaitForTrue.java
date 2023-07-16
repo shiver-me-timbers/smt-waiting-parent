@@ -23,7 +23,7 @@ import java.util.concurrent.Callable;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
@@ -33,6 +33,7 @@ import static org.mockito.Mockito.verify;
 public abstract class AbstractITWaiterWaitForTrue implements ITWaiterWaitForTrue {
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Can_wait_until_true_is_returned() throws Throwable {
 
@@ -50,6 +51,7 @@ public abstract class AbstractITWaiterWaitForTrue implements ITWaiterWaitForTrue
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Can_wait_until_time_out_for_true_when_false_always_returned() throws Throwable {
 
@@ -67,6 +69,7 @@ public abstract class AbstractITWaiterWaitForTrue implements ITWaiterWaitForTrue
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Can_wait_until_time_out_for_true_when_null_always_returned() throws Throwable {
 

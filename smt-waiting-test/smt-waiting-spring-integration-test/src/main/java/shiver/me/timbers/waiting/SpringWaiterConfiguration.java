@@ -18,6 +18,7 @@ package shiver.me.timbers.waiting;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
@@ -33,6 +34,7 @@ public class SpringWaiterConfiguration {
     private ConfigurableEnvironment environment;
 
     @Bean
+    @ConditionalOnMissingBean(DynamicPropertySource.class)
     public DynamicPropertySource dynamicPropertySource() {
         final DynamicPropertySource propertySource = new DynamicPropertySource();
         environment.getPropertySources().addLast(propertySource);

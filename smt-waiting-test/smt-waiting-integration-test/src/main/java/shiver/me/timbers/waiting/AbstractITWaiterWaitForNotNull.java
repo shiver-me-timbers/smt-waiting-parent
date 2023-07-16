@@ -23,7 +23,7 @@ import java.util.concurrent.Callable;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
@@ -33,6 +33,7 @@ import static org.mockito.Mockito.verify;
 public abstract class AbstractITWaiterWaitForNotNull implements ITWaiterWaitForNotNull {
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Can_wait_for_a_non_null_value() throws Throwable {
 
@@ -52,6 +53,7 @@ public abstract class AbstractITWaiterWaitForNotNull implements ITWaiterWaitForN
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Can_wait_until_time_out_for_non_null_when_null_always_returned() throws Throwable {
 

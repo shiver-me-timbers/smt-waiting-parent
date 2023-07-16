@@ -19,7 +19,7 @@ package shiver.me.timbers.waiting;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static shiver.me.timbers.data.random.RandomBooleans.someBoolean;
 
 public class TrueResultTest {

@@ -6,7 +6,7 @@ import shiver.me.timbers.waiting.execution.CannotIgnoreWaitingExcludeClass;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static shiver.me.timbers.waiting.random.RandomExceptions.SOME_OTHER_THROWABLES;
 import static shiver.me.timbers.waiting.random.RandomExceptions.SOME_THROWABLES;
 

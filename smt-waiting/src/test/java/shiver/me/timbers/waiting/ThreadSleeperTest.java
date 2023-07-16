@@ -19,7 +19,7 @@ package shiver.me.timbers.waiting;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ThreadSleeperTest {
 

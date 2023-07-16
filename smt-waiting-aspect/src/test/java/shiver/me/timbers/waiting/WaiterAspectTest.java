@@ -27,14 +27,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willAnswer;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static shiver.me.timbers.data.random.RandomStrings.someString;
 
 @SuppressWarnings("unchecked")
@@ -66,6 +66,7 @@ public class WaiterAspectTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_wait_for_method_in_class() throws Throwable {
 
         final ProceedingJoinPoint joinPoint = mock(ProceedingJoinPoint.class);
@@ -105,6 +106,7 @@ public class WaiterAspectTest {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_wait_for_method() throws Throwable {
 
         final ProceedingJoinPoint joinPoint = mock(ProceedingJoinPoint.class);
@@ -177,6 +179,7 @@ public class WaiterAspectTest {
         @Wait
         class WaitMethodOverride {
             @Wait
+            @SuppressWarnings("unused")
             private void overrideWaitMethod() {
             }
         }
@@ -194,6 +197,6 @@ public class WaiterAspectTest {
 
         // Then
         assertThat(actual, is(expected));
-        verifyZeroInteractions(optionsLoader, waiterLoader);
+        verifyNoInteractions(optionsLoader, waiterLoader);
     }
 }

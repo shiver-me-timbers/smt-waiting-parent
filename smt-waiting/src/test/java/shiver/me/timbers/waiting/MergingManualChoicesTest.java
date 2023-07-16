@@ -26,7 +26,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -49,6 +49,7 @@ public class MergingManualChoicesTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_apply_no_manual_options() {
 
         final Long timeoutDuration = someLong();
@@ -101,6 +102,7 @@ public class MergingManualChoicesTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_apply_all_manual_options() {
 
         final Long timeoutDuration = someLong();

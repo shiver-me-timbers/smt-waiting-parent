@@ -31,7 +31,7 @@ import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.lessThan;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomStrings.someAlphaNumericString;
@@ -54,9 +54,11 @@ public abstract class AbstractITWaiterIntervalProperty extends AbstractITWaiterI
         };
     }
 
+    @SuppressWarnings("SameParameterValue")
     protected abstract WaitingInterval overrideInterval(long duration, TimeUnit unit);
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_override_the_interval_system_properties() throws Throwable {
 
         final Callable callable = mock(Callable.class);
@@ -75,6 +77,7 @@ public abstract class AbstractITWaiterIntervalProperty extends AbstractITWaiterI
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_handle_invalid_time_unit_property() throws Throwable {
 
         final Callable callable = mock(Callable.class);

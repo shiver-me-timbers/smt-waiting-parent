@@ -23,7 +23,7 @@ import org.junit.rules.ExpectedException;
 import java.lang.reflect.InvocationTargetException;
 
 import static org.hamcrest.Matchers.isA;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class DefaultConstructorInstantiaterTest {
 
@@ -59,6 +59,7 @@ public class DefaultConstructorInstantiaterTest {
     }
 
     public static class NonDefaultTestService {
+        @SuppressWarnings("unused")
         public NonDefaultTestService(Object object) {
         }
     }

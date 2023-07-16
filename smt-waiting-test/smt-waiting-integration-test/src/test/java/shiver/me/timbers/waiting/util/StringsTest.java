@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.isEmptyString;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static shiver.me.timbers.data.random.RandomDoubles.someDouble;
 import static shiver.me.timbers.data.random.RandomFloats.someFloat;
 import static shiver.me.timbers.data.random.RandomIntegers.someInteger;
@@ -78,7 +79,7 @@ public class StringsTest {
         final String actual = Strings.concat(someString(1), (Object[]) null);
 
         // Then
-        assertThat(actual, isEmptyString());
+        assertThat(actual, is(emptyString()));
     }
 
     @Test
@@ -88,7 +89,7 @@ public class StringsTest {
         final String actual = Strings.concat(someString(1));
 
         // Then
-        assertThat(actual, isEmptyString());
+        assertThat(actual, is(emptyString()));
     }
 
     @Test
@@ -98,7 +99,7 @@ public class StringsTest {
         final String actual = Strings.concat(null, someString(1));
 
         // Then
-        assertThat(actual, isEmptyString());
+        assertThat(actual, is(emptyString()));
     }
 
     @Test
@@ -108,7 +109,7 @@ public class StringsTest {
         final String actual = Strings.concat(emptyList(), someString(1));
 
         // Then
-        assertThat(actual, isEmptyString());
+        assertThat(actual, is(emptyString()));
     }
 
     private List<String> classNames(List<Object> objects) {
@@ -119,6 +120,7 @@ public class StringsTest {
         return names;
     }
 
+    @SuppressWarnings("rawtypes")
     private String concat(List objects, String delimiter) {
         if (objects.isEmpty()) {
             return "";

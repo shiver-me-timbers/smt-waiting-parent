@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -32,6 +32,7 @@ public class MapLookupFactoryTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_lookup_a_class() {
 
         final List args = someThings(
@@ -51,6 +52,7 @@ public class MapLookupFactoryTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    @SuppressWarnings("rawtypes")
     public void Can_fail_to_lookup_a_class() {
 
         final List args = someThings(
@@ -65,6 +67,7 @@ public class MapLookupFactoryTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_add_a_class() {
 
         // Given

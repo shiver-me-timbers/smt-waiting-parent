@@ -26,14 +26,14 @@ import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isA;
-import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static shiver.me.timbers.data.random.RandomBooleans.someBoolean;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLong;
@@ -47,6 +47,7 @@ public class ChoiceTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_start_a_timeout() {
 
         // Given
@@ -71,11 +72,11 @@ public class ChoiceTest {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_validate_result() throws Throwable {
 
         final Object result = new Object();
 
-        @SuppressWarnings("unchecked")
         final ResultValidator<Object> resultValidator = mock(ResultValidator.class);
 
         final boolean expected = someBoolean();
@@ -100,6 +101,7 @@ public class ChoiceTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_have_no_result_validation() throws Throwable {
 
         // When
@@ -119,14 +121,12 @@ public class ChoiceTest {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_validate_result_in_multiple_ways() throws Throwable {
 
         final Object result = new Object();
-        @SuppressWarnings("unchecked")
         final ResultValidator<Object> resultValidator1 = mock(ResultValidator.class);
-        @SuppressWarnings("unchecked")
         final ResultValidator<Object> resultValidator2 = mock(ResultValidator.class);
-        @SuppressWarnings("unchecked")
         final ResultValidator<Object> resultValidator3 = mock(ResultValidator.class);
 
         final boolean expected = someBoolean();
@@ -156,14 +156,12 @@ public class ChoiceTest {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_stop_on_first_result_validation_failure() throws Throwable {
 
         final Object result = new Object();
-        @SuppressWarnings("unchecked")
         final ResultValidator<Object> resultValidator1 = mock(ResultValidator.class);
-        @SuppressWarnings("unchecked")
         final ResultValidator<Object> resultValidator2 = mock(ResultValidator.class);
-        @SuppressWarnings("unchecked")
         final ResultValidator<Object> resultValidator3 = mock(ResultValidator.class);
 
         // Given
@@ -186,10 +184,11 @@ public class ChoiceTest {
         assertThat(actual, is(false));
         verify(resultValidator1).isValid(result);
         verify(resultValidator2).isValid(result);
-        verifyZeroInteractions(resultValidator3);
+        verifyNoInteractions(resultValidator3);
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_pause_for_an_interval() throws InterruptedException {
 
         // Given
@@ -214,6 +213,7 @@ public class ChoiceTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_have_an_interval_interrupted() throws InterruptedException {
 
         expectedException.expect(RuntimeException.class);
@@ -240,6 +240,7 @@ public class ChoiceTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_check_if_an_included_exception_is_suppressed() {
 
         // Given
@@ -262,6 +263,7 @@ public class ChoiceTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_check_if_an_exception_that_is_not_included_is_not_suppressed() {
 
         // Given
@@ -284,6 +286,7 @@ public class ChoiceTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_check_if_an_excluded_exception_is_not_suppressed() {
 
         // Given
@@ -306,6 +309,7 @@ public class ChoiceTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_check_if_an_exception_that_is_not_excluded_is_suppressed() {
 
         // Given
@@ -328,6 +332,7 @@ public class ChoiceTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_check_if_an_included_and_not_excluded_exception_is_suppressed() {
 
         // Given
@@ -350,6 +355,7 @@ public class ChoiceTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Excluded_exceptions_take_precedence_over_included_excpetions() {
 
         // Given
@@ -372,6 +378,7 @@ public class ChoiceTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_check_that_all_exceptions_are_suppressed_if_no_includes_or_excludes_are_set() {
 
         // Given

@@ -30,7 +30,7 @@ import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static shiver.me.timbers.data.random.RandomBooleans.someBoolean;
@@ -67,6 +67,7 @@ public class PropertyParserChoicesTest {
     }
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void Can_ignore_any_wait_for_set_through_properties() {
 
         final List<ResultValidator> validators = singletonList(mock(ResultValidator.class));
@@ -83,9 +84,9 @@ public class PropertyParserChoicesTest {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_ignore_any_includes_set_through_properties() {
 
-        @SuppressWarnings("unchecked")
         final Set<Class<? extends Throwable>> includes = (Set) singleton(someThrowable().getClass());
 
         // Given
@@ -100,9 +101,9 @@ public class PropertyParserChoicesTest {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_ignore_any_excludes_set_through_properties() {
 
-        @SuppressWarnings("unchecked")
         final Set<Class<? extends Throwable>> excludes = (Set) singleton(someThrowable().getClass());
 
         // Given
@@ -117,7 +118,7 @@ public class PropertyParserChoicesTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_create_a_system_property_choices() {
 
         final Long previousTimeoutDuration = someLong();

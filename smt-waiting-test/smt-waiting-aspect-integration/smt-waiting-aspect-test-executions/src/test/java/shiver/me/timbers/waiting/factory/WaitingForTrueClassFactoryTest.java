@@ -6,7 +6,7 @@ import shiver.me.timbers.waiting.execution.CanWaitUntilWaitingForTrueClass;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class WaitingForTrueClassFactoryTest {
 

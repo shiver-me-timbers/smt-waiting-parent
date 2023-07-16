@@ -23,7 +23,7 @@ import shiver.me.timbers.waiting.validation.FailResult;
 import java.util.concurrent.Callable;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -33,6 +33,7 @@ public abstract class AbstractITWaiterWithDefaults
     implements ITWaiterWithDefaults, WaitingPropertyRuleAware {
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Can_reset_values_back_to_defaults() throws Throwable {
 

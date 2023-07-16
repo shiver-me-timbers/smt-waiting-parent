@@ -31,20 +31,75 @@
     <name>${project.artifactId}</name>
 
     <properties>
-        <aspectj.version>1.8.6</aspectj.version>
+        <aspectj.version>1.9.19</aspectj.version>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>java8</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <argLine>
+                                -javaagent:${settings.localRepository}/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar
+                                -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
+                            </argLine>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>java17</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <argLine>
+                                -javaagent:${settings.localRepository}/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar
+                                -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
+                                --add-opens java.base/java.lang=ALL-UNNAMED
+                            </argLine>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>spring-boot1</id>
+            <properties>
+                <aspectj.version>1.8.14</aspectj.version>
+            </properties>
+        </profile>
+        <profile>
+            <id>spring-boot2</id>
+            <properties>
+                <aspectj.version>1.9.7</aspectj.version>
+            </properties>
+        </profile>
+        <profile>
+            <id>spring-boot3</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
+                <!-- The aspectjweaver has been added to get the tests to run correctly during the maven build. -->
                 <configuration>
-                    <!-- The aspectjweaver has been added to get the tests to run correctly during the maven build. -->
-                    <argLine>
-                        -javaagent:${settings.localRepository}/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar
-                        -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
-                    </argLine>
                     <useSystemClassLoader>true</useSystemClassLoader>
                 </configuration>
                 <dependencies>

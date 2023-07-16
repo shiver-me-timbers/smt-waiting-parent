@@ -16,7 +16,7 @@ import shiver.me.timbers.waiting.factory.WaitingTimeoutMethodFactory;
 import java.util.concurrent.Callable;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;

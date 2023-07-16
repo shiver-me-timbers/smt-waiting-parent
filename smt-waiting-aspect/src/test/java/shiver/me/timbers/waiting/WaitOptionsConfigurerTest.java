@@ -25,13 +25,13 @@ import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isA;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLongBetween;
 import static shiver.me.timbers.waiting.Decision.UNDECIDED;
@@ -50,6 +50,7 @@ public class WaitOptionsConfigurerTest {
     private Interval defaultInterval;
     private Decision defaultWaitForTrue;
     private Decision defaultWaitForNotNull;
+    @SuppressWarnings("rawtypes")
     private Class<ResultValidator>[] defaultWaitFor;
     private Class<? extends Throwable>[] defaultInclude;
     private Class<? extends Throwable>[] defaultExclude;
@@ -101,7 +102,7 @@ public class WaitOptionsConfigurerTest {
 
         // Then
         assertThat(actual, is(options));
-        verifyZeroInteractions(options);
+        verifyNoInteractions(options);
     }
 
     @Test
@@ -348,7 +349,6 @@ public class WaitOptionsConfigurerTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void Can_configure_with_defaults() {
 
         // Given
@@ -374,7 +374,6 @@ public class WaitOptionsConfigurerTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void Can_configure_clear_wait_for() {
 
         // Given
@@ -400,7 +399,6 @@ public class WaitOptionsConfigurerTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void Can_configure_clear_includes() {
 
         // Given
@@ -426,7 +424,6 @@ public class WaitOptionsConfigurerTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void Can_configure_clear_excludes() {
 
         // Given
@@ -451,20 +448,23 @@ public class WaitOptionsConfigurerTest {
         verifyNoMoreInteractions(options);
     }
 
+    @SuppressWarnings("rawtypes")
     public static class TestResultOne implements ResultValidator {
         @Override
-        public boolean isValid(Object result) throws Throwable {
+        public boolean isValid(Object result) {
             throw new UnsupportedOperationException();
         }
     }
 
+    @SuppressWarnings("rawtypes")
     public static class TestResultTwo implements ResultValidator {
         @Override
-        public boolean isValid(Object result) throws Throwable {
+        public boolean isValid(Object result) {
             throw new UnsupportedOperationException();
         }
     }
 
+    @SuppressWarnings("rawtypes")
     public static class NoDefaultTestResult implements ResultValidator {
 
         @SuppressWarnings("UnusedParameters")
@@ -472,11 +472,12 @@ public class WaitOptionsConfigurerTest {
         }
 
         @Override
-        public boolean isValid(Object result) throws Throwable {
+        public boolean isValid(Object result) {
             throw new UnsupportedOperationException();
         }
     }
 
+    @SuppressWarnings("rawtypes")
     public static class NoPublicTestResult implements ResultValidator {
 
         public NoPublicTestResult() throws IllegalAccessException {
@@ -484,7 +485,7 @@ public class WaitOptionsConfigurerTest {
         }
 
         @Override
-        public boolean isValid(Object result) throws Throwable {
+        public boolean isValid(Object result) {
             throw new UnsupportedOperationException();
         }
     }

@@ -27,10 +27,10 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static shiver.me.timbers.data.random.RandomBooleans.someBoolean;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLong;
@@ -61,17 +61,17 @@ public class OptionsTest {
     }
 
     @Test
-    public void Nothing_is_set_on_creation() throws InterruptedException {
+    public void Nothing_is_set_on_creation() {
 
         // When
         new Options(defaultChoices, propertyChoices, manualChoices, chooser);
 
         // Then
-        verifyZeroInteractions(defaultChoices, propertyChoices, manualChoices, chooser);
+        verifyNoInteractions(defaultChoices, propertyChoices, manualChoices, chooser);
     }
 
     @Test
-    public void Can_create_a_choice() throws InterruptedException {
+    public void Can_create_a_choice() {
 
         final Choices defaults = mock(Choices.class);
         final Choices properties = mock(Choices.class);
@@ -93,7 +93,7 @@ public class OptionsTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"rawtypes", "unchecked", "ClassGetClass"})
     public void Can_set_options() {
 
         // Given
@@ -150,7 +150,7 @@ public class OptionsTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"rawtypes", "unchecked", "ClassGetClass"})
     public void Can_copy_an_options() {
 
         final Long timeoutDuration = someLong();

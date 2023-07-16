@@ -8,7 +8,7 @@ import org.mockito.InOrder;
 import shiver.me.timbers.waiting.property.PropertyManager;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;

@@ -24,7 +24,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isA;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 
 public class SingleDependencyInstantiaterTest {
@@ -52,8 +52,7 @@ public class SingleDependencyInstantiaterTest {
     }
 
     @Test
-    public void Cannot_instantiate_a_waiter_with_no_input_constructor()
-        throws IllegalAccessException, InvocationTargetException, InstantiationException {
+    public void Cannot_instantiate_a_waiter_with_no_input_constructor() {
 
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectCause(isA(NoSuchMethodException.class));

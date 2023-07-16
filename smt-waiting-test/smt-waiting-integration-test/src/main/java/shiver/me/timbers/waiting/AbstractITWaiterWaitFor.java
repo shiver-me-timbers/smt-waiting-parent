@@ -23,7 +23,7 @@ import java.util.concurrent.Callable;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
@@ -36,6 +36,7 @@ public abstract class AbstractITWaiterWaitFor implements ITWaiterWaitFor {
     private final ValidResult validator = new ValidResult();
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Can_wait_until_valid_result_is_returned() throws Throwable {
 
@@ -55,6 +56,7 @@ public abstract class AbstractITWaiterWaitFor implements ITWaiterWaitFor {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned() throws Throwable {
 
@@ -74,6 +76,7 @@ public abstract class AbstractITWaiterWaitFor implements ITWaiterWaitFor {
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void Can_wait_until_time_out_for_valid_result_when_an_invalid_result_is_always_returned_and_an_exception_was_thrown() throws Throwable {
 

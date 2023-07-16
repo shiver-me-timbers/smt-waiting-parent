@@ -32,7 +32,7 @@ import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -73,8 +73,10 @@ public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterIn
         };
     }
 
+    @SuppressWarnings("SameParameterValue")
     protected abstract WaitingInclude addInclude(long duration, TimeUnit unit, Throwable include);
 
+    @SuppressWarnings("SameParameterValue")
     protected abstract WaitingInclude clearThenAddInclude(
         long duration,
         TimeUnit unit,
@@ -83,6 +85,7 @@ public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterIn
     );
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_set_multiple_includes_with_a_system_property() throws Throwable {
 
         final Callable callable = mock(Callable.class);
@@ -110,6 +113,7 @@ public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterIn
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_add_an_extra_include_to_those_set_with_the_system_property() throws Throwable {
 
         final Callable callable = mock(Callable.class);
@@ -132,6 +136,7 @@ public abstract class AbstractITWaiterIncludeProperty extends AbstractITWaiterIn
     }
 
     @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void Can_clear_the_include_properties_and_add_a_new_included_exception() throws Throwable {
 
         final Callable callable = mock(Callable.class);
