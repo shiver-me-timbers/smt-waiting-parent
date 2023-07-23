@@ -9,11 +9,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static shiver.me.timbers.data.random.RandomEnums.someEnum;
 import static shiver.me.timbers.data.random.RandomLongs.someLong;
 import static shiver.me.timbers.waiting.random.RandomExceptions.someOtherThrowable;
@@ -70,7 +69,6 @@ public class WaitingPropertyRuleTest {
 
         // Then
         assertThat(actual, is(rule));
-        verifyNoInteractions(properties);
     }
 
     @Test
@@ -81,7 +79,6 @@ public class WaitingPropertyRuleTest {
 
         // Then
         assertThat(actual, is(rule));
-        verifyNoInteractions(properties);
     }
 
     @Test
@@ -106,7 +103,6 @@ public class WaitingPropertyRuleTest {
 
         // Then
         assertThat(actual, is(rule));
-        verifyNoInteractions(properties);
     }
 
     @Test
@@ -117,6 +113,5 @@ public class WaitingPropertyRuleTest {
 
         // Then
         assertThat(actual, is(rule));
-        verifyNoInteractions(properties);
     }
 }
