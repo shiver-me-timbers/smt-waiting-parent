@@ -60,6 +60,12 @@
             <properties>
                 <mockito.version>5.4.0</mockito.version>
             </properties>
+        </profile>
+        <profile>
+            <id>java21</id>
+            <properties>
+                <mockito.version>5.4.0</mockito.version>
+            </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
